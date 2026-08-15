@@ -929,7 +929,9 @@ document.getElementById('btnReset').onclick=function(){
   dialog('Von vorn beginnen', function(bd){
     bd.appendChild(el('p',null,'Alle Buchungen dieser Vorführung werden zurückgesetzt.'));
   },[{text:'Abbrechen'},{text:'Zurücksetzen', art:'pri', fn:function(){
-    D=saat(); sichern(); personenWahl(); zeichne(); toast('Alles wieder auf Anfang.');
+    var ansicht=D.ansicht, ich=D.ich, tagNr=D.tagNr;
+    D=saat(); D.ansicht=ansicht; D.ich=ich; D.tagNr=tagNr;
+    tmAuswahl=null; sichern(); personenWahl(); zeichne(); toast('Alles wieder auf Anfang.');
   }}]);
 };
 
