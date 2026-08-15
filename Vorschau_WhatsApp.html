@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMK Shuttle · So sieht es in WhatsApp aus</title>
+<style>
+:root{--vanbody:#3A404A;--vanline:#828997;--vanglas:#46505F;--vaninnen:#1C1F24;
+  --vanrad:#0C0D10;--vanhaube:#333844;--vanlicht:#FFE9A8;--vanruecklicht:#C2453B}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#111B21;font-family:'Segoe UI',system-ui,-apple-system,Helvetica,Arial,sans-serif;color:#E9EDEF}
+.phone{max-width:430px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;background:#0B141A}
+.wahead{background:#1F2C34;padding:9px 12px;display:flex;align-items:center;gap:11px;flex:0 0 auto}
+.wahead .zur{font-size:22px;color:#AEBAC1;line-height:1}
+.avatar{width:40px;height:40px;border-radius:50%;background:#FFD23F;color:#17181C;display:flex;
+  align-items:center;justify-content:center;font-weight:700;font-size:15px;flex:0 0 auto;letter-spacing:.5px}
+.wahead .tit{font-size:16px;font-weight:600;line-height:1.2}
+.wahead .sub{font-size:12.5px;color:#8696A0;line-height:1.3;overflow:hidden;text-overflow:ellipsis;
+  white-space:nowrap;max-width:250px}
+.wahead .icons{margin-left:auto;display:flex;gap:16px;color:#AEBAC1;font-size:17px}
+
+.chat{flex:1;padding:14px 10px 8px;display:flex;flex-direction:column;gap:9px;overflow:hidden;
+  background-color:#0B141A;
+  background-image:radial-gradient(#182229 1px,transparent 1px);background-size:22px 22px}
+.tag{align-self:center;background:#182229;color:#8696A0;font-size:12px;padding:4px 11px;border-radius:8px;margin-bottom:3px}
+.sys{align-self:center;background:#182229;color:#A7B0B6;font-size:12px;padding:5px 12px;border-radius:8px;text-align:center;max-width:90%}
+
+.b{max-width:88%;border-radius:9px;padding:7px 9px 5px;font-size:14.6px;line-height:1.45;
+  white-space:pre-wrap;position:relative;box-shadow:0 1px 0 rgba(0,0,0,.25)}
+.b.out{align-self:flex-end;background:#005C4B;border-top-right-radius:0}
+.b.in{align-self:flex-start;background:#202C33;border-top-left-radius:0}
+.b .von{font-size:13px;font-weight:600;margin-bottom:2px}
+.b .zeit{float:right;font-size:11px;color:#8FA3AD;margin:6px 0 0 8px;position:relative;top:3px}
+.b.out .zeit{color:#9AC7BC}
+.b .haken{color:#53BDEB}
+.link{color:#53BDEB;text-decoration:underline;word-break:break-all}
+
+/* Link-Vorschaukarte */
+.vorschau{background:#025144;border-radius:6px;overflow:hidden;margin:-1px 0 5px;display:flex}
+.vorschau .bild{width:74px;flex:0 0 auto;background:#17181C;display:flex;align-items:center;justify-content:center;
+  font-size:27px}
+.vorschau .txt{padding:7px 9px;min-width:0}
+.vorschau .t1{font-size:13.5px;font-weight:600;margin-bottom:2px}
+.vorschau .t2{font-size:12.5px;color:#C3D0D6;line-height:1.35}
+.vorschau .t3{font-size:12px;color:#8FA3AD;margin-top:3px}
+
+/* Bildnachricht */
+.bildmsg{padding:4px 4px 5px;max-width:78%}
+.bildmsg .rahmen{background:#0B141A;border-radius:6px;padding:6px 4px 2px;text-align:center}
+.bildmsg .kopf{color:#FFD23F;font-weight:700;font-size:14px;font-family:Arial,sans-serif}
+.bildmsg .unter{color:#E9EDEF;font-size:12px;margin:1px 0 4px}
+.bildmsg .fuss{color:#E9EDEF;font-size:12px;margin:2px 0 4px}
+.bildmsg .bu{font-size:14px;padding:3px 5px 0}
+.vanmap{display:block;max-width:280px;margin:0 auto}
+.seat .seatbox{fill:#23262C;stroke:#5A5F6B;stroke-width:2}
+.seat .seatlehne{fill:#5A5F6B;opacity:.55}
+.seat .seattext{font-family:Arial;font-weight:700;font-size:19px;fill:#fff;text-anchor:middle}
+.seat .seatsub{font-family:Arial;font-size:10px;fill:#fff;opacity:.85;text-anchor:middle}
+.seat.frei .seatbox{stroke-dasharray:5 4}
+.seat.frei .seattext{fill:#FFD23F;font-size:24px}
+.seat.angefragt .seatbox{fill:#4A3D12;stroke:#FFD23F;stroke-dasharray:5 4}
+.seat.angefragt .seatlehne{fill:#FFD23F;opacity:.8}
+.seat.bestaetigt .seatbox{fill:#22401F;stroke:#64A85C}
+.seat.bestaetigt .seatlehne{fill:#64A85C}
+.seat.gesperrt .seatbox{fill:#26282E;stroke:#33363E}
+.seat.gesperrt .seattext{font-size:15px;opacity:.75}
+.seat.fahrer .seatbox{fill:#1A1C21;stroke:#4A4E58}
+.seat.fahrer .seatlehne{fill:#4A4E58;opacity:.6}
+.seat .lenkrad{fill:none;stroke:#4A4E58;stroke-width:3}
+.seat .lenkradnabe{fill:#4A4E58}
+
+.eingabe{background:#111B21;padding:8px 10px;display:flex;align-items:center;gap:9px;flex:0 0 auto}
+.eingabe .feld{flex:1;background:#2A3942;border-radius:20px;padding:10px 14px;color:#8696A0;font-size:14.5px}
+.eingabe .send{width:42px;height:42px;border-radius:50%;background:#00A884;display:flex;align-items:center;
+  justify-content:center;font-size:19px;color:#111B21;flex:0 0 auto}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="wahead">
+    <span class="zur">‹</span>
+    <div class="avatar">AMK</div>
+    <div>
+      <div class="tit">AMK Crew · Tour 2026</div>
+      <div class="sub" id="mitglieder">Du, Tourmanagement, Backline, Licht, Ton, Video, Catering, …</div>
+    </div>
+    <div class="icons"><span>📹</span><span>📞</span><span>⋮</span></div>
+  </div>
+  <div class="chat" id="chat"></div>
+  <div class="eingabe">
+    <div class="feld">Nachricht</div>
+    <div class="send">➤</div>
+  </div>
+</div>
+
+<script src="shuttle_fahrzeuge.js"></script>
+<script>
+'use strict';
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!==undefined)e.textContent=x;return e;}
+function q(n){var r={};location.search.replace(/^\?/,'').split('&').forEach(function(p){
+  var t=p.split('=');r[decodeURIComponent(t[0])]=decodeURIComponent(t[1]||'');});return r[n];}
+
+function tag(txt){var d=el('div','tag',txt);document.getElementById('chat').appendChild(d);}
+function sys(txt){document.getElementById('chat').appendChild(el('div','sys',txt));}
+
+function blase(art, von, text, zeit, vorschau){
+  var b=el('div','b '+art);
+  if(von){var v=el('div','von',von);v.style.color=(art==='in'?'#53BDEB':'#FFD23F');b.appendChild(v);}
+  if(vorschau){
+    var vv=el('div','vorschau');
+    var bi=el('div','bild','🚐'); vv.appendChild(bi);
+    var tx=el('div','txt');
+    tx.appendChild(el('div','t1',vorschau.t1));
+    tx.appendChild(el('div','t2',vorschau.t2));
+    tx.appendChild(el('div','t3',vorschau.t3));
+    vv.appendChild(tx); b.appendChild(vv);
+  }
+  var wrap=el('span');
+  String(text).split(/(https?:\/\/\S+)/).forEach(function(teil,i){
+    if(i%2===1)wrap.appendChild(el('span','link',teil));
+    else wrap.appendChild(document.createTextNode(teil));
+  });
+  b.appendChild(wrap);
+  var z=el('span','zeit',zeit+' ');
+  if(art==='out'){var h=el('span','haken','✓✓');z.appendChild(h);}
+  b.appendChild(z);
+  document.getElementById('chat').appendChild(b);
+  return b;
+}
+
+function bildBlase(zeit, titel, unter, fuss, belegung){
+  var b=el('div','b out bildmsg');
+  var r=el('div','rahmen');
+  r.appendChild(el('div','kopf',titel));
+  r.appendChild(el('div','unter',unter));
+  var svg=VANS.zeichneVan('van7',{ohneKlick:true,zustand:function(sid,def){
+    if(def.typ==='fahrer')return {klasse:'fahrer',sub:''};
+    var v=belegung[sid];
+    if(!v)return {klasse:'frei',text:'+',sub:'frei'};
+    return {klasse:v[2]||'bestaetigt',text:v[0],sub:v[1]};
+  }});
+  r.appendChild(svg);
+  r.appendChild(el('div','fuss',fuss));
+  b.appendChild(r);
+  var t=el('div','bu','Stand gerade eben — wer noch mit will, klickt einfach auf einen freien Sitz.');
+  b.appendChild(t);
+  b.appendChild((function(){var z=el('span','zeit',zeit+' ');z.appendChild(el('span','haken','✓✓'));return z;})());
+  document.getElementById('chat').appendChild(b);
+}
+
+var szene=q('s')||'1';
+
+if(szene==='1'){
+  tag('HEUTE');
+  blase('in','Charlotte · Tour','Moin! Weiß jemand, wann morgen früh der erste Shuttle geht?','19:04');
+  blase('out',null,
+'🚐 SHUTTLE · SA 15.08. · 08:30 UHR\nHotel ➜ Venue\n\nHallo liebe Crew,\nfür morgen früh stehen für die Fahrt zur Venue folgende Shuttles und Zeiten zur Verfügung:\n\n🕒 08:30 Uhr · Shuttle 1\n   7-Sitzer · N-AM 1234 · Fahrer Rüdiger\n   6 von 6 Plätzen frei\n🕒 08:30 Uhr · Shuttle 2\n   8-Sitzer · N-MK 5678 · Fahrer Petra\n   6 von 6 Plätzen frei\n\n📍 Treffpunkt: Hotellobby\n🏁 Ziel: Arena · Loading Dock 2\nℹ️ Bitte pünktlich, wir fahren wegen der Anlieferung genau um 08:30 los.\n\nBitte bucht euch gerne selbstständig ein:\n👉 https://amk-shuttle.app/?f=t1\n\nIhr klickt einfach auf einen freien Sitz. Wir geben den Platz frei, dann wird er bei euch grün.\n\nEuer Tourmanagement',
+    '19:12',{t1:'AMK Crew-Shuttle · Sa 15.08. · 08:30 Uhr',
+             t2:'Hotel ➜ Venue · 12 Plätze · jetzt Sitzplatz auswählen',
+             t3:'amk-shuttle.app'});
+  blase('in','Timo · Licht','Top, bin drin 👍','19:14');
+  blase('in','Nina · Ton','Ich nehm Shuttle 2, muss vorher noch zum Catering','19:15');
+}
+
+if(szene==='2'){
+  tag('HEUTE');
+  blase('in','Ruben · Backline','Ist in Shuttle 1 noch was frei?','07:38');
+  bildBlase('07:40','Shuttle 1 · N-AM 1234','Sa 15.08. · 08:30 Uhr · Hotel ➜ Venue','1 von 6 Plätzen frei',
+    {'BF':['LH','Lea'],'2L':['JB','Jonas'],'2M':['RG','Ruben'],'2R':['DC','Dario','angefragt'],'3L':['SO','Sven']});
+  blase('out',null,'Ruben, du stehst schon drin. Es ist noch genau ein Platz frei — Dario wartet noch auf Freigabe, den bestätige ich gleich.\n\n👉 https://amk-shuttle.app/?f=t1','07:41');
+  blase('in','Aylin · Catering','Ich nehm den letzten, danke!','07:43');
+  sys('Aylin hat einen Platz angefragt · Shuttle 1');
+}
+
+if(szene==='3'){
+  tag('HEUTE');
+  blase('out',null,
+'⏰ ERINNERUNG · Abfahrt 08:30 Uhr · Hotel ➜ Venue\n\n🚐 Shuttle 1 (N-AM 1234): Lea H., Jonas B., Ruben G., Dario C., Sven O., Aylin N.\n🚐 Shuttle 2 (N-MK 5678): Timo D., Kai H., Emil W., Nina F.\n\nTreffpunkt Hotellobby. Bitte seid 5 Minuten früher da.\nEs sind noch 2 Plätze frei: https://amk-shuttle.app/?f=t1\n\nEuer Tourmanagement','08:00');
+  blase('in','Kai · Licht','Bin unterwegs, zwei Minuten','08:26');
+  blase('in','Emil · Licht','Ich schaff es nicht, nehmt mich bitte raus — habe im Tool abgesagt','08:27');
+  sys('Emil hat seinen Platz freigegeben · in Shuttle 2 ist wieder einer frei');
+  blase('out',null,'Passt, danke fürs Absagen. Der Platz ist wieder frei und Frida ist von der Warteliste nachgerückt.','08:28');
+}
+</script>
+</body>
+</html>

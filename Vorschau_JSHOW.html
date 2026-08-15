@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>So sähe es in J.SHOW aus</title>
+<style>
+:root{--vanbody:#3A404A;--vanline:#828997;--vanglas:#46505F;--vaninnen:#1C1F24;
+  --vanrad:#0C0D10;--vanhaube:#333844;--vanlicht:#FFE9A8;--vanruecklicht:#C2453B}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0E1116;font-family:'Segoe UI',system-ui,-apple-system,Helvetica,Arial,sans-serif;color:#E8EAEE}
+.rahmen{display:flex;gap:26px;justify-content:center;align-items:flex-start;padding:26px 20px 40px;flex-wrap:wrap}
+.handy{width:390px;background:#12161C;border:1px solid #2A3039;border-radius:26px;overflow:hidden;
+  box-shadow:0 18px 46px rgba(0,0,0,.55)}
+.beschrift{text-align:center;font-size:13.5px;color:#98A2B3;margin:10px auto 0;max-width:390px;line-height:1.45}
+
+/* Kopf einer Tourplattform */
+.jkopf{background:#171C24;padding:12px 14px;display:flex;align-items:center;gap:11px;border-bottom:1px solid #262D38}
+.logo{width:34px;height:34px;border-radius:9px;background:#E7EAF0;color:#12161C;display:flex;align-items:center;
+  justify-content:center;font-weight:800;font-size:13px;letter-spacing:-.5px}
+.jkopf .t1{font-size:15px;font-weight:600;line-height:1.15}
+.jkopf .t2{font-size:12px;color:#8A94A6}
+.jkopf .rechts{margin-left:auto;color:#8A94A6;font-size:18px}
+
+.datum{padding:12px 14px 4px;font-size:12.5px;color:#8A94A6;letter-spacing:.6px;text-transform:uppercase}
+.show{padding:0 14px 10px}
+.showkarte{background:#171C24;border:1px solid #262D38;border-radius:12px;padding:12px 13px}
+.showkarte .stadt{font-size:17px;font-weight:600}
+.showkarte .venue{font-size:13px;color:#8A94A6;margin-top:1px}
+.status{display:inline-block;margin-top:8px;font-size:11.5px;font-weight:700;background:#1E5B45;color:#9EE7C6;
+  border-radius:4px;padding:3px 8px}
+
+.abschnitt{padding:14px 14px 4px;font-size:12.5px;color:#8A94A6;letter-spacing:.6px;text-transform:uppercase}
+.zeile{display:flex;gap:12px;padding:10px 14px;border-bottom:1px solid #1D232C;align-items:flex-start}
+.zeit{font-variant-numeric:tabular-nums;font-size:14.5px;color:#C6CDD9;min-width:46px;padding-top:2px}
+.inhalt{flex:1;min-width:0}
+.inhalt .was{font-size:15px;font-weight:600}
+.inhalt .wo{font-size:13px;color:#8A94A6;margin-top:1px}
+.zeile.aktiv{background:#141A22;border-left:3px solid #FFD23F;padding-left:11px}
+
+/* Der eingebaute Shuttle-Block */
+.shuttleblock{margin:6px 14px 14px;border:1px solid #3A4250;border-radius:12px;overflow:hidden;background:#141A22}
+.sbkopf{display:flex;align-items:center;gap:9px;padding:10px 12px;background:#1A212B;border-bottom:1px solid #2A3340}
+.sbkopf .titel{font-size:14.5px;font-weight:600}
+.sbkopf .marke{margin-left:auto;font-size:10.5px;font-weight:700;background:#FFD23F;color:#161616;
+  border-radius:4px;padding:3px 7px;letter-spacing:.4px}
+.vans{display:flex;gap:10px;padding:12px}
+.van{flex:1;min-width:0;text-align:center}
+.van .name{font-size:13px;font-weight:600;margin-bottom:2px}
+.van .kfz{font-size:11px;color:#8A94A6;font-variant-numeric:tabular-nums}
+.van .frei{font-size:12.5px;margin-top:4px}
+.van .frei b{color:#7FD8A6}
+.van .frei.voll b{color:#FF8B80}
+.vanmap{display:block;max-width:150px;margin:6px auto 0}
+.seat .seatbox{fill:#232830;stroke:#5A6473;stroke-width:2}
+.seat .seatlehne{fill:#5A6473;opacity:.55}
+.seat .seattext{font-family:Arial;font-weight:700;font-size:19px;fill:#fff;text-anchor:middle}
+.seat .seatsub{font-family:Arial;font-size:10px;fill:#fff;opacity:.85;text-anchor:middle}
+.seat.frei .seatbox{stroke-dasharray:5 4}
+.seat.bestaetigt .seatbox{fill:#22401F;stroke:#64A85C}
+.seat.bestaetigt .seatlehne{fill:#64A85C}
+.seat.angefragt .seatbox{fill:#4A3D12;stroke:#FFD23F;stroke-dasharray:5 4}
+.seat.angefragt .seatlehne{fill:#FFD23F;opacity:.8}
+.seat.gesperrt .seatbox{fill:#20252D;stroke:#333C48}
+.seat.fahrer .seatbox{fill:#171C24;stroke:#4A5563}
+.seat.fahrer .seatlehne{fill:#4A5563;opacity:.6}
+.seat .lenkrad{fill:none;stroke:#4A5563;stroke-width:3}
+.seat .lenkradnabe{fill:#4A5563}
+.knopfzeile{display:flex;gap:9px;padding:0 12px 12px}
+.knopf{flex:1;text-align:center;background:#FFD23F;color:#161616;font-weight:700;font-size:14px;
+  border-radius:8px;padding:11px 8px}
+.knopf.zweit{background:#232B36;color:#E8EAEE;border:1px solid #38424F}
+.meins{margin:0 12px 12px;background:#16241D;border:1px solid #2C5B44;border-radius:9px;padding:9px 11px;font-size:13.5px}
+.meins b{color:#9EE7C6}
+.fuss{padding:10px 14px 16px;font-size:12px;color:#6F7A8C;line-height:1.45}
+
+.legende{display:flex;gap:12px;justify-content:center;padding:0 12px 12px;font-size:11.5px;color:#98A2B3;flex-wrap:wrap}
+.legende span{display:flex;align-items:center;gap:5px}
+.lp{width:12px;height:12px;border-radius:3px;border:2px solid #5A6473;background:#232830;display:inline-block}
+.lp.b{background:#22401F;border-color:#64A85C}
+.lp.a{background:#4A3D12;border-color:#FFD23F}
+</style>
+</head>
+<body>
+<div class="rahmen">
+
+  <!-- Ansicht 1: Tagesablauf mit dem Shuttle-Eintrag -->
+  <div>
+    <div class="handy">
+      <div class="jkopf">
+        <div class="logo">J.</div>
+        <div>
+          <div class="t1">AnnenMayKantereit</div>
+          <div class="t2">Publikum Open Airs 2026</div>
+        </div>
+        <div class="rechts">☰</div>
+      </div>
+      <div class="datum">Sonntag · 16. August 2026</div>
+      <div class="show">
+        <div class="showkarte">
+          <div class="stadt">Berlin</div>
+          <div class="venue">Parkbühne Wuhlheide · Hotel Alexanderplatz</div>
+          <div class="status">bestätigt</div>
+        </div>
+      </div>
+      <div class="abschnitt">Tagesablauf</div>
+      <div class="zeile"><div class="zeit">07:00</div><div class="inhalt">
+        <div class="was">Frühstück</div><div class="wo">Hotel Alexanderplatz</div></div></div>
+      <div class="zeile aktiv"><div class="zeit">08:30</div><div class="inhalt">
+        <div class="was">Shuttle zur Venue</div><div class="wo">ab Hotellobby · 3 Plätze frei</div></div></div>
+      <div class="zeile"><div class="zeit">09:00</div><div class="inhalt">
+        <div class="was">Load-in</div><div class="wo">Loading Dock 2</div></div></div>
+      <div class="zeile"><div class="zeit">14:00</div><div class="inhalt">
+        <div class="was">Soundcheck</div><div class="wo">Hauptbühne</div></div></div>
+      <div class="zeile"><div class="zeit">23:59</div><div class="inhalt">
+        <div class="was">Shuttle zurück ins Hotel</div><div class="wo">ab Crew-Eingang · 13 Plätze frei</div></div></div>
+      <div class="fuss">Nachbau. So würde der Shuttle-Eintrag im gewohnten Tagesablauf stehen — ein Tipp darauf öffnet die Platzbuchung.</div>
+    </div>
+    <div class="beschrift">1 · Im Tagesablauf: der Shuttle-Eintrag zwischen Frühstück und Load-in</div>
+  </div>
+
+  <!-- Ansicht 2: der geoeffnete Shuttle-Eintrag -->
+  <div>
+    <div class="handy">
+      <div class="jkopf">
+        <div class="logo">J.</div>
+        <div>
+          <div class="t1">Shuttle zur Venue</div>
+          <div class="t2">So 16.08. · 08:30 Uhr · Berlin</div>
+        </div>
+        <div class="rechts">✕</div>
+      </div>
+
+      <div class="zeile"><div class="zeit">08:30</div><div class="inhalt">
+        <div class="was">Abfahrt Hotellobby</div>
+        <div class="wo">Ziel: Parkbühne Wuhlheide · Loading Dock 2</div></div></div>
+
+      <div class="shuttleblock">
+        <div class="sbkopf">
+          <div class="titel">Platz auswählen</div>
+          <div class="marke">CREW-SHUTTLE</div>
+        </div>
+        <div class="vans" id="vans"></div>
+        <div class="legende">
+          <span><i class="lp"></i> frei</span>
+          <span><i class="lp a"></i> angefragt</span>
+          <span><i class="lp b"></i> belegt</span>
+        </div>
+        <div class="meins">Dein Platz: <b>Shuttle 1</b> · bestätigt · Treffpunkt Hotellobby, 08:25 Uhr</div>
+        <div class="knopfzeile">
+          <div class="knopf">Platz nehmen</div>
+          <div class="knopf zweit">Absagen</div>
+        </div>
+      </div>
+
+      <div class="fuss">Nachbau. Es geht nur um einen Platz im Fahrzeug — welcher Sitz es wird, entscheidet sich beim Einsteigen.</div>
+    </div>
+    <div class="beschrift">2 · Geöffnet: Fahrzeuge mit freien Plätzen, ein Tipp genügt</div>
+  </div>
+
+</div>
+
+<script src="shuttle_fahrzeuge.js"></script>
+<script>
+'use strict';
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!==undefined)e.textContent=x;return e;}
+var VANS_DEMO=[
+  {name:'Shuttle 1', kfz:'B-AM 1234', vorlage:'van7', frei:1,
+   belegt:{'BF':['LH','Lea'],'2L':['JB','Jonas'],'2M':['RG','Ruben'],'3L':['SO','Sven'],'2R':['DC','Dario','angefragt']}},
+  {name:'Shuttle 2', kfz:'B-MK 5678', vorlage:'van8', frei:2,
+   belegt:{'BF':['TD','Timo'],'2L':['KH','Kai'],'2M':['EW','Emil','angefragt'],'3L':['NF','Nina']}, gesperrt:['3R']}
+];
+var box=document.getElementById('vans');
+VANS_DEMO.forEach(function(v){
+  var d=el('div','van');
+  d.appendChild(el('div','name',v.name));
+  d.appendChild(el('div','kfz',v.kfz));
+  var svg=VANS.zeichneVan(v.vorlage,{ohneKlick:true,zustand:function(sid,def){
+    if(def.typ==='fahrer')return {klasse:'fahrer',sub:''};
+    if((v.gesperrt||[]).indexOf(sid)>=0)return {klasse:'gesperrt',text:'▩',sub:''};
+    var b=v.belegt[sid];
+    if(!b)return {klasse:'frei',text:'',sub:''};
+    return {klasse:b[2]||'bestaetigt',text:'',sub:''};
+  }});
+  d.appendChild(svg);
+  var f=el('div','frei'+(v.frei?'':' voll'));
+  f.innerHTML='<b>'+v.frei+'</b> von '+(v.vorlage==='van7'?6:6)+' frei';
+  d.appendChild(f);
+  box.appendChild(d);
+});
+</script>
+</body>
+</html>

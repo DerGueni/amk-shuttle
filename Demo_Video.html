@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMK Crew-Shuttle · Erklärvideo</title>
+<style>
+:root{--case:#17181C;--panel:#1F2126;--panel2:#26282E;--line:#33363E;--ink:#fff;--tape:#FFD23F;--ok:#64A85C;--now:#FF4B3E;
+  --disp:Arial,Helvetica,sans-serif;--body:Calibri,'Segoe UI',Arial,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--case);color:var(--ink);font-family:var(--body);font-size:16.5px;line-height:1.5}
+header{background:var(--panel);border-bottom:3px solid var(--tape);padding:16px 22px}
+.kicker{font-family:var(--disp);font-weight:700;font-size:12px;color:var(--tape);letter-spacing:1px}
+h1{font-family:var(--disp);font-size:clamp(20px,3vw,28px);margin:4px 0}
+.sub{font-size:14.5px;opacity:.9}
+main{max-width:1240px;margin:0 auto;padding:20px 22px 60px;display:grid;grid-template-columns:1fr 320px;gap:18px;align-items:start}
+@media (max-width:940px){main{grid-template-columns:1fr}}
+.player{background:#000;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+video{width:100%;display:block;background:#000}
+.steuer{display:flex;gap:9px;align-items:center;padding:11px 12px;background:var(--panel);border-top:1px solid var(--line);flex-wrap:wrap}
+.steuer button{background:var(--panel2);border:1px solid var(--line);border-radius:6px;color:var(--ink);
+  font-family:var(--disp);font-weight:700;font-size:14px;padding:9px 14px;cursor:pointer}
+.steuer button:hover{border-color:var(--tape)}
+.steuer button.pri{background:var(--tape);border-color:var(--tape);color:#161616}
+.zeit{margin-left:auto;font-size:13.5px;opacity:.85}
+.bahn{height:6px;background:var(--panel2);border-radius:3px;margin:0;cursor:pointer;position:relative}
+.bahn i{display:block;height:100%;width:0;background:var(--tape);border-radius:3px}
+aside{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:13px}
+aside h2{font-family:var(--disp);font-size:14px;margin-bottom:9px}
+.kap{display:block;width:100%;text-align:left;background:none;border:none;border-left:3px solid transparent;
+  color:var(--ink);font-family:var(--body);font-size:14.5px;padding:7px 9px;cursor:pointer;border-radius:0 5px 5px 0}
+.kap:hover{background:var(--panel2)}
+.kap.an{border-left-color:var(--tape);background:var(--panel2)}
+.kap .t{font-family:var(--disp);font-weight:700;font-size:11.5px;color:var(--tape);margin-right:8px}
+.hinweis{margin-top:14px;border-left:3px solid var(--tape);background:var(--panel);padding:10px 12px;font-size:14.5px;border-radius:0 6px 6px 0}
+.hinweis.rot{border-left-color:var(--now)}
+.links{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap}
+.links a{background:var(--panel2);border:1px solid var(--line);border-radius:6px;color:var(--tape);
+  font-family:var(--disp);font-weight:700;font-size:13px;padding:9px 13px;text-decoration:none}
+.links a:hover{border-color:var(--tape)}
+.fehlt{padding:24px;background:var(--panel);color:var(--ink);display:none}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker">LANDSTREICHER BOOKING · CREW-SHUTTLE</div>
+  <h1>Erklärvideo: ein Tourtag mit dem Shuttle-Werkzeug</h1>
+  <div class="sub">Knapp vier Minuten, mit gesprochener Erklärung. Eine Datei mit Bild und Ton — auch zum Weitergeben.</div>
+</header>
+
+<main>
+  <div>
+    <div class="player">
+      <video id="v" controls playsinline preload="metadata">
+        <source src="Demo_Shuttle.mp4" type="video/mp4">
+      </video>
+      <div class="steuer">
+        <button class="pri" id="ab">▶ Abspielen</button>
+        <button id="zur10">◀ 10 s</button>
+        <button id="vor10">10 s ▶</button>
+        <button id="anfang">An den Anfang</button>
+        <span class="zeit" id="zeit">0:00 / 3:53</span>
+      </div>
+    </div>
+    <div class="hinweis" id="tonhinweis">Bild und Ton stecken in einer Datei (<b>Demo_Shuttle.mp4</b>) — die lässt sich auch weitergeben oder in eine Präsentation einbauen.</div>
+    <div class="hinweis rot">In diesem Video ist die Anbindung an J.SHOW <b>nachgestellt</b> — es entsteht keine Verbindung nach außen.</div>
+    <div class="links">
+      <a href="START_HIER.html">Übersicht mit Bildern</a>
+      <a href="Praesentation_Shuttle.html">Präsentation</a>
+      <a href="shuttle.html">Werkzeug öffnen</a>
+      <a href="Anbindung_JSHOW.html">Anbindung an J.SHOW</a>
+    </div>
+  </div>
+
+  <aside>
+    <h2>Kapitel</h2>
+    <div id="kapitel"></div>
+    <div class="hinweis" style="margin-top:12px">Ein Klick auf ein Kapitel springt an die Stelle.</div>
+  </aside>
+</main>
+
+<script>
+var KAP=[
+ {"t":1.2,"n":"Worum es geht"},
+ {"t":21.39,"n":"Die Abfahrten des Tages"},
+ {"t":40.88,"n":"Das Fahrzeug von oben"},
+ {"t":66.25,"n":"Die Crew bucht selbst"},
+ {"t":80.11,"n":"Freigeben"},
+ {"t":90.41,"n":"Selbst besetzen"},
+ {"t":119.44,"n":"Kleinigkeiten, die zählen"},
+ {"t":141.29,"n":"Fahrzeuge und Fahrer"},
+ {"t":162.23,"n":"Die Nachricht an die Crew"},
+ {"t":179.4,"n":"Die Nachricht an die Fahrer"},
+ {"t":197.16,"n":"Anbindung an J.SHOW"},
+ {"t":215.94,"n":"Zum Schluss"}
+];
+var v=document.getElementById('v');
+var ab=document.getElementById('ab'), zeit=document.getElementById('zeit');
+var box=document.getElementById('kapitel'), laeuft=false;
+
+function mmss(s){s=Math.max(0,Math.round(s));return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2);}
+KAP.forEach(function(k,i){
+  var b=document.createElement('button'); b.className='kap';
+  b.innerHTML='<span class="t">'+mmss(k.t)+'</span>'+k.n;
+  b.onclick=function(){springe(k.t);};
+  box.appendChild(b);
+});
+function marken(){
+  var t=v.currentTime||0, akt=0;
+  KAP.forEach(function(k,i){ if(t>=k.t-0.2)akt=i; });
+  [].slice.call(box.children).forEach(function(b,i){b.classList.toggle('an',i===akt);});
+}
+function starten(){ v.play(); laeuft=true; ab.textContent='❚❚ Pause'; }
+function anhalten(){ v.pause(); laeuft=false; ab.textContent='▶ Abspielen'; }
+function springe(t){ v.currentTime=t; if(!laeuft)starten(); marken(); }
+ab.onclick=function(){ laeuft?anhalten():starten(); };
+document.getElementById('zur10').onclick=function(){springe(Math.max(0,v.currentTime-10));};
+document.getElementById('vor10').onclick=function(){springe(v.currentTime+10);};
+document.getElementById('anfang').onclick=function(){springe(0);};
+v.addEventListener('timeupdate',function(){
+  var d=v.duration||226;
+  zeit.textContent=mmss(v.currentTime)+' / '+mmss(d);
+  marken();
+});
+v.addEventListener('play',function(){laeuft=true;ab.textContent='❚❚ Pause';});
+v.addEventListener('pause',function(){laeuft=false;ab.textContent='▶ Abspielen';});
+v.addEventListener('ended',function(){anhalten();});
+v.addEventListener('error',function(){
+  document.querySelector('.player').innerHTML='<div class="fehlt" style="display:block">'+
+    'Die Videodatei <b>Demo_Shuttle.mp4</b> liegt nicht neben dieser Seite.</div>';
+});
+document.addEventListener('keydown',function(e){
+  if(e.key===' '){e.preventDefault(); laeuft?anhalten():starten();}
+});
+marken();
+</script>
+</body>
+</html>

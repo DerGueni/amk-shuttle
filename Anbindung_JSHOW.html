@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shuttle-Werkzeug und J.SHOW</title>
+<style>
+:root{--case:#17181C;--panel:#1F2126;--panel2:#26282E;--line:#33363E;--ink:#fff;--tape:#FFD23F;--ok:#64A85C;--now:#FF4B3E}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--case);color:var(--ink);font-family:Calibri,'Segoe UI',Arial,sans-serif;font-size:16.5px;line-height:1.55}
+header{background:var(--panel);border-bottom:3px solid var(--tape);padding:22px 26px}
+.kicker{font-family:Arial;font-weight:700;font-size:13px;color:var(--tape)}
+h1{font-family:Arial;font-size:28px;margin:4px 0 6px}
+main{max-width:1000px;margin:0 auto;padding:8px 26px 60px}
+h2{font-family:Arial;font-size:20px;margin:32px 0 10px;padding-top:14px;border-top:1px solid var(--line)}
+h3{font-family:Arial;font-size:16.5px;margin:18px 0 6px;color:var(--tape)}
+p{margin:0 0 11px;max-width:840px}
+ul{margin:0 0 12px 20px}li{margin-bottom:6px;max-width:840px}
+.karte{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px;margin:12px 0}
+.karte.gut{border-left:4px solid var(--ok)}
+.karte.mittel{border-left:4px solid var(--tape)}
+.karte.schlecht{border-left:4px solid var(--now)}
+.marke{display:inline-block;font-family:Arial;font-weight:700;font-size:12px;border-radius:3px;padding:2px 8px;
+  background:var(--panel2);border:1px solid var(--line);margin-bottom:8px}
+.marke.gut{background:var(--ok);color:#161616;border-color:var(--ok)}
+.stufe{display:flex;gap:14px;align-items:flex-start;margin:14px 0}
+.stufe .nr{flex:0 0 40px;height:40px;border-radius:50%;background:var(--tape);color:#161616;
+  display:flex;align-items:center;justify-content:center;font-family:Arial;font-weight:700;font-size:18px}
+table{width:100%;border-collapse:collapse;font-size:15px;margin:10px 0}
+th{font-family:Arial;font-size:13px;text-align:left;border-bottom:1px solid var(--line);padding:7px 8px;color:var(--tape)}
+td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.pre{white-space:pre-wrap;font-family:Consolas,monospace;font-size:13px;background:var(--panel2);
+  border:1px solid var(--line);border-radius:6px;padding:12px;overflow-x:auto}
+a{color:var(--tape)}
+footer{border-top:1px solid var(--line);margin-top:36px;padding-top:14px;font-size:14px;opacity:.85}
+</style>
+</head>
+<body>
+<header>
+  <div class="kicker">AMK CREW-SHUTTLE · ENTSCHEIDUNGSHILFE</div>
+  <h1>Eigenes Werkzeug oder alles in J.SHOW?</h1>
+  <p>Kurze Antwort: eigenes Werkzeug, aber fest an J.SHOW angebunden — nicht daneben, sondern daran.</p>
+</header>
+<main>
+
+<div class="karte mittel" style="margin-top:18px">
+  <span class="marke">Stand 15.08.2026</span>
+  <h3>Weg B ist gewählt — und bis zur Freigabe abgeschaltet</h3>
+  <p>Die Anbindung ist im Werkzeug fertig eingebaut, aber ein Schalter hält sie zurück: ohne das Go von
+     Landstreicher geht nichts an J.SHOW und nichts von dort. Die Vorführung läuft davon unabhängig.
+     Die nächsten Schritte stimmen wir direkt miteinander ab.</p>
+</div>
+
+<h2>Was wir vorgefunden haben</h2>
+<p>Landstreicher arbeitet bereits mit J.SHOW: die Agentur hat dort eine eigene Plattform
+  (<code>landstreicher.j.show</code>), jeder Künstler bekommt eine eigene Adresse. In J.SHOW stehen schon:
+  Termine mit Venues und Städten, die Travel Party mit Rollen und Rechten, ein Crew-Booking-Werkzeug,
+  Hotels und Zimmerverteilung, Fahrzeuge mit Vorlagen, Gästelisten, Verträge und Abrechnungen.
+  Dazu Apps für iPhone und Android mit Offline-Modus, und eine REST-Schnittstelle mit Schlüsseln und Rechten.</p>
+<p>Was J.SHOW nach der Dokumentation <b>nicht</b> hat: eine Sitzplatz-Buchung, bei der sich die Crew selbst
+  auf einen Platz im Shuttle setzt, eine Draufsicht des Fahrzeugs, die Freigabe durch den Admin,
+  und die Kommunikation mit einer zweiten WhatsApp-Gruppe, in der in jeder Stadt andere Fahrer sind.
+  Genau diese Lücke füllt dieses Werkzeug.</p>
+
+<h2>Die drei möglichen Wege</h2>
+
+<div class="karte schlecht">
+  <span class="marke">Weg A</span>
+  <h3>Alles in J.SHOW einbauen lassen</h3>
+  <p>Wäre am saubersten — geht aber nur über den Hersteller. J.SHOW ist ein fertiges, verkauftes Produkt;
+     niemand außer deren Team kann dort etwas einbauen. Man kann den Wunsch anmelden, hat aber keinen
+     Einfluss darauf, ob und wann er kommt, und die Optik und der Ablauf wären nicht mehr unsere Entscheidung.
+     Als alleiniger Plan zu unsicher.</p>
+</div>
+
+<div class="karte gut">
+  <span class="marke gut">Weg B · Empfehlung</span>
+  <h3>Eigenes Werkzeug, an J.SHOW angehängt</h3>
+  <p>Das Shuttle-Werkzeug bleibt eigenständig und wird an J.SHOW angebunden: Stammdaten kommen von dort,
+     der fertige Sitzplan geht dorthin zurück, und im Tagesablauf eines Termins steht der Link zum Einbuchen.
+     Für die Crew fühlt es sich an wie ein Teil von J.SHOW — ein Klick, und der Sitzplan ist da.
+     Nichts wird doppelt gepflegt, und wir bleiben unabhängig.</p>
+</div>
+
+<div class="karte mittel">
+  <span class="marke">Weg C</span>
+  <h3>So weiter wie bisher, nur mit WhatsApp</h3>
+  <p>Funktioniert sofort und ist besser als Zettel — aber Crewlisten und Termine müssten zweimal gepflegt werden.
+     Als Zwischenschritt in Ordnung, als Dauerlösung nicht.</p>
+</div>
+
+<h2>Der Vorschlag in drei Stufen</h2>
+
+<div class="stufe">
+  <div class="nr">1</div>
+  <div>
+    <h3>Sofort einsetzbar, ohne Abstimmung mit J.SHOW</h3>
+    <p>So läuft das Werkzeug heute schon: Crew einmal einlesen, Fahrzeuge und Fahrer je Stadt eintragen,
+       Fahrten anlegen, Link in die Crew-Gruppe. Für die erste Stadt reicht das völlig.
+       Aufwand: eine halbe Stunde Einrichtung.</p>
+  </div>
+</div>
+
+<div class="stufe">
+  <div class="nr">2</div>
+  <div>
+    <h3>Stammdaten aus J.SHOW holen</h3>
+    <p>Mit dem Agentur-Schlüssel liest das Werkzeug Termine, Städte, Venues und die Travel Party aus J.SHOW.
+       Dann steht die Crew-Liste automatisch richtig da, auch wenn jemand dazukommt oder abspringt.
+       Gebraucht wird dafür ein API-Schlüssel und der Zugang zur Schnittstellen-Beschreibung, die in der
+       Plattform selbst hinterlegt ist. In den Einstellungen ist der Platz dafür schon vorbereitet.</p>
+  </div>
+</div>
+
+<div class="stufe">
+  <div class="nr">3</div>
+  <div>
+    <h3>Den fertigen Plan zurückgeben</h3>
+    <p>Der besetzte Sitzplan geht als Eintrag oder Datei an den jeweiligen Termin in J.SHOW zurück,
+       damit alle ihn dort finden — auch die, die nie in WhatsApp schauen. Der Knopf
+       „Plan als JSON ausgeben“ zeigt heute schon genau das Paket, das dabei übergeben würde.
+       Wenn J.SHOW mitspielt, wird daraus ein richtiger Menüpunkt im Tagesablauf.</p>
+  </div>
+</div>
+
+<h2>Was dafür gebraucht wird</h2>
+<table>
+  <tr><th>Punkt</th><th>Wer</th><th>Anmerkung</th></tr>
+  <tr><td>API-Schlüssel der Agentur-Plattform</td><td>Landstreicher</td><td>steht in J.SHOW im Bereich API</td></tr>
+  <tr><td>Zugriff auf die Schnittstellen-Doku</td><td>Landstreicher</td><td>liegt in der Plattform, nicht öffentlich</td></tr>
+  <tr><td>Entscheidung, wo die Crew-Liste zuhause ist</td><td>Tourmanagement</td><td>Vorschlag: J.SHOW führt, Shuttle liest</td></tr>
+  <tr><td>Datenschutz: Namen und Telefonnummern</td><td>beide</td><td>J.SHOW ist DSGVO-konform, unser Werkzeug speichert dann nur, was es braucht</td></tr>
+  <tr><td>Anfrage an J.SHOW, ob ein Link im Tagesablauf möglich ist</td><td>Landstreicher</td><td>kleiner Aufwand, große Wirkung</td></tr>
+</table>
+
+<h2>So sieht das Übergabepaket aus</h2>
+<p>Dieses Paket erzeugt das Werkzeug heute schon auf Knopfdruck — es ist der Vorschlag für die Schnittstelle.</p>
+<div class="pre">{
+ "quelle": "AMK Shuttle",
+ "tour": { "kuenstler": "AnnenMayKantereit", "tour": "Publikum Open Airs", "jahr": 2026 },
+ "tag": "2026-08-16",
+ "stadt": "Berlin",
+ "fahrten": [
+  { "zeit": "08:30", "richtung": "Hotel ➜ Venue",
+    "treffpunkt": "Hotellobby", "ziel": "Parkbühne Wuhlheide · Loading Dock 2",
+    "shuttles": [
+     { "fahrzeug": "Shuttle 1", "kennzeichen": "B-AM 1234", "typ": "van7",
+       "fahrer": "Rüdiger Palm", "frei": 1,
+       "plaetze": [ { "sitz": "BF", "name": "Hartmann Lea", "gewerk": "Produktion", "status": "bestaetigt" } ] }
+    ] }
+ ]
+}</div>
+
+<h2>Und die zweite WhatsApp-Gruppe?</h2>
+<p>Die Fahrer sind in jeder Stadt andere, deshalb hängt die Fahrer-Gruppe an der Stadt, nicht an der Tour.
+  Im Werkzeug steht je Stadt, wie die Fahrer-Gruppe heißt, wer fährt, mit welcher Nummer und für welche Firma.
+  Für diese Gruppe gibt es eigene Textvorlagen: die Fahrer bekommen Zeiten, Treffpunkt, Ziel, Personenzahl und
+  Kontakt — aber keinen Buchungslink, denn buchen sollen sie nicht. Beide Gruppen werden also aus derselben
+  Planung bedient, sehen aber nur, was sie angeht. Genau so würde es später auch in J.SHOW laufen,
+  wo Rechte und Rollen ohnehin vorgesehen sind.</p>
+
+<footer>
+  Stand 15.08.2026 · Quellen: j.show und die öffentliche Anleitung doc.j.show, Stand August 2026.
+  Die genauen Endpunkte der Schnittstelle stehen nur in der Plattform selbst — dafür brauchen wir einmal Zugang.
+</footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMK Crew-Shuttle · Präsentation</title>
+<style>
+:root{--case:#17181C;--panel:#1F2126;--panel2:#26282E;--line:#33363E;--ink:#fff;--tape:#FFD23F;--ok:#64A85C;--now:#FF4B3E;
+  --disp:Arial,Helvetica,sans-serif;--body:Calibri,'Segoe UI',Arial,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--case);color:var(--ink);font-family:var(--body);overflow:hidden}
+.folie{position:absolute;inset:0;display:none;flex-direction:column;padding:44px 56px 74px}
+.folie.an{display:flex}
+.nr{font-family:var(--disp);font-weight:700;font-size:12px;color:var(--tape);letter-spacing:1px}
+h1{font-family:var(--disp);font-size:clamp(26px,4.2vw,46px);line-height:1.1;margin:6px 0 12px}
+h2{font-family:var(--disp);font-size:clamp(20px,2.6vw,30px);margin:4px 0 14px}
+p{font-size:clamp(15px,1.5vw,20px);line-height:1.5;max-width:1000px;margin-bottom:12px}
+ul{margin:6px 0 12px 24px}li{font-size:clamp(15px,1.4vw,19px);line-height:1.55;margin-bottom:8px;max-width:980px}
+.mitte{justify-content:center;align-items:flex-start}
+.zwei{display:flex;gap:34px;align-items:flex-start;flex:1;min-height:0}
+.zwei .txt{flex:1 1 40%;min-width:280px}
+.zwei .bild{flex:1 1 55%;min-width:0;display:flex;align-items:center;justify-content:center}
+.zwei img{max-width:100%;max-height:64vh;border:1px solid var(--line);border-radius:8px;display:block}
+.kacheln{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px}
+.kachel{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--tape);
+  border-radius:8px;padding:14px 16px;flex:1 1 240px;min-width:220px}
+.kachel b{font-family:var(--disp);font-size:16px;display:block;margin-bottom:5px}
+.kachel span{font-size:15px;line-height:1.45;display:block}
+.gross{font-family:var(--disp);font-weight:700;font-size:clamp(30px,5vw,58px);color:var(--tape);line-height:1}
+.leiste{position:absolute;left:0;right:0;bottom:0;height:56px;background:var(--panel);
+  border-top:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:0 20px}
+.leiste button{background:var(--panel2);border:1px solid var(--line);border-radius:6px;color:var(--ink);
+  font-family:var(--disp);font-weight:700;font-size:14px;padding:8px 14px;cursor:pointer}
+.leiste button:hover{border-color:var(--tape)}
+.punkte{display:flex;gap:6px;margin-left:auto}
+.punkt{width:9px;height:9px;border-radius:50%;background:var(--line);cursor:pointer}
+.punkt.an{background:var(--tape)}
+.fuss{font-size:13px;opacity:.75}
+.marke{display:inline-block;font-family:var(--disp);font-weight:700;font-size:12px;border-radius:3px;
+  padding:3px 9px;background:var(--tape);color:#161616;margin-bottom:10px}
+.marke.gruen{background:var(--ok);color:#161616}
+.marke.rot{background:var(--now);color:#fff}
+@media (max-width:820px){.zwei{flex-direction:column}.folie{padding:26px 22px 70px}}
+</style>
+</head>
+<body>
+
+<!-- 1 -->
+<section class="folie an mitte">
+  <div class="nr">LANDSTREICHER BOOKING · TOURMANAGEMENT</div>
+  <h1>Crew-Shuttle<br>Plätze selbst buchen</h1>
+  <p>Ein kleines Werkzeug für die tägliche Frage „Wer fährt wann mit welchem Van?“ —
+     bedient aus der WhatsApp-Gruppe heraus, geplant vom Tourmanagement.</p>
+  <p class="fuss">Vorführstand · August 2026 · Beispiel: AnnenMayKantereit, Publikum Open Airs 2026</p>
+</section>
+
+<!-- 2 -->
+<section class="folie">
+  <div class="nr">DAS PROBLEM</div>
+  <h1>60 Leute, eine Gruppe, drei Vans</h1>
+  <div class="kacheln">
+    <div class="kachel"><b>Jeden Tag neu</b><span>Hotel zur Venue, zurück, Bahnhof, Flughafen — mit wechselnden Zeiten.</span></div>
+    <div class="kachel"><b>Alles in einem Chat</b><span>Wer mitfährt, steht verstreut in dreißig Nachrichten.</span></div>
+    <div class="kachel"><b>Niemand weiß, ob noch Platz ist</b><span>Und zwei Leute stehen morgens umsonst in der Lobby.</span></div>
+    <div class="kachel"><b>Die Fahrer sind überall andere</b><span>In jeder Stadt eine neue Firma, neue Nummern, neue Gruppe.</span></div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="folie">
+  <div class="nr">DIE IDEE</div>
+  <h1>Der Van von oben — wie ein Sitzplan im Flugzeug</h1>
+  <div class="zwei">
+    <div class="txt">
+      <p>Das Fahrzeug von oben, das Dach ist weg, man sieht auf einen Blick, wie viele Plätze frei sind.
+         Freien Platz antippen, fertig. Welcher Sitz es genau wird, spielt keine Rolle.</p>
+      <ul>
+        <li>Grün heißt bestätigt</li>
+        <li>Gelb gestrichelt heißt angefragt</li>
+        <li>Gestrichelt und leer heißt frei</li>
+        <li>Schraffiert heißt Gepäck</li>
+      </ul>
+      <p>Sechs Fahrzeugtypen: vom Kombi mit fünf Sitzen bis zum Minibus mit sechzehn.</p>
+    </div>
+    <div class="bild"><img src="Bildschirmfotos/05_Tool_Sitzplan_Admin.png" alt="Sitzplan"></div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="folie">
+  <div class="nr">DER ABLAUF</div>
+  <h1>Fünf Schritte, jeden Tag gleich</h1>
+  <div class="kacheln">
+    <div class="kachel"><b>1 · Ansage</b><span>Text im Werkzeug erzeugen und in die Crew-Gruppe einfügen.</span></div>
+    <div class="kachel"><b>2 · Einbuchen</b><span>Die Crew tippt auf den Link und nimmt sich einen freien Platz.</span></div>
+    <div class="kachel"><b>3 · Freigeben</b><span>Das Tourmanagement bestätigt — alles auf einmal oder einzeln.</span></div>
+    <div class="kachel"><b>4 · Erinnern</b><span>Kurz vor der Abfahrt: wer fährt mit, wer fehlt noch.</span></div>
+    <div class="kachel"><b>5 · Fahren</b><span>Fahrerliste zum Ausdrucken, Fahrer-Gruppe bekommt ihre eigene Nachricht.</span></div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="folie">
+  <div class="nr">IN WHATSAPP</div>
+  <h1>Die Ansage bleibt dort, wo alle hinschauen</h1>
+  <div class="zwei">
+    <div class="txt">
+      <p>WhatsApp lässt kein Werkzeug von außen in eine Gruppe schreiben — deshalb baut das Werkzeug
+         die fertige Nachricht, und der Admin fügt sie mit einem Klick ein.</p>
+      <p>Darin stehen Zeiten, Fahrzeuge mit Kennzeichen, freie Plätze, Treffpunkt und der Link zum Einbuchen.</p>
+      <p>Wer nicht klicken mag, sieht den Sitzplan auch als Bild.</p>
+    </div>
+    <div class="bild"><img src="Bildschirmfotos/01_WhatsApp_Ansage.png" alt="WhatsApp-Ansage"></div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="folie">
+  <div class="nr">FÜR DIE CREW</div>
+  <h1>Zwei Fingertipps, kein Konto, keine App</h1>
+  <div class="zwei">
+    <div class="txt">
+      <p>Link antippen, freien Platz antippen, bestätigen. Der eigene Platz ist weiß umrandet,
+         damit man sich sofort wiederfindet.</p>
+      <p>Unter „Meine Plätze“ steht, wo man überall eingetragen ist und wie lange es noch bis zur Abfahrt ist.
+         Absagen geht mit einem Knopf — dann rückt die Warteliste nach.</p>
+    </div>
+    <div class="bild"><img src="Bildschirmfotos/10_Tool_Crew_Platz_buchen.png" alt="Platz buchen"></div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="folie">
+  <div class="nr">FÜR DAS TOURMANAGEMENT</div>
+  <h1>Besetzen wie ein Schichtplan</h1>
+  <div class="zwei">
+    <div class="txt">
+      <p>Links die ganze Crew nach Gewerken, rechts die Abfahrten mit ihren Plätzen.
+         Platz antippen, Namen doppelt antippen — die Person ist eingeteilt. Am Handy genauso.</p>
+      <ul>
+        <li>Neben jedem Namen steht, wo er schon mitfährt</li>
+        <li>„Nur ohne Platz“ zeigt, wer noch fehlt</li>
+        <li>„Rest verteilen“ füllt den Rest automatisch</li>
+        <li>Rechte Maustaste: „fährt selbst“, Gewerk ändern, herausnehmen</li>
+        <li>Jeder Schritt lässt sich rückgängig machen</li>
+      </ul>
+    </div>
+    <div class="bild"><img src="Bildschirmfotos/13_Besetzung_Dashboard.png" alt="Besetzung"></div>
+  </div>
+</section>
+
+<!-- 8 -->
+<section class="folie">
+  <div class="nr">ZWEITE GRUPPE</div>
+  <h1>Die Fahrer sind in jeder Stadt andere</h1>
+  <div class="zwei">
+    <div class="txt">
+      <p>Deshalb hängen sie an der Stadt: Name, Telefon, Mietwagenfirma, Fahrzeug — und der Name der
+         Fahrer-WhatsApp-Gruppe, dazu Hotel und Venue.</p>
+      <p>Die Fahrer bekommen einen eigenen Text: Fahrzeug, Kennzeichen, Zeiten, Treffpunkt, Ziel und
+         Personenzahl. Keinen Buchungslink — buchen sollen sie nicht.</p>
+    </div>
+    <div class="bild"><img src="Bildschirmfotos/14_Fahrer_je_Stadt.png" alt="Fahrer je Stadt"></div>
+  </div>
+</section>
+
+<!-- 9 -->
+<section class="folie">
+  <div class="nr">TEXTE UND TOUREN</div>
+  <h1>Jeder Text frei, jede Tour eigenständig</h1>
+  <div class="zwei">
+    <div class="txt">
+      <p>Der fertige Text steht in einem Feld, in dem man einfach weiterschreibt; darunter läuft die
+         Vorschau mit. Was gut ist, wird zur Vorlage — für alle Städte oder nur für eine, für die Crew
+         oder für die Fahrer.</p>
+      <p>Datum, Uhrzeit, Orte und Link werden beim Speichern automatisch zu Platzhaltern, damit die
+         Vorlage am nächsten Tag wieder passt.</p>
+      <p>Jede Tour hat ihre eigene Crew, Fahrzeuge, Fahrer und Vorlagen — umschalten dauert einen Klick.</p>
+    </div>
+    <div class="bild"><img src="Bildschirmfotos/17_Touren_verwalten.png" alt="Touren"></div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="folie">
+  <div class="nr">ANBINDUNG</div>
+  <h1>An J.SHOW angehängt, nicht danebengestellt</h1>
+  <div class="zwei">
+    <div class="txt">
+      <span class="marke">Vorschlag</span>
+      <p>Termine, Städte und die Travel Party stehen schon in J.SHOW. Das Shuttle-Werkzeug holt sie sich
+         von dort und gibt den fertigen Sitzplan zurück — nichts wird zweimal gepflegt.</p>
+      <ul>
+        <li>Stufe 1: eigenständig, sofort einsetzbar — läuft heute</li>
+        <li>Stufe 2: Stammdaten aus J.SHOW lesen</li>
+        <li>Stufe 3: Plan zurückschreiben, Link im Tagesablauf</li>
+      </ul>
+      <p><span class="marke rot">wichtig</span> In dieser Vorführung ist die Anbindung <b>nachgestellt</b>.
+         Es entsteht keine Verbindung, solange die Freigabe fehlt.</p>
+    </div>
+    <div class="bild"><img src="Bildschirmfotos/18_Anbindung_JSHOW_aus.png" alt="Anbindung"></div>
+  </div>
+</section>
+
+<!-- 10b -->
+<section class="folie">
+  <div class="nr">SO SÄHE ES IN J.SHOW AUS</div>
+  <h1>Für die Crew: ein Eintrag im Tagesablauf</h1>
+  <div class="zwei">
+    <div class="txt">
+      <p>Wer J.SHOW ohnehin offen hat, findet den Shuttle dort, wo er hingehört —
+         zwischen Frühstück und Load-in, mit der Zahl der freien Plätze.</p>
+      <p>Ein Tipp darauf öffnet die Fahrzeuge mit ihren freien Plätzen. „Platz nehmen“ genügt,
+         der eigene Platz steht danach grün darunter. Absagen geht genauso.</p>
+      <p>Es geht dabei nur um <b>einen Platz im Fahrzeug</b> — welcher Sitz es wird,
+         entscheidet sich beim Einsteigen.</p>
+      <p><span class="marke rot">Nachbau</span> Diese beiden Bilder sind nachgestellt und zeigen,
+         wie die Anbindung aussehen würde. Sie sind kein Bildschirmfoto aus J.SHOW.</p>
+    </div>
+    <div class="bild"><img src="Bildschirmfotos/19_JSHOW_Crew_Ansicht.png" alt="J.SHOW-Ansicht"></div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="folie">
+  <div class="nr">EHRLICH GESAGT</div>
+  <h1>Was für den echten Betrieb noch dazukommt</h1>
+  <div class="kacheln">
+    <div class="kachel"><b>Gemeinsamer Speicher</b><span>Heute liegen die Daten im Browser des Geräts. Damit 60 Leute denselben Sitzplan sehen, braucht es eine kleine Ablage im Netz. An der Bedienung ändert das nichts.</span></div>
+    <div class="kachel"><b>Persönlicher Link</b><span>Damit niemand versehentlich für jemand anderen bucht.</span></div>
+    <div class="kachel"><b>Automatische Erinnerung</b><span>Zur eingestellten Uhrzeit, ohne dass jemand daran denken muss.</span></div>
+    <div class="kachel"><b>Datenschutz</b><span>Namen und Telefonnummern nur so lange wie nötig, Zugriff nur für die, die ihn brauchen.</span></div>
+  </div>
+</section>
+
+<!-- 12 -->
+<section class="folie mitte">
+  <div class="nr">NÄCHSTER SCHRITT</div>
+  <h1>Einmal an einer Stadt ausprobieren</h1>
+  <p>Eine Show, drei Abfahrten, die echte Crew-Liste — und danach entscheiden, ob es bleibt.
+     Die Einrichtung dauert eine halbe Stunde, alles Weitere kommt aus der Planung von selbst.</p>
+  <div class="gross">Danke.</div>
+  <p class="fuss" style="margin-top:14px">Fragen und Rückmeldungen jederzeit — auch zu Wünschen, die hier noch fehlen.</p>
+</section>
+
+<div class="leiste">
+  <button id="zur">◀ Zurück</button>
+  <button id="vor">Weiter ▶</button>
+  <span class="fuss" id="stand">1 / 13</span>
+  <span class="fuss">Pfeiltasten oder Leertaste · F für Vollbild</span>
+  <div class="punkte" id="punkte"></div>
+</div>
+
+<script>
+var folien=[].slice.call(document.querySelectorAll('.folie')), i=0;
+var punkte=document.getElementById('punkte');
+folien.forEach(function(f,n){
+  var p=document.createElement('span'); p.className='punkt'+(n===0?' an':'');
+  p.onclick=function(){zeige(n);}; punkte.appendChild(p);
+});
+function zeige(n){
+  i=Math.max(0,Math.min(folien.length-1,n));
+  folien.forEach(function(f,k){f.classList.toggle('an',k===i);});
+  [].slice.call(punkte.children).forEach(function(p,k){p.classList.toggle('an',k===i);});
+  document.getElementById('stand').textContent=(i+1)+' / '+folien.length;
+}
+document.getElementById('vor').onclick=function(){zeige(i+1);};
+document.getElementById('zur').onclick=function(){zeige(i-1);};
+document.addEventListener('keydown',function(e){
+  if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();zeige(i+1);}
+  if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();zeige(i-1);}
+  if(e.key==='Home')zeige(0);
+  if(e.key==='End')zeige(folien.length-1);
+  if(e.key==='f'||e.key==='F'){
+    if(document.fullscreenElement)document.exitFullscreen();
+    else document.documentElement.requestFullscreen();
+  }
+});
+</script>
+</body>
+</html>

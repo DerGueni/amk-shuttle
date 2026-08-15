@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>AMK GL – Icon-Quelle</title>
+<style>
+  /* Offline: kein Google-Fonts-Link, System-Font-Fallback in fetten Schnitten
+     simuliert die Archivo-Black-Optik ausreichend fuer den Icon-Screenshot. */
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{
+    background:#0a0a0c;
+    width:100%;
+    height:100%;
+  }
+  body{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:100vh;
+  }
+  /* Quadratische Flaeche, exakt fuer Screenshot-Crop (id="icon") */
+  #icon{
+    width:512px;
+    height:512px;
+    background:#17181C;
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    font-family:"Segoe UI Black","Arial Black",system-ui,sans-serif;
+  }
+  /* Gaffa-gelber Balken quer ueber die Flaeche (Roadcase-Optik) */
+  #icon .balken{
+    position:absolute;
+    left:0;
+    right:0;
+    top:50%;
+    transform:translateY(-50%) rotate(-6deg);
+    height:132px;
+    background:#FFD23F;
+  }
+  /* dezente Ecken-Nieten wie ein Flightcase */
+  #icon .niete{
+    position:absolute;
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    background:#33363E;
+    border:3px solid #0a0a0c;
+  }
+  #icon .niete.tl{top:22px;left:22px}
+  #icon .niete.tr{top:22px;right:22px}
+  #icon .niete.bl{bottom:22px;left:22px}
+  #icon .niete.br{bottom:22px;right:22px}
+  #icon .rand{
+    position:absolute;
+    inset:0;
+    border:10px solid #33363E;
+    pointer-events:none;
+  }
+  #icon .text{
+    position:relative;
+    z-index:2;
+    color:#17181C;
+    font-weight:900;
+    font-size:96px;
+    letter-spacing:.02em;
+    text-transform:uppercase;
+    text-align:center;
+    line-height:1;
+    transform:rotate(-6deg);
+    white-space:nowrap;
+  }
+</style>
+</head>
+<body>
+  <div id="icon">
+    <div class="rand"></div>
+    <div class="niete tl"></div>
+    <div class="niete tr"></div>
+    <div class="niete bl"></div>
+    <div class="niete br"></div>
+    <div class="balken"></div>
+    <div class="text">AMK GL</div>
+  </div>
+</body>
+</html>

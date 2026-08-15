@@ -1,0 +1,3282 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#17181C">
+<title>AMK Live 2026 · Crew-Shuttle</title>
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon-180.png">
+<style>
+:root{
+  --case:#17181C; --panel:#1F2126; --panel2:#26282E; --line:#33363E;
+  --ink:#FFFFFF; --dim:#FFFFFF; --tape:#FFD23F; --now:#FF4B3E; --ok:#64A85C;
+  --rowhover:#2A2D34;
+  --disp:Arial,Helvetica,sans-serif;
+  --body:Calibri,'Segoe UI',Arial,Helvetica,sans-serif;
+  --mono:Arial,Helvetica,sans-serif;
+  --tape-ink:#FFD23F; --tape-sig:#FFD23F;
+  --ok-ink:#BFE6B8; --now-ink:#FFB4AD;
+  --vanbody:#3A404A; --vanline:#828997; --vanglas:#46505F;
+  --vaninnen:#1C1F24; --vanrad:#0C0D10; --vanhaube:#333844; --vanlicht:#FFE9A8; --vanruecklicht:#C2453B;
+  --frei-bg:#23262C; --frei-line:#5A5F6B;
+  --zoom:1;
+}
+:root[data-theme="light"]{
+  --case:#F1F1F1; --panel:#FFFFFF; --panel2:#E6E6E6; --line:#C4C4C4;
+  --ink:#000000; --dim:#000000; --rowhover:#DCDCDC;
+  --tape-ink:#141518; --tape-sig:#A24B00;
+  --ok-ink:#1F6B2E; --now-ink:#A32017;
+  --vanbody:#FFFFFF; --vanline:#7E838D; --vanglas:#C3CFDF;
+  --vaninnen:#E9EBEE; --vanrad:#2F323A; --vanhaube:#F2F3F5; --vanlicht:#FFE9A8; --vanruecklicht:#D6534A;
+  --frei-bg:#F6F6F6; --frei-line:#8A8F99;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{zoom:var(--zoom,1);-webkit-text-size-adjust:100%}
+body{background:var(--case);color:var(--ink);font-family:var(--body);
+  font-variant-numeric:tabular-nums;font-size:16px;line-height:1.4;padding-bottom:80px}
+
+/* ---------- Kopf ---------- */
+header{background:var(--panel);border-bottom:3px solid var(--tape);padding:12px 16px 10px;position:sticky;top:0;z-index:40}
+.kicker{font-family:var(--mono);font-weight:700;font-size:13px;color:var(--tape-ink)}
+h1{font-family:var(--disp);font-size:clamp(18px,4.5vw,26px);margin:2px 0}
+.sub{font-size:14px;color:var(--dim)}
+.hdrgear{position:absolute;top:10px;right:12px;background:var(--panel2);border:1px solid var(--line);
+  border-radius:6px;color:var(--tape-ink);font-size:18px;line-height:1;padding:7px 10px;cursor:pointer}
+@media (max-width:560px){header{padding-right:58px}}
+
+/* ---------- Tabs ---------- */
+.tabs{display:flex;margin:14px 16px 0;border:1px solid var(--line);border-radius:6px;overflow:hidden;flex-wrap:wrap}
+.tabs button{flex:1 1 0;min-width:62px;background:var(--panel);border:none;color:var(--dim);
+  font-family:var(--disp);font-weight:700;font-size:13px;padding:11px 3px;cursor:pointer;position:relative}
+@media (max-width:560px){.tabs button{font-size:12px;min-width:78px;padding:10px 2px}}
+.tabs button.active{background:var(--tape);color:#161616}
+.tabs button+button{border-left:1px solid var(--line)}
+.tabs .zaehler{display:inline-block;min-width:18px;padding:0 4px;margin-left:5px;border-radius:9px;
+  background:var(--now);color:#fff;font-size:11px;font-weight:700;vertical-align:1px}
+.tabs button.active .zaehler{background:#161616;color:var(--tape)}
+
+/* ---------- Blöcke ---------- */
+.sec{margin:14px 16px}
+.sechead{display:flex;justify-content:space-between;align-items:baseline;margin:18px 16px 6px;gap:10px;flex-wrap:wrap}
+.sechead h2{font-family:var(--disp);font-size:15px}
+.sechead span{font-family:var(--mono);font-weight:700;font-size:13px;color:var(--dim)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:12px;margin-bottom:10px}
+.card.hl{border-color:var(--tape);box-shadow:0 0 0 1px var(--tape)}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.grow{flex:1;min-width:0}
+.stack{display:flex;flex-direction:column;gap:3px}
+.hint{margin:10px 16px;font-size:14px;color:var(--dim);border-left:3px solid var(--line);padding-left:9px}
+.hint.tape{border-color:var(--tape)}
+.hint.warn{border-color:var(--now)}
+.leer{padding:22px 12px;text-align:center;color:var(--dim);font-size:14px}
+
+/* ---------- Knöpfe ---------- */
+button.btn{font-family:var(--disp);font-weight:700;font-size:14px;border-radius:6px;padding:9px 14px;
+  cursor:pointer;border:1px solid var(--line);background:var(--panel2);color:var(--ink)}
+button.btn:hover{background:var(--rowhover)}
+button.btn.pri{background:var(--tape);border-color:var(--tape);color:#161616}
+button.btn.ok{background:var(--ok);border-color:var(--ok);color:#161616}
+button.btn.warn{background:var(--now);border-color:var(--now);color:#fff}
+button.btn.klein{font-size:13px;padding:6px 10px}
+button.btn:disabled{opacity:.45;cursor:not-allowed}
+.btnzeile{display:flex;gap:8px;flex-wrap:wrap}
+
+/* ---------- Marken ---------- */
+.badge{font-family:var(--mono);font-size:12px;border-radius:3px;padding:2px 7px;font-weight:700;display:inline-block}
+.b-tape{background:var(--tape);color:#161616}
+.b-ok{background:var(--ok);color:#161616}
+.b-warn{background:var(--now);color:#fff}
+.b-plan{background:var(--panel2);color:var(--dim);border:1px solid var(--line)}
+.b-zu{background:#5a2b28;color:#ffb4ad}
+:root[data-theme="light"] .b-zu{background:#F6D8D5;color:#A32017}
+
+/* ---------- Formularfelder ---------- */
+label.feld{display:block;font-family:var(--disp);font-weight:700;font-size:13px;margin:10px 0 4px;color:var(--dim)}
+input,select,textarea{font-family:var(--body);font-size:15px;background:var(--panel2);color:var(--ink);
+  border:1px solid var(--line);border-radius:5px;padding:8px 9px;width:100%}
+textarea{min-height:90px;resize:vertical;line-height:1.45}
+.fzeile{display:flex;gap:10px;flex-wrap:wrap}
+.fzeile>div{flex:1 1 150px}
+
+/* ---------- Sitzplan ---------- */
+.vanwrap{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px;margin-top:10px}
+.vanmap{display:block;max-width:460px;margin:0 auto}
+.vanmap.klein{max-width:186px}
+.seat .seatbox{fill:var(--frei-bg);stroke:var(--frei-line);stroke-width:2}
+.seat .seatlehne{fill:var(--frei-line);opacity:.55}
+.seat .seattext{font-family:var(--disp);font-weight:700;font-size:19px;fill:var(--ink);text-anchor:middle}
+.seat .seatsub{font-family:var(--disp);font-size:10px;fill:var(--dim);opacity:.85;text-anchor:middle}
+.seat.frei .seatbox{stroke-dasharray:5 4}
+.seat.frei .seattext{fill:var(--tape-sig);font-size:24px}
+.seat.klickbar:hover .seatbox{stroke:var(--tape);stroke-width:3}
+.seat.angefragt .seatbox{fill:#4A3D12;stroke:var(--tape);stroke-dasharray:5 4}
+.seat.angefragt .seatlehne{fill:var(--tape);opacity:.8}
+.seat.bestaetigt .seatbox{fill:#22401F;stroke:var(--ok)}
+.seat.bestaetigt .seatlehne{fill:var(--ok)}
+.seat.gesperrt .seatbox{fill:var(--panel2);stroke:var(--line)}
+.seat.gesperrt .seattext{font-size:15px;opacity:.75}
+.seat.fahrer .seatbox{fill:var(--vanglas);stroke:var(--vanline)}
+.seat.fahrer .seatlehne{fill:var(--vanline);opacity:.6}
+.seat .lenkrad{fill:none;stroke:var(--vanline);stroke-width:3}
+.seat .lenkradnabe{fill:var(--vanline)}
+.seat.ich .seatbox{stroke:var(--ink);stroke-width:3.5}
+:root[data-theme="light"] .seat.angefragt .seatbox{fill:#FFF0C2}
+:root[data-theme="light"] .seat.bestaetigt .seatbox{fill:#DDF0D9}
+.legende{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:10px;font-size:13px}
+.legende span{display:flex;align-items:center;gap:6px}
+.lp{width:15px;height:15px;border-radius:4px;border:2px solid var(--frei-line);background:var(--frei-bg);display:inline-block}
+.lp.a{background:#4A3D12;border-color:var(--tape)} .lp.b{background:#22401F;border-color:var(--ok)}
+.lp.g{background:var(--panel2);border-color:var(--line)}
+:root[data-theme="light"] .lp.a{background:#FFF0C2} :root[data-theme="light"] .lp.b{background:#DDF0D9}
+
+/* ---------- Shuttle-Karte ---------- */
+.shuttlegrid{display:flex;gap:12px;flex-wrap:wrap}
+.shuttlecard{flex:1 1 300px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px}
+.shuttlecard h3{font-family:var(--disp);font-size:15px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.kfz{font-family:var(--mono);font-weight:700;font-size:12px;background:var(--panel2);border:1px solid var(--line);
+  border-radius:4px;padding:2px 7px;letter-spacing:.5px}
+.meta{font-size:13px;color:var(--dim);margin-top:3px}
+.balken{height:7px;border-radius:4px;background:var(--panel2);overflow:hidden;margin:9px 0 4px}
+.balken i{display:block;height:100%;background:var(--ok)}
+.balken i.voll{background:var(--now)}
+
+/* ---------- Listen ---------- */
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{font-family:var(--disp);font-size:12px;text-align:left;color:var(--dim);
+  border-bottom:1px solid var(--line);padding:6px 7px;white-space:nowrap}
+td{padding:7px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:hover td{background:var(--rowhover)}
+.tabwrap{overflow-x:auto;background:var(--panel);border:1px solid var(--line);border-radius:6px}
+
+/* ---------- Besetzungs-Dashboard ---------- */
+.dash{display:flex;gap:14px;align-items:flex-start;margin:12px 16px}
+.dashlinks{flex:0 0 310px;max-height:72vh;overflow:auto;background:var(--panel);
+  border:1px solid var(--line);border-radius:8px;padding:10px}
+.dashrechts{flex:1;min-width:0}
+@media (max-width:860px){.dash{flex-direction:column}.dashlinks{flex:none;width:100%;max-height:46vh}}
+.crewrow{display:flex;align-items:center;gap:9px;padding:6px 7px;border-radius:6px;cursor:pointer;
+  border:1px solid transparent;user-select:none;-webkit-user-select:none}
+.crewrow:hover{background:var(--rowhover)}
+.crewrow.gewaehlt{border-color:var(--tape);background:var(--panel2)}
+.crewrow.verplant .cname{opacity:.55}
+.crewrow.selbst .cname{font-style:italic;opacity:.7}
+.kchip{min-width:36px;height:27px;padding:0 5px;border-radius:5px;display:flex;align-items:center;
+  justify-content:center;font-family:var(--disp);font-weight:700;font-size:12.5px;
+  background:var(--panel2);border:1px solid var(--line);flex:0 0 auto}
+.cname{flex:1;min-width:0;font-size:14.5px;line-height:1.25}
+.cname small{display:block;font-size:12px;opacity:.8}
+.sitzchip{font-family:var(--mono);font-size:11.5px;font-weight:700;background:var(--ok);color:#161616;
+  border-radius:3px;padding:2px 5px;flex:0 0 auto}
+.sitzchip.offen{background:var(--tape);color:#161616}
+.gwkopf{font-family:var(--disp);font-weight:700;font-size:12.5px;color:var(--tape-ink);
+  margin:12px 0 3px;border-bottom:1px solid var(--line);padding-bottom:3px}
+.dashkopf{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 16px}
+.dashkopf select,.dashkopf input{width:auto;min-width:130px}
+.seat.wahl .seatbox{stroke:var(--tape);stroke-width:4.5}
+.kmenu{position:fixed;background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:5px;
+  z-index:150;box-shadow:0 8px 26px rgba(0,0,0,.55);min-width:225px;max-width:88vw}
+.kmenu button{display:block;width:100%;text-align:left;background:none;border:none;color:var(--ink);
+  font-family:var(--body);font-size:14.5px;padding:9px 10px;border-radius:5px;cursor:pointer}
+.kmenu button:hover{background:var(--rowhover)}
+.kmenu .kkopf{font-family:var(--disp);font-weight:700;font-size:12.5px;color:var(--tape-ink);padding:5px 10px}
+.kmenu .trenn{height:1px;background:var(--line);margin:4px 2px}
+
+/* ---------- Dialog ---------- */
+.ovl{position:fixed;inset:0;background:rgba(0,0,0,.62);display:flex;align-items:center;justify-content:center;
+  padding:16px;z-index:100}
+.dlg{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--tape);border-radius:8px;
+  padding:16px;max-width:520px;width:100%;max-height:88vh;overflow:auto}
+.dlg h2{font-family:var(--disp);font-size:17px;margin-bottom:8px}
+.dlg p{font-size:14px;margin-bottom:6px}
+.dlgbtns{display:flex;gap:8px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--panel);
+  border:1px solid var(--tape);border-radius:6px;padding:10px 16px;font-size:14px;z-index:200;max-width:90vw}
+
+/* ---------- WhatsApp-Vorschau ---------- */
+.wa{background:#0B141A;border-radius:10px;padding:14px 12px;border:1px solid var(--line)}
+.wabubble{background:#005C4B;color:#E9EDEF;border-radius:9px 0 9px 9px;padding:9px 11px;font-size:14.5px;
+  white-space:pre-wrap;line-height:1.5;margin-left:auto;max-width:min(460px,94%);font-family:'Segoe UI',Arial,sans-serif}
+.wabubble .link{color:#53BDEB;text-decoration:underline;word-break:break-all}
+.wazeit{display:block;text-align:right;font-size:11px;color:#8FA3AD;margin-top:4px}
+.pre{white-space:pre-wrap;font-family:var(--body);font-size:14px;background:var(--panel2);
+  border:1px solid var(--line);border-radius:6px;padding:11px;line-height:1.5}
+
+footer{margin:26px 16px 10px;font-size:12.5px;color:var(--dim);opacity:.85;text-align:center}
+.hide{display:none!important}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker">AMK LIVE 2026 · CREW</div>
+  <h1>Shuttle-Planung</h1>
+  <div class="sub" id="kopfsub">Hotel ↔ Venue · Plätze selbst buchen</div>
+  <button class="hdrgear" id="btnEinst" title="Einstellungen">⚙</button>
+</header>
+
+<div class="tabs" id="tabs"></div>
+<main id="main"></main>
+<footer>
+  AMK Shuttle · Demo-Stand · Alle Daten liegen nur in diesem Browser (kein Server).
+</footer>
+
+<script src="qr.js"></script>
+<script src="shuttle_fahrzeuge.js"></script>
+<script>
+'use strict';
+/* ==========================================================
+   AMK Shuttle — Sitzplatz-Buchung für die Crew
+   Ein einziges Formular, läuft auch ohne Internet (file://).
+   ========================================================== */
+
+/* ---------- kleine Helfer ---------- */
+function el(tag, cls, txt){var e=document.createElement(tag); if(cls)e.className=cls;
+  if(txt!==undefined&&txt!==null)e.textContent=txt; return e;}
+function $(id){return document.getElementById(id);}
+function leeren(n){while(n.firstChild)n.removeChild(n.firstChild);return n;}
+function uid(p){return (p||'x')+Math.random().toString(36).slice(2,9);}
+function pad(n){return (n<10?'0':'')+n;}
+function heuteISO(d){d=d||new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
+function plusTage(iso,n){var t=new Date(iso+'T12:00:00');t.setDate(t.getDate()+n);return heuteISO(t);}
+var WOCHENTAG=['So','Mo','Di','Mi','Do','Fr','Sa'];
+function datumLang(iso){if(!iso)return '';var d=new Date(iso+'T12:00:00');
+  return WOCHENTAG[d.getDay()]+'. '+pad(d.getDate())+'.'+pad(d.getMonth()+1)+'.'+d.getFullYear();}
+function datumKurz(iso){if(!iso)return '';var d=new Date(iso+'T12:00:00');
+  return WOCHENTAG[d.getDay()]+' '+pad(d.getDate())+'.'+pad(d.getMonth()+1)+'.';}
+function jetzt(){return new Date();}
+function fahrtZeitpunkt(f){return new Date(f.datum+'T'+(f.zeit||'00:00')+':00');}
+function minutenBis(f){return Math.round((fahrtZeitpunkt(f)-jetzt())/60000);}
+function restText(f){
+  var m=minutenBis(f);
+  if(m<-120) return 'gefahren';
+  if(m<0) return 'unterwegs';
+  if(m<60) return 'in '+m+' Min';
+  var h=Math.floor(m/60), r=m%60;
+  if(h<24) return 'in '+h+' Std'+(r?' '+r+' Min':'');
+  return 'in '+Math.round(h/24)+' Tagen';
+}
+
+/* ---------- Zustand ---------- */
+var LS='amk_shuttle_v1';
+var S=null, merk={};
+var ansicht={tab:'fahrten', fahrtId:null, tag:null, crewWahl:null, sitzWahl:null,
+              suche:'', nurOhne:false, empf:'crew', textArt:'ansage', fahrtWahl:null};
+
+function speichern(){
+  try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){merk[LS]=JSON.stringify(S);}
+}
+function laden(){
+  var j=null;
+  try{j=localStorage.getItem(LS);}catch(e){j=merk[LS]||null;}
+  if(!j){S=demoDaten(); speichern(); return;}
+  try{S=JSON.parse(j);}catch(e){S=demoDaten();speichern();}
+  if(!S||!S.fahrten){S=demoDaten();speichern();}
+  if(!S.einst)S.einst=demoDaten().einst;
+  if(!S.protokoll)S.protokoll=[];
+  nachziehen();
+}
+/* Ältere Stände auf den neuen Aufbau heben (Touren, Gewerke, Textvorlagen). */
+function nachziehen(){
+  if(!S.touren||!S.touren.length){
+    var d=demoDaten();
+    S.touren=d.touren;
+    S.einst.tourId=d.einst.tourId;
+    S.textvorlagen=S.textvorlagen||d.textvorlagen;
+  }
+  var tid=S.einst.tourId||S.touren[0].id;
+  ['crew','fahrzeuge','fahrten','tagesvorlagen'].forEach(function(k){
+    (S[k]||[]).forEach(function(o){ if(!o.tourId)o.tourId=tid; });
+  });
+  (S.crew||[]).forEach(function(c){
+    if(!c.gewerk)c.gewerk=c.abteilung||'ohne Gewerk';
+    if(c.info===undefined)c.info='';
+  });
+  (S.fahrten||[]).forEach(function(f){ if(!f.stadt)f.stadt=S.einst.stadt||''; });
+  if(!S.textvorlagen)S.textvorlagen=demoDaten().textvorlagen;
+  if(!S.einst.tourId)S.einst.tourId=tid;
+  if(!S.einst.jshow)S.einst.jshow={adresse:'',schluessel:'',plattform:''};
+  var js=S.einst.jshow;
+  if(js.pfadTermine===undefined)js.pfadTermine='';
+  if(js.pfadCrew===undefined)js.pfadCrew='';
+  if(js.pfadSchreiben===undefined)js.pfadSchreiben='';
+  if(js.proxy===undefined)js.proxy='';
+  if(js.kopf===undefined)js.kopf='Authorization: Bearer {schluessel}';
+  if(js.aktiv===undefined)js.aktiv=false;
+  if(js.modus===undefined)js.modus='demo';
+  if(!S.fahrer)S.fahrer=demoDaten().fahrer;
+  (S.fahrer||[]).forEach(function(x){ if(!x.tourId)x.tourId=tid; });
+  (S.textvorlagen||[]).forEach(function(v){ if(!v.empfaenger)v.empfaenger='crew'; });
+  (S.touren||[]).forEach(function(t){ if(!t.staedteInfo)t.staedteInfo={}; });
+}
+function protokoll(text){
+  S.protokoll.unshift({ts:new Date().toISOString(), text:text});
+  if(S.protokoll.length>300)S.protokoll.length=300;
+}
+
+/* ---------- Demo-Daten ---------- */
+function demoDaten(){
+  /* Der Demo-Tag liegt immer in der Zukunft: vor 7 Uhr ist es heute, sonst morgen. */
+  var h=(new Date().getHours()<7)?heuteISO():plusTage(heuteISO(),1), m1=plusTage(h,1);
+  var crewRoh=[
+    ['Marek','Ahrens','Produktion'],['Jonas','Beck','Backline'],['Silke','Brand','Catering'],
+    ['Timo','Deckert','Licht'],['Nina','Falk','Audio'],['Ruben','Gerlach','Backline'],
+    ['Lea','Hartmann','Produktion'],['Kai','Hoffmann','Licht'],['Mira','Jansen','LED/Video'],
+    ['Ole','Kranz','Audio'],['Frida','Lang','Merchandise'],['Ben','Maurer','Rigging'],
+    ['Aylin','Neumann','Catering'],['Sven','Ortmann','Bühne'],['Jule','Pfeiffer','LED/Video'],
+    ['Nico','Reinert','Bühne'],['Tara','Schmitz','Merchandise'],['Luis','Steger','Rigging'],
+    ['Hanna','Vogt','Produktion'],['Emil','Walther','Licht'],['Pia','Zeidler','Audio'],
+    ['Dario','Cordes','Backline'],['Maja','Endres','Bühne'],['Finn','Groth','LED/Video']
+  ];
+  crewRoh = crewRoh.concat([
+    ['Charlotte','König','Tourmanagement'],['Daniel','Treseler','Tourmanagement'],
+    ['Ilja','Bertram','Band'],['Nele','Winter','Band'],['Samuel','Roth','Band'],['Toni','Kessler','Band'],
+    ['Rüdiger','Palm','Fahrer'],['Petra','Simon','Fahrer']
+  ]);
+  var crew=crewRoh.map(function(c,i){
+    return {id:'c'+(i+1), tourId:'tour-amk', vorname:c[0], nachname:c[1], gewerk:c[2],
+            kuerzel:(c[0][0]+c[1][0]).toUpperCase(), info:'', telefon:''};
+  });
+  var fz=[
+    {id:'f1', tourId:'tour-amk', stadt:'Berlin', fahrerId:'fa1', name:'Shuttle 1', vorlage:'van7', kennzeichen:'B-AM 1234', fahrer:'Rüdiger Palm',
+     notiz:'Klimaanlage, Platz für 4 kleine Cases im Heck.'},
+    {id:'f2', tourId:'tour-amk', stadt:'Berlin', fahrerId:'fa2', name:'Shuttle 2', vorlage:'van8', kennzeichen:'B-MK 5678', fahrer:'Petra Simon',
+     notiz:'Große Heckklappe, gut für Werkzeugkisten.'},
+    {id:'f3', tourId:'tour-amk', stadt:'Berlin', fahrerId:'fa3', name:'Shuttle 3', vorlage:'van9', kennzeichen:'B-AK 9012', fahrer:'Mo (Local Crew)',
+     notiz:'Letzte Reihe ist für Gepäck gesperrt.'},
+    {id:'f4', tourId:'tour-amk', stadt:'Berlin', fahrerId:'fa4', name:'Nightliner-Zubringer', vorlage:'bus16', kennzeichen:'B-LS 4711', fahrer:'Busfahrer Achim',
+     notiz:'Nur für Nachtfahrten zum Hotel.'},
+    {id:'f5', tourId:'tour-amk', stadt:'', fahrerId:'', name:'Kombi klein', vorlage:'pkw5', kennzeichen:'B-CS 220', fahrer:'Tourmanagement',
+     notiz:'Für kurzfristige Einzelfahrten.'}
+  ];
+  function pl(){return {};}
+  var fahrten=[
+    {id:'t1', tourId:'tour-amk', stadt:'Berlin', datum:h, zeit:'08:30', richtung:'Hotel ➜ Venue', von:'Hotellobby', nach:'Parkbühne Wuhlheide · Loading Dock 2',
+     hinweis:'Bitte pünktlich, wir fahren wegen der Anlieferung genau um 08:30 los.', status:'offen',
+     shuttles:[
+       {id:'s1', fahrzeugId:'f1', zeit:'', gesperrt:[], warteliste:[], plaetze:{
+         'BF':{crewId:'c7',status:'bestaetigt'}, '2L':{crewId:'c2',status:'bestaetigt'},
+         '2M':{crewId:'c6',status:'bestaetigt'}, '2R':{crewId:'c22',status:'angefragt'},
+         '3L':{crewId:'c14',status:'bestaetigt'}}},
+       {id:'s2', fahrzeugId:'f2', zeit:'', gesperrt:['3R'], warteliste:[], plaetze:{
+         'BF':{crewId:'c4',status:'bestaetigt'}, '2L':{crewId:'c8',status:'bestaetigt'},
+         '2M':{crewId:'c20',status:'angefragt'}, '3L':{crewId:'c5',status:'bestaetigt'}}}
+     ]},
+    {id:'t2', tourId:'tour-amk', stadt:'Berlin', datum:h, zeit:'17:45', richtung:'Hotel ➜ Venue', von:'Hotellobby', nach:'Parkbühne Wuhlheide · Crew-Eingang',
+     hinweis:'Späte Schicht — Catering ist bereits vor Ort.', status:'offen',
+     shuttles:[
+       {id:'s3', fahrzeugId:'f1', zeit:'', gesperrt:[], warteliste:[], plaetze:{
+         'BF':{crewId:'c11',status:'bestaetigt'}, '2L':{crewId:'c17',status:'angefragt'}}}
+     ]},
+    {id:'t3', tourId:'tour-amk', stadt:'Berlin', datum:h, zeit:'23:59', richtung:'Venue ➜ Hotel', von:'Parkbühne Wuhlheide · Crew-Eingang', nach:'Hotellobby',
+     hinweis:'Nach Show-Ende. Wir warten auf die letzten aus dem Backline-Load-out.', status:'offen',
+     shuttles:[
+       {id:'s4', fahrzeugId:'f4', zeit:'', gesperrt:[], warteliste:[], plaetze:{
+         '2L':{crewId:'c1',status:'bestaetigt'}, '2M':{crewId:'c9',status:'bestaetigt'},
+         '3L':{crewId:'c19',status:'bestaetigt'}}}
+     ]},
+    {id:'t4', tourId:'tour-amk', stadt:'Berlin', datum:m1, zeit:'09:15', richtung:'Hotel ➜ Venue', von:'Hotellobby', nach:'Parkbühne Wuhlheide · Loading Dock 2',
+     hinweis:'', status:'entwurf',
+     shuttles:[
+       {id:'s5', fahrzeugId:'f1', zeit:'', gesperrt:[], warteliste:[], plaetze:pl()},
+       {id:'s6', fahrzeugId:'f3', zeit:'', gesperrt:['4L','4R'], warteliste:[], plaetze:pl()}
+     ]}
+  ];
+  var vorlagen=[
+    {id:'v1', tourId:'tour-amk', name:'Showtag Standard', abfahrten:[
+      {zeit:'08:30', richtung:'Hotel ➜ Venue', von:'Hotellobby', nach:'Venue · Loading Dock', fahrzeugIds:['f1','f2'], hinweis:'Frühschicht Aufbau.'},
+      {zeit:'13:00', richtung:'Hotel ➜ Venue', von:'Hotellobby', nach:'Venue · Crew-Eingang', fahrzeugIds:['f1'], hinweis:'Spätschicht.'},
+      {zeit:'23:59', richtung:'Venue ➜ Hotel', von:'Venue · Crew-Eingang', nach:'Hotellobby', fahrzeugIds:['f3','f4'], hinweis:'Nach Load-out.'}
+    ]},
+    {id:'v2', tourId:'tour-amk', name:'Reisetag', abfahrten:[
+      {zeit:'10:00', richtung:'Hotel ➜ Bahnhof', von:'Hotellobby', nach:'Hauptbahnhof · Haupteingang', fahrzeugIds:['f2'], hinweis:'Mit Gepäck, bitte 10 Minuten früher unten sein.'},
+      {zeit:'15:30', richtung:'Bahnhof ➜ Hotel', von:'Hauptbahnhof · Haupteingang', nach:'Hotellobby', fahrzeugIds:['f2'], hinweis:''}
+    ]},
+    {id:'v3', tourId:'tour-amk', name:'Abreisetag Flughafen', abfahrten:[
+      {zeit:'06:00', richtung:'Hotel ➜ Flughafen', von:'Hotellobby', nach:'Flughafen · Terminal 1', fahrzeugIds:['f3'], hinweis:'Früher Flug, Gepäck bitte am Vorabend anmelden.'}
+    ]}
+  ];
+  var fahrer=[
+    {id:'fa1', tourId:'tour-amk', stadt:'Berlin', name:'Rüdiger Palm', telefon:'0170 1234567',
+     firma:'City Cars Berlin', notiz:'Kennt die Zufahrt am Loading Dock.'},
+    {id:'fa2', tourId:'tour-amk', stadt:'Berlin', name:'Petra Simon', telefon:'0171 2345678',
+     firma:'City Cars Berlin', notiz:''},
+    {id:'fa3', tourId:'tour-amk', stadt:'Berlin', name:'Mo Yildiz', telefon:'0172 3456789',
+     firma:'Shuttle Service Spree', notiz:'Nur bis 18 Uhr verfügbar.'},
+    {id:'fa4', tourId:'tour-amk', stadt:'Berlin', name:'Achim Bruns', telefon:'0173 4567890',
+     firma:'Bus Berlin', notiz:'Fährt den Minibus.'},
+    {id:'fa5', tourId:'tour-amk', stadt:'Hamburg', name:'Jens Ohlsen', telefon:'0175 5678901',
+     firma:'Elbe Rides', notiz:''},
+    {id:'fa6', tourId:'tour-amk', stadt:'Hamburg', name:'Svenja Rieck', telefon:'0176 6789012',
+     firma:'Elbe Rides', notiz:''}
+  ];
+  var touren=[
+    {id:'tour-amk', kuenstler:'AnnenMayKantereit', tour:'Publikum Open Airs', jahr:2026, aktiv:true,
+     staedte:['Dortmund','Neu-Ulm','Mönchengladbach','Ludwigsburg','Berlin','Hamburg'],
+     staedteInfo:{
+       'Berlin':{fahrerGruppe:'Shuttle Fahrer Berlin', link:'', hotel:'Hotel Alexanderplatz',
+                 venue:'Parkbühne Wuhlheide'},
+       'Hamburg':{fahrerGruppe:'Shuttle Fahrer Hamburg', link:'', hotel:'', venue:'Stadtpark'}
+     }},
+    {id:'tour-provinz', kuenstler:'Provinz', tour:'Tour', jahr:2026, staedte:[]},
+    {id:'tour-kraftklub', kuenstler:'KRAFTKLUB', tour:'Tour', jahr:2026, staedte:[]},
+    {id:'tour-vwl', kuenstler:'Von Wegen Lisbeth', tour:'Tour', jahr:2026, staedte:[]},
+    {id:'tour-blond', kuenstler:'Blond', tour:'Tour', jahr:2026, staedte:[]},
+    {id:'tour-faber', kuenstler:'Faber', tour:'Tour', jahr:2026, staedte:[]}
+  ];
+  var textvorlagen=[
+    {id:'tv1', tourId:'tour-amk', stadt:'', empfaenger:'crew', name:'Ansage Standard', art:'ansage', text:
+'🚐 SHUTTLE · {datum} · {zeit} UHR\n{richtung} · {stadt}\n\n{gruss}\nfür {tag_wort} stehen für die Fahrt folgende Shuttles und Zeiten zur Verfügung:\n\n{shuttles}\n📍 Treffpunkt: {treffpunkt}\n🏁 Ziel: {ziel}\n{hinweis}\nBitte bucht euch gerne selbstständig ein:\n👉 {link}\n\nIhr klickt einfach auf einen freien Sitz. Wir geben den Platz frei, dann wird er bei euch grün.\n\n{signatur}'},
+    {id:'tv2', tourId:'tour-amk', stadt:'', empfaenger:'crew', name:'Erinnerung vor Abfahrt', art:'erinnerung', text:
+'⏰ ERINNERUNG · Abfahrt {zeit} Uhr · {richtung}\n\n{besetzung}\n\nTreffpunkt {treffpunkt}. Bitte seid 5 Minuten früher da.\nEs sind noch {freie_plaetze} Plätze frei: {link}\n\n{signatur}'},
+    {id:'tv3', tourId:'tour-amk', stadt:'', empfaenger:'crew', name:'Kurz und knapp', art:'ansage', text:
+'🚐 {datum} · {zeit} Uhr · {richtung}\nTreffpunkt {treffpunkt}.\n{shuttles}Einbuchen: {link}\n{signatur}'},
+    {id:'tv4', tourId:'tour-amk', stadt:'', empfaenger:'fahrer', name:'Fahrer-Ansage Tag', art:'ansage', text:
+'Hallo zusammen,\nhier die Shuttle-Fahrten für {tag_wort} in {stadt} ({datum}):\n\n{fahrer_liste}\nBitte seid 10 Minuten vor der Abfahrt am Treffpunkt und meldet euch kurz, wenn etwas dazwischenkommt.\n\nDanke und gute Fahrt!\n{signatur}\n{tm_kontakt}'},
+    {id:'tv5', tourId:'tour-amk', stadt:'', empfaenger:'fahrer', name:'Fahrer-Erinnerung', art:'erinnerung', text:
+'⏰ Gleich geht es los: {zeit} Uhr ab {treffpunkt} → {ziel}\n\n{fahrer_liste}\nInsgesamt {anzahl} Personen.\nBei Verzögerung bitte kurz hier in die Gruppe schreiben.\n\n{signatur}\n{tm_kontakt}'}
+  ];
+  return {
+    version:3, touren:touren, crew:crew, fahrzeuge:fz, fahrten:fahrten, tagesvorlagen:vorlagen,
+    textvorlagen:textvorlagen, fahrer:fahrer, protokoll:[],
+    einst:{
+      rolle:'admin', ich:'c7', theme:'dark', buchungsschluss:30, tourId:'tour-amk',
+      basisLink:'https://dergueni.github.io/amk-shuttle/',
+      gruss:'Hallo liebe Crew,', signatur:'Euer Tourmanagement',
+      autoBestaetigen:false, agentur:'Landstreicher Booking · Berlin', stadt:'Berlin',
+      gruppieren:true,
+      jshow:{aktiv:false, modus:'demo', adresse:'', schluessel:'', plattform:'',
+             kopf:'Authorization: Bearer {schluessel}',
+             pfadTermine:'', pfadCrew:'', pfadSchreiben:'', proxy:''}
+    }
+  };
+}
+
+/* ---------- Aktive Tour ---------- */
+function tourId(){return S.einst.tourId;}
+function tour(){
+  for(var i=0;i<S.touren.length;i++)if(S.touren[i].id===S.einst.tourId)return S.touren[i];
+  return S.touren[0];
+}
+function tourName(t){t=t||tour();return t?(t.kuenstler+' \u00b7 '+t.tour+' '+t.jahr):'';}
+function mFahrten(){return S.fahrten.filter(function(x){return x.tourId===tourId();});}
+function mCrew(){return S.crew.filter(function(x){return x.tourId===tourId();});}
+function mFahrzeuge(){return S.fahrzeuge.filter(function(x){return x.tourId===tourId();});}
+function mVorlagen(){return S.tagesvorlagen.filter(function(x){return x.tourId===tourId();});}
+function mTexte(stadt){
+  return S.textvorlagen.filter(function(x){
+    if(x.tourId!==tourId())return false;
+    if(stadt===undefined)return true;
+    return !x.stadt || x.stadt===stadt;
+  });
+}
+function mFahrer(stadt){
+  return S.fahrer.filter(function(x){
+    return x.tourId===tourId() && (!stadt || x.stadt===stadt);
+  });
+}
+function fahrerById(id){for(var i=0;i<S.fahrer.length;i++)if(S.fahrer[i].id===id)return S.fahrer[i];return null;}
+function kurzFz(fz){
+  var n=(fz&&fz.name)||'?';
+  return n.replace(/^Shuttle\s*/,'Sh ').slice(0,14);
+}
+function fahrerName(fz){
+  var f=fz&&fz.fahrerId?fahrerById(fz.fahrerId):null;
+  return f?f.name:((fz&&fz.fahrer)||'noch offen');
+}
+function stadtInfo(stadt){
+  var t=tour(); if(!t.staedteInfo)t.staedteInfo={};
+  if(!t.staedteInfo[stadt])t.staedteInfo[stadt]={fahrerGruppe:'',link:'',hotel:'',venue:''};
+  return t.staedteInfo[stadt];
+}
+function aktStadt(){
+  if(ansicht.tag){
+    var f=mFahrten().filter(function(x){return x.datum===ansicht.tag;})[0];
+    if(f&&f.stadt)return f.stadt;
+  }
+  return S.einst.stadt||'';
+}
+function gewerkVon(c){return (c&&(c.gewerk||c.abteilung))||'ohne Gewerk';}
+var GEWERKE=['Tourmanagement','Produktion','Band','Backline','Audio','Licht','LED/Video',
+             'Rigging','B\u00fchne','Catering','Merchandise','Fahrer'];
+
+/* ---------- Nachschlagen ---------- */
+function crewById(id){for(var i=0;i<S.crew.length;i++)if(S.crew[i].id===id)return S.crew[i];return null;}
+function fzById(id){for(var i=0;i<S.fahrzeuge.length;i++)if(S.fahrzeuge[i].id===id)return S.fahrzeuge[i];return null;}
+function fahrtById(id){for(var i=0;i<S.fahrten.length;i++)if(S.fahrten[i].id===id)return S.fahrten[i];return null;}
+function name(c){return c?(c.nachname+' '+c.vorname):'—';}
+function nameKurz(c){return c?(c.vorname+' '+c.nachname[0]+'.'):'—';}
+function istAdmin(){return S.einst.rolle==='admin';}
+function ich(){return crewById(S.einst.ich);}
+
+function vorlageVon(sh){var f=fzById(sh.fahrzeugId);return f?f.vorlage:'van7';}
+function buchbareSitze(sh){return VANS.buchbar(vorlageVon(sh));}
+function freiCount(sh){
+  var b=buchbareSitze(sh), frei=0;
+  b.forEach(function(s){
+    if((sh.gesperrt||[]).indexOf(s.id)>=0)return;
+    if(!sh.plaetze[s.id])frei++;
+  });
+  return frei;
+}
+function belegtCount(sh){
+  var n=0; for(var k in sh.plaetze) if(sh.plaetze.hasOwnProperty(k))n++;
+  return n;
+}
+function kapazitaet(sh){return buchbareSitze(sh).length-(sh.gesperrt||[]).length;}
+function fahrtFrei(f){var n=0;f.shuttles.forEach(function(s){n+=freiCount(s);});return n;}
+function fahrtKap(f){var n=0;f.shuttles.forEach(function(s){n+=kapazitaet(s);});return n;}
+function offeneAnfragen(){
+  var n=0;
+  mFahrten().forEach(function(f){f.shuttles.forEach(function(sh){
+    for(var k in sh.plaetze) if(sh.plaetze[k].status==='angefragt')n++;
+  });});
+  return n;
+}
+function meinPlatz(f, crewId){
+  for(var i=0;i<f.shuttles.length;i++){
+    var sh=f.shuttles[i];
+    for(var k in sh.plaetze) if(sh.plaetze[k].crewId===crewId) return {sh:sh, sitz:k, b:sh.plaetze[k]};
+  }
+  return null;
+}
+function buchbarBis(f){
+  var m=minutenBis(f)-(S.einst.buchungsschluss||0);
+  return m>0;
+}
+function fahrtZu(f){
+  return f.status==='geschlossen' || !buchbarBis(f);
+}
+
+/* ---------- Toast / Dialog ---------- */
+var toastT=null;
+function toast(txt){
+  var alt=document.querySelector('.toast'); if(alt)alt.remove();
+  var t=el('div','toast',txt); document.body.appendChild(t);
+  clearTimeout(toastT); toastT=setTimeout(function(){t.remove();},2600);
+}
+function dialog(titel, inhaltFn, knoepfe){
+  var ovl=el('div','ovl'), d=el('div','dlg');
+  d.appendChild(el('h2',null,titel));
+  var body=el('div'); d.appendChild(body);
+  if(inhaltFn)inhaltFn(body);
+  var zeile=el('div','dlgbtns');
+  function zu(){ovl.remove();}
+  (knoepfe||[{text:'Schließen'}]).forEach(function(k){
+    var b=el('button','btn'+(k.art?' '+k.art:''),k.text);
+    b.onclick=function(){ if(!k.fn||k.fn(body)!==false) zu(); };
+    zeile.appendChild(b);
+  });
+  d.appendChild(zeile);
+  ovl.appendChild(d); document.body.appendChild(ovl);
+  ovl.addEventListener('click',function(e){if(e.target===ovl)zu();});
+  return {zu:zu, body:body};
+}
+function frage(titel, text, jaText, jaFn, art){
+  dialog(titel,function(b){b.appendChild(el('p',null,text));},
+    [{text:'Abbrechen'},{text:jaText,art:art||'pri',fn:function(){jaFn();}}]);
+}
+
+/* ---------- Kopieren ---------- */
+function kopieren(text, meldung){
+  function fallback(){
+    var ta=el('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    try{document.execCommand('copy'); toast(meldung||'Kopiert.');}
+    catch(e){toast('Kopieren nicht möglich — bitte Text markieren.');}
+    ta.remove();
+  }
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){toast(meldung||'Kopiert.');},fallback);
+  } else fallback();
+}
+
+/* ==========================================================
+   Tabs
+   ========================================================== */
+var TABS_ADMIN=[
+  {id:'fahrten', t:'Fahrten'}, {id:'besetzung', t:'Besetzung'}, {id:'anfragen', t:'Anfragen'},
+  {id:'fahrzeuge', t:'Fahrzeuge'}, {id:'vorlagen', t:'Vorlagen'}, {id:'crew', t:'Crew'},
+  {id:'whatsapp', t:'WhatsApp'}
+];
+var TABS_CREW=[{id:'fahrten', t:'Fahrten'}, {id:'meine', t:'Meine Plätze'}];
+
+function zeichneTabs(){
+  var box=leeren($('tabs'));
+  var liste=istAdmin()?TABS_ADMIN:TABS_CREW;
+  liste.forEach(function(t){
+    var b=el('button',ansicht.tab===t.id?'active':'',t.t);
+    if(t.id==='anfragen'){
+      var n=offeneAnfragen();
+      if(n>0){var z=el('span','zaehler',String(n)); b.appendChild(z);}
+    }
+    b.onclick=function(){ansicht.tab=t.id;ansicht.fahrtId=null;zeichne();};
+    box.appendChild(b);
+  });
+}
+
+function zeichne(){
+  document.documentElement.setAttribute('data-theme',S.einst.theme==='light'?'light':'dark');
+  $('kopfsub').textContent = tourName() + ' · ' + (S.einst.stadt||'') +
+    ' · ' + (istAdmin()?'Admin-Ansicht':'angemeldet als '+name(ich()));
+  zeichneTabs();
+  var m=leeren($('main'));
+  if(ansicht.fahrtId){ zeichneFahrtDetail(m); return; }
+  if(ansicht.tab==='fahrten')   zeichneFahrten(m);
+  else if(ansicht.tab==='besetzung') zeichneBesetzung(m);
+  else if(ansicht.tab==='anfragen')  zeichneAnfragen(m);
+  else if(ansicht.tab==='fahrzeuge') zeichneFahrzeuge(m);
+  else if(ansicht.tab==='vorlagen')  zeichneVorlagen(m);
+  else if(ansicht.tab==='crew')      zeichneCrew(m);
+  else if(ansicht.tab==='whatsapp')  zeichneWhatsapp(m);
+  else if(ansicht.tab==='meine')     zeichneMeine(m);
+}
+
+/* ==========================================================
+   1) Fahrten-Übersicht
+   ========================================================== */
+function zeichneFahrten(m){
+  var tage={};
+  mFahrten().slice().sort(function(a,b){
+    return (a.datum+a.zeit)<(b.datum+b.zeit)?-1:1;
+  }).forEach(function(f){ (tage[f.datum]=tage[f.datum]||[]).push(f); });
+
+  var datumsListe=Object.keys(tage).sort();
+  if(!datumsListe.length){
+    m.appendChild(el('div','leer','Noch keine Fahrten angelegt.'));
+  }
+
+  if(istAdmin()){
+    var k=el('div','sec'), z=el('div','btnzeile');
+    var b1=el('button','btn pri','Neue Fahrt anlegen'); b1.onclick=function(){fahrtBearbeiten(null);};
+    var b2=el('button','btn','Tag aus Vorlage erzeugen'); b2.onclick=vorlageAnwendenDialog;
+    z.appendChild(b1); z.appendChild(b2); k.appendChild(z); m.appendChild(k);
+  }
+
+  datumsListe.forEach(function(dat){
+    var kopf=el('div','sechead');
+    kopf.appendChild(el('h2',null,datumLang(dat)+(dat===heuteISO()?' · heute':'')));
+    var frei=0,kap=0; tage[dat].forEach(function(f){frei+=fahrtFrei(f);kap+=fahrtKap(f);});
+    kopf.appendChild(el('span',null,tage[dat].length+' Abfahrten · '+frei+' von '+kap+' Plätzen frei'));
+    m.appendChild(kopf);
+
+    var sec=el('div','sec');
+    tage[dat].forEach(function(f){ sec.appendChild(fahrtKarte(f)); });
+    m.appendChild(sec);
+  });
+}
+
+function fahrtKarte(f){
+  var c=el('div','card'+(f.status==='entwurf'?'':' hl'));
+  var kopf=el('div','row');
+  var t=el('div','grow stack');
+  var z1=el('div','row');
+  var zeit=el('span',null,f.zeit+' Uhr'); zeit.style.fontFamily='var(--disp)';
+  zeit.style.fontWeight='700'; zeit.style.fontSize='20px'; zeit.style.color='var(--tape-sig)';
+  z1.appendChild(zeit);
+  z1.appendChild(el('span',null,f.richtung));
+  if(f.status==='entwurf') z1.appendChild(el('span','badge b-plan','Entwurf'));
+  else if(fahrtZu(f)) z1.appendChild(el('span','badge b-zu','Buchung zu'));
+  else z1.appendChild(el('span','badge b-ok','Buchung offen'));
+  var rest=el('span','badge b-plan',restText(f)); z1.appendChild(rest);
+  t.appendChild(z1);
+  t.appendChild(el('div','meta','Ab '+f.von+' → '+f.nach));
+  var frei=fahrtFrei(f), kap=fahrtKap(f);
+  t.appendChild(el('div','meta',(kap-frei)+' von '+kap+' Plätzen belegt · '+frei+' frei'));
+  if(f.hinweis) t.appendChild(el('div','meta','„'+f.hinweis+'"'));
+  kopf.appendChild(t);
+  c.appendChild(kopf);
+
+  /* Mini-Vorschau der Shuttles */
+  var vor=el('div','row'); vor.style.marginTop='10px';
+  f.shuttles.forEach(function(sh){
+    var fz=fzById(sh.fahrzeugId); if(!fz)return;
+    var box=el('div'); box.style.width='110px'; box.style.textAlign='center';
+    var svg=VANS.zeichneVan(fz.vorlage,{ohneKlick:true,zustand:function(sid,def){
+      return sitzZustand(sh,sid,def,true);
+    }});
+    svg.classList.add('klein');
+    box.appendChild(svg);
+    var lab=el('div','meta',fz.name); lab.style.fontSize='12px'; box.appendChild(lab);
+    var lab2=el('div','meta',freiCount(sh)+' frei'); lab2.style.fontSize='12px';
+    lab2.style.color=freiCount(sh)?'var(--ok-ink)':'var(--now-ink)'; box.appendChild(lab2);
+    vor.appendChild(box);
+  });
+  c.appendChild(vor);
+
+  var mp=meinPlatz(f,S.einst.ich);
+  if(mp){
+    var hin=el('div','hint tape');
+    hin.textContent='Dein Platz: '+(fzById(mp.sh.fahrzeugId)||{}).name+
+      ' · '+(mp.b.status==='bestaetigt'?'bestätigt':'noch nicht bestätigt');
+    hin.style.margin='10px 0 0'; c.appendChild(hin);
+  }
+
+  var btn=el('div','btnzeile'); btn.style.marginTop='11px';
+  var b=el('button','btn pri','Sitzplan öffnen');
+  b.onclick=function(){ansicht.fahrtId=f.id;zeichne();};
+  btn.appendChild(b);
+  if(istAdmin()){
+    var b2=el('button','btn klein','Bearbeiten'); b2.onclick=function(){fahrtBearbeiten(f);};
+    var b3=el('button','btn klein','WhatsApp-Text'); b3.onclick=function(){whatsappDialog(f);};
+    btn.appendChild(b2); btn.appendChild(b3);
+  }
+  c.appendChild(btn);
+  return c;
+}
+
+/* ==========================================================
+   2) Fahrt-Detail mit Sitzplänen
+   ========================================================== */
+function sitzZustand(sh, sid, def, mini){
+  var fz=fzById(sh.fahrzeugId)||{};
+  if(def.typ==='fahrer') return {klasse:'fahrer', titel:'Fahrer: '+fahrerName(fz), sub:''};
+  if((sh.gesperrt||[]).indexOf(sid)>=0)
+    return {klasse:'gesperrt', text:'▩', sub:mini?'':'Gepäck', titel:'Für Gepäck gesperrt'};
+  var b=sh.plaetze[sid];
+  if(!b){
+    var offen=!fahrtZu(aktuelleFahrt(sh));
+    return {klasse:'frei', text:mini?'':'+', sub:mini?'':'frei',
+      titel:offen?'Freier Platz — zum Buchen anklicken':'Freier Platz, Buchung ist geschlossen',
+      klickbar:offen||istAdmin()};
+  }
+  var c=crewById(b.crewId);
+  var eigen=(b.crewId===S.einst.ich);
+  return {
+    klasse:(b.status==='bestaetigt'?'bestaetigt':'angefragt')+(eigen?' ich':''),
+    text:mini?'':(c?c.kuerzel:'??'),
+    sub:mini?'':(c?c.vorname:''),
+    titel:(c?name(c):'?')+' · '+(b.status==='bestaetigt'?'bestätigt':'angefragt, wartet auf Freigabe'),
+    klickbar:istAdmin()||eigen
+  };
+}
+function aktuelleFahrt(sh){
+  for(var i=0;i<S.fahrten.length;i++){
+    var f=S.fahrten[i];
+    for(var j=0;j<f.shuttles.length;j++) if(f.shuttles[j]===sh) return f;
+  }
+  return S.fahrten[0];
+}
+
+function zeichneFahrtDetail(m){
+  var f=fahrtById(ansicht.fahrtId);
+  if(!f){ansicht.fahrtId=null;zeichne();return;}
+
+  var kopf=el('div','sec');
+  var zur=el('button','btn klein','← Zurück zu den Fahrten');
+  zur.onclick=function(){ansicht.fahrtId=null;zeichne();};
+  kopf.appendChild(zur);
+  m.appendChild(kopf);
+
+  var kk=el('div','sechead');
+  kk.appendChild(el('h2',null,datumLang(f.datum)+' · '+f.zeit+' Uhr · '+f.richtung));
+  kk.appendChild(el('span',null,restText(f)));
+  m.appendChild(kk);
+
+  var info=el('div','sec');
+  var ic=el('div','card');
+  ic.appendChild(el('div',null,'Treffpunkt: '+f.von));
+  ic.appendChild(el('div','meta','Ziel: '+f.nach));
+  if(f.hinweis) ic.appendChild(el('div','meta','Hinweis: '+f.hinweis));
+  var st=el('div','row'); st.style.marginTop='8px';
+  if(fahrtZu(f)) st.appendChild(el('span','badge b-zu','Buchung geschlossen'));
+  else st.appendChild(el('span','badge b-ok','Buchung offen bis '+S.einst.buchungsschluss+' Min vor Abfahrt'));
+  var mp=meinPlatz(f,S.einst.ich);
+  if(mp) st.appendChild(el('span','badge b-tape','Dein Platz: '+(fzById(mp.sh.fahrzeugId)||{}).name));
+  ic.appendChild(st);
+  info.appendChild(ic);
+  m.appendChild(info);
+
+  if(istAdmin()){
+    var ab=el('div','sec'), z=el('div','btnzeile');
+    var b1=el('button','btn klein','Shuttle hinzufügen'); b1.onclick=function(){shuttleHinzufuegen(f);};
+    var b2=el('button','btn klein','Alle Anfragen bestätigen'); b2.onclick=function(){alleBestaetigen(f);};
+    var b3=el('button','btn klein','WhatsApp-Text'); b3.onclick=function(){whatsappDialog(f);};
+    var b4=el('button','btn klein',fahrtZu(f)?'Buchung wieder öffnen':'Buchung schließen');
+    b4.onclick=function(){f.status=(f.status==='geschlossen'?'offen':'geschlossen');
+      protokoll('Fahrt '+f.zeit+' '+(f.status==='geschlossen'?'geschlossen':'geöffnet'));speichern();zeichne();};
+    var b5=el('button','btn klein','Fahrerliste drucken'); b5.onclick=function(){fahrerliste(f);};
+    [b1,b2,b3,b4,b5].forEach(function(b){z.appendChild(b);});
+    ab.appendChild(z); m.appendChild(ab);
+  }
+
+  var wrap=el('div','sec'), grid=el('div','shuttlegrid');
+  f.shuttles.forEach(function(sh){ grid.appendChild(shuttleKarte(f,sh)); });
+  wrap.appendChild(grid); m.appendChild(wrap);
+
+  var lg=el('div','sec legende');
+  [['','frei'],['a','angefragt'],['b','bestätigt'],['g','Gepäck / gesperrt']].forEach(function(p){
+    var s=el('span'); var i=el('i','lp'+(p[0]?' '+p[0]:'')); i.style.display='inline-block';
+    s.appendChild(i); s.appendChild(el('span',null,p[1])); lg.appendChild(s);
+  });
+  m.appendChild(lg);
+}
+
+function shuttleKarte(f, sh){
+  var fz=fzById(sh.fahrzeugId)||{name:'Unbekannt',vorlage:'van7'};
+  var vl=VANS.VORLAGEN[fz.vorlage]||{};
+  var c=el('div','shuttlecard');
+  var h=el('h3',null,fz.name);
+  h.appendChild(el('span','kfz',fz.kennzeichen||'ohne Kennzeichen'));
+  c.appendChild(h);
+  c.appendChild(el('div','meta',(vl.name||'')+' · Fahrer: '+fahrerName(fz)+
+    (sh.zeit?' · Abfahrt abweichend '+sh.zeit+' Uhr':'')));
+  if(fz.notiz) c.appendChild(el('div','meta',fz.notiz));
+
+  var kap=kapazitaet(sh), belegt=belegtCount(sh);
+  var bal=el('div','balken'); var i=el('i');
+  i.style.width=(kap?Math.round(belegt/kap*100):0)+'%';
+  if(belegt>=kap)i.className='voll';
+  bal.appendChild(i); c.appendChild(bal);
+  c.appendChild(el('div','meta',belegt+' von '+kap+' Plätzen belegt · '+freiCount(sh)+' frei'));
+
+  var vw=el('div','vanwrap');
+  var svg=VANS.zeichneVan(fz.vorlage,{
+    zustand:function(sid,def){return sitzZustand(sh,sid,def,false);},
+    klick:function(sid,def){sitzKlick(f,sh,sid,def);}
+  });
+  vw.appendChild(svg); c.appendChild(vw);
+
+  if((sh.warteliste||[]).length){
+    var wl=el('div','hint warn');
+    wl.style.margin='10px 0 0';
+    wl.textContent='Warteliste: '+sh.warteliste.map(function(id){return nameKurz(crewById(id));}).join(', ');
+    c.appendChild(wl);
+  }
+
+  var bz=el('div','btnzeile'); bz.style.marginTop='10px';
+  if(!istAdmin() && freiCount(sh)===0 && !meinPlatz(f,S.einst.ich)){
+    var bw=el('button','btn klein','Auf die Warteliste');
+    bw.onclick=function(){aufWarteliste(f,sh);};
+    bz.appendChild(bw);
+  }
+  if(istAdmin()){
+    var bb=el('button','btn klein','Bild für WhatsApp');
+    bb.onclick=function(){bildExport(f,sh,svg);};
+    bz.appendChild(bb);
+    var br=el('button','btn klein','Shuttle entfernen');
+    br.onclick=function(){
+      frage('Shuttle entfernen','„'+fz.name+'" aus dieser Fahrt entfernen? Gebuchte Plätze gehen verloren.',
+        'Entfernen',function(){
+          f.shuttles=f.shuttles.filter(function(x){return x!==sh;});
+          protokoll('Shuttle '+fz.name+' aus Fahrt '+f.zeit+' entfernt'); speichern(); zeichne();
+        },'warn');
+    };
+    bz.appendChild(br);
+  }
+  c.appendChild(bz);
+  return c;
+}
+
+/* ---------- Klick auf einen Platz ---------- */
+function sitzKlick(f, sh, sid, def){
+  if(def.typ==='fahrer'){toast('Das ist der Fahrerplatz.');return;}
+  var b=sh.plaetze[sid];
+  var gesperrt=(sh.gesperrt||[]).indexOf(sid)>=0;
+
+  if(istAdmin()){ adminSitzMenue(f,sh,sid,b,gesperrt); return; }
+
+  /* Crew-Ansicht */
+  if(gesperrt){toast('Dieser Platz ist für Gepäck gesperrt.');return;}
+  if(b){
+    if(b.crewId===S.einst.ich){
+      frage('Platz freigeben','Möchtest du deinen Platz wieder freigeben?','Platz freigeben',
+        function(){ platzFreigeben(f,sh,sid); },'warn');
+    } else {
+      toast('Platz ist von '+nameKurz(crewById(b.crewId))+' belegt.');
+    }
+    return;
+  }
+  if(fahrtZu(f)){toast('Die Buchung für diese Fahrt ist geschlossen.');return;}
+  var vorher=meinPlatz(f,S.einst.ich);
+  var txt='Einen Platz in „'+(fzById(sh.fahrzeugId)||{}).name+'" für '+name(ich())+' anfragen?';
+  if(vorher) txt+='\n\nDein bisheriger Platz in dieser Fahrt wird dabei frei.';
+  dialog('Platz reservieren',function(bd){
+    bd.appendChild(el('p',null,txt));
+    bd.appendChild(el('p',null,'Die Freigabe macht das Tourmanagement. Du siehst den Platz danach grün.'));
+  },[{text:'Abbrechen'},{text:'Platz anfragen',art:'pri',fn:function(){
+    if(vorher) delete vorher.sh.plaetze[vorher.sitz];
+    sh.plaetze[sid]={crewId:S.einst.ich, status:S.einst.autoBestaetigen?'bestaetigt':'angefragt',
+      ts:new Date().toISOString()};
+    sh.warteliste=(sh.warteliste||[]).filter(function(x){return x!==S.einst.ich;});
+    protokoll(name(ich())+' hat einen Platz in '+(fzById(sh.fahrzeugId)||{}).name+' angefragt');
+    speichern(); zeichne();
+    toast(S.einst.autoBestaetigen?'Platz gebucht.':'Anfrage abgeschickt — wartet auf Freigabe.');
+  }}]);
+}
+
+function adminSitzMenue(f, sh, sid, b, gesperrt){
+  var fz=fzById(sh.fahrzeugId)||{};
+  dialog('Platz in '+fz.name,function(bd){
+    if(b){
+      bd.appendChild(el('p',null,'Belegt von '+name(crewById(b.crewId))+
+        ' · '+(b.status==='bestaetigt'?'bestätigt':'angefragt')));
+    } else if(gesperrt){
+      bd.appendChild(el('p',null,'Dieser Platz ist für Gepäck gesperrt.'));
+    } else {
+      bd.appendChild(el('p',null,'Platz ist frei. Du kannst direkt jemanden eintragen.'));
+      var lab=el('label','feld','Crew-Mitglied'); bd.appendChild(lab);
+      var sel=el('select'); sel.id='dlgCrew';
+      sel.appendChild(el('option',null,'— bitte wählen —'));
+      mCrew().slice().sort(function(a,b2){return name(a)<name(b2)?-1:1;}).forEach(function(c){
+        var o=el('option',null,name(c)+' · '+gewerkVon(c)); o.value=c.id; sel.appendChild(o);
+      });
+      bd.appendChild(sel);
+    }
+  }, (function(){
+    var k=[{text:'Schließen'}];
+    if(b){
+      if(b.status==='angefragt')
+        k.push({text:'Bestätigen',art:'ok',fn:function(){
+          b.status='bestaetigt'; protokoll('Platz für '+name(crewById(b.crewId))+' bestätigt');
+          speichern();zeichne();toast('Platz bestätigt.');}});
+      k.push({text:'Platz freigeben',art:'warn',fn:function(){platzFreigeben(f,sh,sid);}});
+    } else if(gesperrt){
+      k.push({text:'Sperre aufheben',fn:function(){
+        sh.gesperrt=sh.gesperrt.filter(function(x){return x!==sid;});speichern();zeichne();}});
+    } else {
+      k.push({text:'Für Gepäck sperren',fn:function(){
+        sh.gesperrt=(sh.gesperrt||[]).concat([sid]);
+        protokoll('Ein Platz in '+fz.name+' für Gepäck gesperrt');speichern();zeichne();}});
+      k.push({text:'Eintragen',art:'pri',fn:function(bd){
+        var sel=bd.querySelector('#dlgCrew');
+        if(!sel||!sel.value){toast('Bitte zuerst jemanden auswählen.');return false;}
+        var vorher=meinPlatzVon(f,sel.value);
+        if(vorher) delete vorher.sh.plaetze[vorher.sitz];
+        sh.plaetze[sid]={crewId:sel.value,status:'bestaetigt',ts:new Date().toISOString()};
+        protokoll(name(crewById(sel.value))+' in '+fz.name+' eingetragen');
+        speichern();zeichne();toast('Eingetragen und bestätigt.');
+      }});
+    }
+    return k;
+  })());
+}
+function meinPlatzVon(f, crewId){return meinPlatz(f,crewId);}
+
+function platzFreigeben(f, sh, sid){
+  var b=sh.plaetze[sid]; if(!b)return;
+  var wer=name(crewById(b.crewId));
+  delete sh.plaetze[sid];
+  protokoll('Platz von '+wer+' freigegeben');
+  /* Warteliste rückt nach */
+  if((sh.warteliste||[]).length){
+    var next=sh.warteliste.shift();
+    sh.plaetze[sid]={crewId:next,status:'angefragt',ts:new Date().toISOString()};
+    protokoll(name(crewById(next))+' ist von der Warteliste nachgerückt');
+    toast('Platz frei — '+nameKurz(crewById(next))+' ist von der Warteliste nachgerückt.');
+  } else toast('Platz ist wieder frei.');
+  speichern(); zeichne();
+}
+
+function aufWarteliste(f, sh){
+  sh.warteliste=sh.warteliste||[];
+  if(sh.warteliste.indexOf(S.einst.ich)>=0){toast('Du stehst schon auf der Warteliste.');return;}
+  sh.warteliste.push(S.einst.ich);
+  protokoll(name(ich())+' auf Warteliste');
+  speichern(); zeichne(); toast('Du stehst auf der Warteliste — wir sagen Bescheid.');
+}
+
+function alleBestaetigen(f){
+  var n=0;
+  f.shuttles.forEach(function(sh){
+    for(var k in sh.plaetze) if(sh.plaetze[k].status==='angefragt'){sh.plaetze[k].status='bestaetigt';n++;}
+  });
+  if(!n){toast('Es gibt keine offenen Anfragen.');return;}
+  protokoll(n+' Anfragen für die Fahrt '+f.zeit+' bestätigt');
+  speichern(); zeichne(); toast(n+' Anfragen bestätigt.');
+}
+
+function shuttleHinzufuegen(f){
+  dialog('Shuttle hinzufügen',function(bd){
+    bd.appendChild(el('label','feld','Fahrzeug'));
+    var sel=el('select'); sel.id='dlgFz';
+    mFahrzeuge().forEach(function(fz){
+      var vl=VANS.VORLAGEN[fz.vorlage]||{};
+      var o=el('option',null,fz.name+' · '+(vl.kurz||'')+' · '+fz.kennzeichen); o.value=fz.id;
+      sel.appendChild(o);
+    });
+    bd.appendChild(sel);
+    bd.appendChild(el('label','feld','Abweichende Abfahrtszeit (leer = wie die Fahrt)'));
+    var t=el('input'); t.type='time'; t.id='dlgZeit'; bd.appendChild(t);
+  },[{text:'Abbrechen'},{text:'Hinzufügen',art:'pri',fn:function(bd){
+    var fid=bd.querySelector('#dlgFz').value;
+    f.shuttles.push({id:uid('s'), fahrzeugId:fid, zeit:bd.querySelector('#dlgZeit').value||'',
+      gesperrt:[], warteliste:[], plaetze:{}});
+    protokoll('Shuttle '+(fzById(fid)||{}).name+' zur Fahrt '+f.zeit+' hinzugefügt');
+    speichern(); zeichne();
+  }}]);
+}
+
+/* ---------- Fahrt anlegen / bearbeiten ---------- */
+function fahrtBearbeiten(f){
+  var neu=!f;
+  var d={datum:f?f.datum:heuteISO(), zeit:f?f.zeit:'08:30',
+    richtung:f?f.richtung:'Hotel ➜ Venue', von:f?f.von:'Hotellobby',
+    nach:f?f.nach:'Venue · Crew-Eingang', hinweis:f?f.hinweis:'', status:f?f.status:'offen'};
+  dialog(neu?'Neue Fahrt':'Fahrt bearbeiten',function(bd){
+    function feld(id,lab,typ,wert){
+      bd.appendChild(el('label','feld',lab));
+      var i=el('input'); i.type=typ||'text'; i.id=id; i.value=wert||''; bd.appendChild(i); return i;
+    }
+    var z=el('div','fzeile');
+    var d1=el('div'); d1.appendChild(el('label','feld','Datum'));
+    var i1=el('input'); i1.type='date'; i1.id='fDatum'; i1.value=d.datum; d1.appendChild(i1);
+    var d2=el('div'); d2.appendChild(el('label','feld','Abfahrt'));
+    var i2=el('input'); i2.type='time'; i2.id='fZeit'; i2.value=d.zeit; d2.appendChild(i2);
+    z.appendChild(d1); z.appendChild(d2); bd.appendChild(z);
+
+    bd.appendChild(el('label','feld','Richtung'));
+    var sel=el('select'); sel.id='fRicht';
+    ['Hotel ➜ Venue','Venue ➜ Hotel','Hotel ➜ Bahnhof','Bahnhof ➜ Hotel','Hotel ➜ Flughafen',
+     'Flughafen ➜ Hotel','Sonderfahrt'].forEach(function(r){
+      var o=el('option',null,r); o.value=r; if(r===d.richtung)o.selected=true; sel.appendChild(o);
+    });
+    bd.appendChild(sel);
+    feld('fVon','Treffpunkt','text',d.von);
+    feld('fNach','Ziel','text',d.nach);
+    bd.appendChild(el('label','feld','Hinweis für die Crew'));
+    var ta=el('textarea'); ta.id='fHin'; ta.value=d.hinweis; ta.style.minHeight='60px'; bd.appendChild(ta);
+    bd.appendChild(el('label','feld','Status'));
+    var s2=el('select'); s2.id='fStatus';
+    [['entwurf','Entwurf (Crew sieht die Fahrt, kann aber nicht buchen)'],
+     ['offen','Offen (Crew kann buchen)'],
+     ['geschlossen','Geschlossen (keine Buchung mehr)']].forEach(function(p){
+      var o=el('option',null,p[1]); o.value=p[0]; if(p[0]===d.status)o.selected=true; s2.appendChild(o);
+    });
+    bd.appendChild(s2);
+  },[{text:'Abbrechen'},
+     (f?{text:'Fahrt löschen',art:'warn',fn:function(){
+       S.fahrten=S.fahrten.filter(function(x){return x!==f;});
+       protokoll('Fahrt '+f.datum+' '+f.zeit+' gelöscht');
+       speichern();ansicht.fahrtId=null;zeichne();}}:{text:' ',fn:function(){return true;}}),
+     {text:'Speichern',art:'pri',fn:function(bd){
+       var neuF=f||{id:uid('t'), tourId:tourId(), stadt:S.einst.stadt, shuttles:[]};
+       neuF.datum=bd.querySelector('#fDatum').value||heuteISO();
+       neuF.zeit=bd.querySelector('#fZeit').value||'08:00';
+       neuF.richtung=bd.querySelector('#fRicht').value;
+       neuF.von=bd.querySelector('#fVon').value;
+       neuF.nach=bd.querySelector('#fNach').value;
+       neuF.hinweis=bd.querySelector('#fHin').value;
+       neuF.status=bd.querySelector('#fStatus').value;
+       if(!f){S.fahrten.push(neuF); protokoll('Neue Fahrt '+neuF.datum+' '+neuF.zeit+' angelegt');}
+       else protokoll('Fahrt '+neuF.datum+' '+neuF.zeit+' geändert');
+       speichern(); zeichne();
+       if(!f){ansicht.fahrtId=neuF.id;zeichne();}
+     }}]);
+}
+
+/* ---------- Fahrerliste ---------- */
+function fahrerliste(f){
+  var w=window.open('','_blank');
+  if(!w){toast('Das Fenster wurde blockiert.');return;}
+  var h='<html><head><meta charset="utf-8"><title>Fahrerliste</title><style>'+
+    'body{font-family:Arial,sans-serif;padding:22px;color:#000}h1{font-size:19px;margin-bottom:2px}'+
+    'h2{font-size:15px;margin:18px 0 4px}table{border-collapse:collapse;width:100%;font-size:13px}'+
+    'td,th{border:1px solid #999;padding:5px 7px;text-align:left}th{background:#eee}'+
+    '.m{color:#444;font-size:13px}</style></head><body>';
+  h+='<h1>Shuttle-Fahrerliste · '+datumLang(f.datum)+' · '+f.zeit+' Uhr</h1>';
+  h+='<div class="m">'+f.richtung+' · Treffpunkt '+f.von+' · Ziel '+f.nach+'</div>';
+  f.shuttles.forEach(function(sh){
+    var fz=fzById(sh.fahrzeugId)||{};
+    h+='<h2>'+fz.name+' · '+(fz.kennzeichen||'')+' · Fahrer '+fahrerName(fz)+'</h2>';
+    h+='<table><tr><th>Nr.</th><th>Name</th><th>Gewerk</th><th>Status</th></tr>';
+    var nr=0;
+    VANS.buchbar(fz.vorlage).forEach(function(s){
+      var b=sh.plaetze[s.id];
+      var g=(sh.gesperrt||[]).indexOf(s.id)>=0;
+      nr++;
+      h+='<tr><td>'+nr+'</td><td>'+(b?name(crewById(b.crewId)):(g?'— Gepäck —':'frei'))+'</td><td>'+
+        (b?gewerkVon(crewById(b.crewId)):'')+'</td><td>'+
+        (b?(b.status==='bestaetigt'?'bestätigt':'angefragt'):'')+'</td></tr>';
+    });
+    h+='</table>';
+  });
+  h+='<p class="m">Gedruckt am '+datumLang(heuteISO())+'</p></body></html>';
+  w.document.write(h); w.document.close();
+}
+
+/* ---------- Bild-Export für WhatsApp ---------- */
+function bildExport(f, sh, svgQuelle){
+  var fz=fzById(sh.fahrzeugId)||{};
+  var svg=svgQuelle.cloneNode(true);
+  /* Farben fest einsetzen, damit das Bild ohne Formularvorlage stimmt */
+  var hell=(S.einst.theme==='light');
+  var css='.seatbox{stroke-width:2}.seattext{font-family:Arial;font-weight:700;font-size:19px;text-anchor:middle}'+
+    '.seatsub{font-family:Arial;font-size:10px;text-anchor:middle}';
+  var st=document.createElementNS('http://www.w3.org/2000/svg','style');
+  st.textContent=css; svg.insertBefore(st,svg.firstChild);
+  /* Variablen auflösen */
+  var werte={'--vanbody':hell?'#FFFFFF':'#3A404A','--vanline':hell?'#7E838D':'#828997',
+    '--vanglas':hell?'#C3CFDF':'#46505F','--frei-bg':hell?'#F6F6F6':'#23262C',
+    '--frei-line':hell?'#8A8F99':'#5A5F6B','--ink':hell?'#000':'#FFF','--dim':hell?'#000':'#FFF',
+    '--vaninnen':hell?'#E9EBEE':'#1C1F24','--vanrad':hell?'#2F323A':'#0C0D10',
+    '--vanhaube':hell?'#F2F3F5':'#333844','--vanlicht':'#FFE9A8','--vanruecklicht':hell?'#D6534A':'#C2453B'};
+  var alle=svg.querySelectorAll('*');
+  for(var i=0;i<alle.length;i++){
+    var n=alle[i];
+    ['fill','stroke'].forEach(function(at){
+      var v=n.getAttribute(at);
+      if(v&&v.indexOf('var(')===0){
+        var k=v.slice(4,-1).trim();
+        if(werte[k])n.setAttribute(at,werte[k]);
+      }
+    });
+    var kl=n.getAttribute('class')||'';
+    if(kl.indexOf('seatbox')>=0){
+      var p=n.parentNode.getAttribute('class')||'';
+      if(p.indexOf('bestaetigt')>=0){n.setAttribute('fill',hell?'#DDF0D9':'#22401F');n.setAttribute('stroke','#64A85C');}
+      else if(p.indexOf('angefragt')>=0){n.setAttribute('fill',hell?'#FFF0C2':'#4A3D12');n.setAttribute('stroke','#FFD23F');
+        n.setAttribute('stroke-dasharray','5 4');}
+      else if(p.indexOf('frei')>=0){n.setAttribute('fill',werte['--frei-bg']);n.setAttribute('stroke',werte['--frei-line']);
+        n.setAttribute('stroke-dasharray','5 4');}
+      else if(p.indexOf('gesperrt')>=0){n.setAttribute('fill',hell?'#E6E6E6':'#26282E');n.setAttribute('stroke',hell?'#C4C4C4':'#33363E');}
+      else if(p.indexOf('fahrer')>=0){n.setAttribute('fill',hell?'#E9EAEE':'#1A1C21');n.setAttribute('stroke',hell?'#9A9EA8':'#4A4E58');}
+      else {n.setAttribute('fill',werte['--frei-bg']);n.setAttribute('stroke',werte['--frei-line']);}
+    }
+    if(kl.indexOf('seattext')>=0||kl.indexOf('seatsub')>=0)n.setAttribute('fill',werte['--ink']);
+    if(kl.indexOf('seatlehne')>=0)n.setAttribute('fill',werte['--frei-line']);
+    if(kl.indexOf('lenkrad')>=0)n.setAttribute('stroke',werte['--vanline']);
+  }
+  var vb=(svg.getAttribute('viewBox')||'0 0 300 400').split(' ');
+  var bw=parseFloat(vb[2]), bh=parseFloat(vb[3]);
+  var kopfH=64, fussH=34, sk=2;
+  var cv=document.createElement('canvas');
+  cv.width=Math.round(bw*sk); cv.height=Math.round((bh+kopfH+fussH)*sk);
+  var ctx=cv.getContext('2d');
+  ctx.fillStyle=hell?'#FFFFFF':'#17181C'; ctx.fillRect(0,0,cv.width,cv.height);
+  var xml=new XMLSerializer().serializeToString(svg);
+  var img=new Image();
+  img.onload=function(){
+    ctx.drawImage(img,0,kopfH*sk,bw*sk,bh*sk);
+    ctx.fillStyle=hell?'#141518':'#FFD23F';
+    ctx.font='700 '+(19*sk)+'px Arial';
+    ctx.textAlign='center';
+    ctx.fillText(fz.name+' · '+(fz.kennzeichen||''), cv.width/2, 26*sk);
+    ctx.fillStyle=hell?'#000':'#FFF';
+    ctx.font=(13*sk)+'px Arial';
+    ctx.fillText(datumKurz(f.datum)+' · '+f.zeit+' Uhr · '+f.richtung, cv.width/2, 48*sk);
+    ctx.fillText(freiCount(sh)+' von '+kapazitaet(sh)+' Plätzen frei',
+      cv.width/2, (bh+kopfH+21)*sk);
+    var url=cv.toDataURL('image/png');
+    dialog('Bild für WhatsApp',function(bd){
+      bd.appendChild(el('p',null,'Rechtsklick → Bild kopieren, oder herunterladen und in der Gruppe teilen.'));
+      var im=el('img'); im.src=url; im.style.width='100%'; im.style.maxWidth='320px';
+      im.style.display='block'; im.style.margin='10px auto'; bd.appendChild(im);
+      var a=el('a',null,'Bild herunterladen');
+      a.href=url; a.download='Shuttle_'+f.datum+'_'+f.zeit.replace(':','')+'_'+fz.name.replace(/\s+/g,'_')+'.png';
+      a.style.color='var(--tape-sig)'; a.style.display='block'; a.style.textAlign='center';
+      bd.appendChild(a);
+    },[{text:'Schließen'}]);
+  };
+  img.onerror=function(){toast('Bild konnte nicht erzeugt werden.');};
+  img.src='data:image/svg+xml;base64,'+btoa(unescape(encodeURIComponent(xml)));
+}
+
+/* ==========================================================
+   3) Anfragen (Admin)
+   ========================================================== */
+function zeichneAnfragen(m){
+  var offen=[];
+  mFahrten().forEach(function(f){f.shuttles.forEach(function(sh){
+    for(var k in sh.plaetze) if(sh.plaetze[k].status==='angefragt')
+      offen.push({f:f,sh:sh,sitz:k,b:sh.plaetze[k]});
+  });});
+
+  var kopf=el('div','sechead');
+  kopf.appendChild(el('h2',null,'Offene Anfragen'));
+  kopf.appendChild(el('span',null,offen.length+' zu bearbeiten'));
+  m.appendChild(kopf);
+
+  if(!offen.length){
+    var s=el('div','sec'); var c=el('div','card');
+    c.appendChild(el('div','leer','Alles bestätigt — es wartet niemand auf eine Freigabe.'));
+    s.appendChild(c); m.appendChild(s);
+  } else {
+    var sec=el('div','sec');
+    offen.sort(function(a,b){return (a.f.datum+a.f.zeit)<(b.f.datum+b.f.zeit)?-1:1;});
+    offen.forEach(function(o){
+      var c=el('div','card');
+      var r=el('div','row');
+      var t=el('div','grow stack');
+      t.appendChild(el('div',null,name(crewById(o.b.crewId))+' · '+
+        gewerkVon(crewById(o.b.crewId))));
+      t.appendChild(el('div','meta',datumKurz(o.f.datum)+' · '+o.f.zeit+' Uhr · '+o.f.richtung));
+      t.appendChild(el('div','meta',(fzById(o.sh.fahrzeugId)||{}).name+' · '+
+        ((fzById(o.sh.fahrzeugId)||{}).kennzeichen||'')));
+      r.appendChild(t);
+      var bz=el('div','btnzeile');
+      var b1=el('button','btn ok klein','Bestätigen');
+      b1.onclick=function(){o.b.status='bestaetigt';
+        protokoll('Platz für '+name(crewById(o.b.crewId))+' bestätigt');
+        speichern();zeichne();};
+      var b2=el('button','btn klein','Ablehnen');
+      b2.onclick=function(){platzFreigeben(o.f,o.sh,o.sitz);};
+      bz.appendChild(b1); bz.appendChild(b2);
+      r.appendChild(bz);
+      c.appendChild(r);
+      sec.appendChild(c);
+    });
+    var alles=el('div','sec');
+    var ba=el('button','btn pri','Alle '+offen.length+' Anfragen bestätigen');
+    ba.onclick=function(){
+      offen.forEach(function(o){o.b.status='bestaetigt';});
+      protokoll(offen.length+' Anfragen gesammelt bestätigt');
+      speichern();zeichne();toast('Alle Anfragen bestätigt.');
+    };
+    alles.appendChild(ba); m.appendChild(alles);
+    m.appendChild(sec);
+  }
+
+  /* Protokoll */
+  var pk=el('div','sechead'); pk.appendChild(el('h2',null,'Was zuletzt passiert ist'));
+  m.appendChild(pk);
+  var ps=el('div','sec'), pc=el('div','card');
+  if(!S.protokoll.length) pc.appendChild(el('div','leer','Noch nichts passiert.'));
+  S.protokoll.slice(0,14).forEach(function(p){
+    var d=new Date(p.ts);
+    var z=el('div','meta',pad(d.getHours())+':'+pad(d.getMinutes())+' · '+p.text);
+    pc.appendChild(z);
+  });
+  ps.appendChild(pc); m.appendChild(ps);
+}
+
+/* ==========================================================
+   4) Fahrzeuge (Admin)
+   ========================================================== */
+function zeichneFahrzeuge(m){
+  var kopf=el('div','sechead');
+  kopf.appendChild(el('h2',null,'Fahrzeuge, Fahrer und Vorlagen'));
+  kopf.appendChild(el('span',null,mFahrzeuge().length+' Fahrzeuge'));
+  m.appendChild(kopf);
+
+  var s0=el('div','sec');
+  var bn=el('button','btn pri','Neues Fahrzeug anlegen');
+  bn.onclick=function(){fahrzeugBearbeiten(null);};
+  s0.appendChild(bn); m.appendChild(s0);
+
+  var sec=el('div','sec'), grid=el('div','shuttlegrid');
+  mFahrzeuge().forEach(function(fz){
+    var vl=VANS.VORLAGEN[fz.vorlage]||{};
+    var c=el('div','shuttlecard');
+    var h=el('h3',null,fz.name); h.appendChild(el('span','kfz',fz.kennzeichen||'—'));
+    c.appendChild(h);
+    c.appendChild(el('div','meta',vl.name+' · '+vl.plaetze+' Plätze für die Crew'));
+    c.appendChild(el('div','meta','Fahrer: '+fahrerName(fz)+(fz.stadt?' · '+fz.stadt:'')));
+    if(fz.notiz)c.appendChild(el('div','meta',fz.notiz));
+    var vw=el('div','vanwrap');
+    vw.appendChild(VANS.zeichneVan(fz.vorlage,{ohneKlick:true,zustand:function(sid,def){
+      return def.typ==='fahrer'?{klasse:'fahrer',sub:''}:{klasse:'frei',text:'',sub:''};
+    }}));
+    c.appendChild(vw);
+    var bz=el('div','btnzeile'); bz.style.marginTop='10px';
+    var b1=el('button','btn klein','Bearbeiten'); b1.onclick=function(){fahrzeugBearbeiten(fz);};
+    bz.appendChild(b1);
+    c.appendChild(bz);
+    grid.appendChild(c);
+  });
+  sec.appendChild(grid); m.appendChild(sec);
+
+  zeichneFahrer(m);
+
+  var vk=el('div','sechead'); vk.appendChild(el('h2',null,'Verfügbare Draufsichten'));
+  m.appendChild(vk);
+  var vs=el('div','sec'), vg=el('div','shuttlegrid');
+  VANS.REIHENFOLGE.forEach(function(id){
+    var vl=VANS.VORLAGEN[id];
+    var c=el('div','shuttlecard');
+    c.appendChild(el('h3',null,vl.name));
+    c.appendChild(el('div','meta',vl.beschreibung));
+    var vw=el('div','vanwrap');
+    vw.appendChild(VANS.zeichneVan(id,{ohneKlick:true,zustand:function(sid,def){
+      return def.typ==='fahrer'?{klasse:'fahrer',sub:''}:{klasse:'frei',text:'',sub:''};
+    }}));
+    c.appendChild(vw);
+    vg.appendChild(c);
+  });
+  vs.appendChild(vg); m.appendChild(vs);
+}
+
+function zeichneFahrer(m){
+  var stadt=aktStadt();
+  var kopf=el('div','sechead');
+  kopf.appendChild(el('h2',null,'Fahrer vor Ort'));
+  kopf.appendChild(el('span',null,mFahrer(stadt).length+' in '+(stadt||'—')));
+  m.appendChild(kopf);
+
+  var h=el('div','hint tape');
+  h.textContent='Die Shuttlefahrer sind in jeder Stadt andere. Hier stehen sie je Stadt mit Telefonnummer und Firma — und der Name der WhatsApp-Gruppe, in die ihre Nachrichten gehen.';
+  m.appendChild(h);
+
+  var sec=el('div','sec'), c=el('div','card');
+  var z=el('div','fzeile');
+  var d1=el('div'); d1.appendChild(el('label','feld','Stadt'));
+  var sel=el('select');
+  var st=(tour().staedte||[]).slice();
+  if(stadt && st.indexOf(stadt)<0) st.push(stadt);
+  st.forEach(function(x){
+    var o=el('option',null,x); o.value=x; if(x===stadt)o.selected=true; sel.appendChild(o);
+  });
+  sel.onchange=function(){S.einst.stadt=sel.value;speichern();zeichne();};
+  d1.appendChild(sel); z.appendChild(d1);
+
+  var inf=stadtInfo(stadt);
+  var d2=el('div'); d2.appendChild(el('label','feld','Name der Fahrer-WhatsApp-Gruppe'));
+  var i2=el('input'); i2.value=inf.fahrerGruppe||'';
+  i2.onchange=function(){inf.fahrerGruppe=i2.value;speichern();};
+  d2.appendChild(i2); z.appendChild(d2);
+  c.appendChild(z);
+
+  var z2=el('div','fzeile');
+  var d3=el('div'); d3.appendChild(el('label','feld','Hotel'));
+  var i3=el('input'); i3.value=inf.hotel||'';
+  i3.onchange=function(){inf.hotel=i3.value;speichern();};
+  d3.appendChild(i3); z2.appendChild(d3);
+  var d4=el('div'); d4.appendChild(el('label','feld','Venue'));
+  var i4=el('input'); i4.value=inf.venue||'';
+  i4.onchange=function(){inf.venue=i4.value;speichern();};
+  d4.appendChild(i4); z2.appendChild(d4);
+  c.appendChild(z2);
+  sec.appendChild(c); m.appendChild(sec);
+
+  var s2=el('div','sec');
+  var bn=el('button','btn pri','Fahrer hinzufügen');
+  bn.onclick=function(){fahrerBearbeiten(null, stadt);};
+  s2.appendChild(bn);
+  var w=el('div','tabwrap'); w.style.marginTop='10px';
+  var t=el('table'); var tr=el('tr');
+  ['Name','Telefon','Firma','Fahrzeug','Notiz',''].forEach(function(x){tr.appendChild(el('th',null,x));});
+  t.appendChild(tr);
+  mFahrer(stadt).forEach(function(fa){
+    var r=el('tr');
+    r.appendChild(el('td',null,fa.name));
+    r.appendChild(el('td',null,fa.telefon||''));
+    r.appendChild(el('td',null,fa.firma||''));
+    var fzn=mFahrzeuge().filter(function(x){return x.fahrerId===fa.id;})
+      .map(function(x){return x.name;}).join(', ');
+    r.appendChild(el('td',null,fzn||'—'));
+    r.appendChild(el('td',null,fa.notiz||''));
+    var td=el('td');
+    var b=el('button','btn klein','Ändern'); b.onclick=function(){fahrerBearbeiten(fa, stadt);};
+    td.appendChild(b); r.appendChild(td);
+    t.appendChild(r);
+  });
+  w.appendChild(t); s2.appendChild(w); m.appendChild(s2);
+}
+
+function fahrerBearbeiten(fa, stadt){
+  dialog(fa?'Fahrer ändern':'Fahrer hinzufügen',function(bd){
+    function feld(id,lab,wert){
+      bd.appendChild(el('label','feld',lab));
+      var i=el('input'); i.id=id; i.value=wert||''; bd.appendChild(i);
+    }
+    feld('faName','Name',fa?fa.name:'');
+    feld('faTel','Telefon',fa?fa.telefon:'');
+    feld('faFirma','Firma / Mietwagenpartner',fa?fa.firma:'');
+    bd.appendChild(el('label','feld','Stadt'));
+    var sel=el('select'); sel.id='faStadt';
+    var st=(tour().staedte||[]).slice();
+    var akt=fa?fa.stadt:stadt;
+    if(akt && st.indexOf(akt)<0) st.push(akt);
+    st.forEach(function(x){
+      var o=el('option',null,x); o.value=x; if(x===akt)o.selected=true; sel.appendChild(o);
+    });
+    bd.appendChild(sel);
+    feld('faNotiz','Notiz',fa?fa.notiz:'');
+  },[{text:'Abbrechen'},
+     (fa?{text:'Löschen',art:'warn',fn:function(){
+       S.fahrer=S.fahrer.filter(function(x){return x!==fa;});
+       S.fahrzeuge.forEach(function(x){if(x.fahrerId===fa.id)x.fahrerId='';});
+       speichern();zeichne();}}:{text:' ',fn:function(){return true;}}),
+     {text:'Speichern',art:'pri',fn:function(bd){
+       var o=fa||{id:uid('fa'), tourId:tourId()};
+       o.name=bd.querySelector('#faName').value.trim()||'Fahrer';
+       o.telefon=bd.querySelector('#faTel').value.trim();
+       o.firma=bd.querySelector('#faFirma').value.trim();
+       o.stadt=bd.querySelector('#faStadt').value;
+       o.notiz=bd.querySelector('#faNotiz').value.trim();
+       if(!fa)S.fahrer.push(o);
+       protokoll('Fahrer '+o.name+' gespeichert');
+       speichern();zeichne();
+     }}]);
+}
+
+function fahrzeugBearbeiten(fz){
+  var neu=!fz;
+  dialog(neu?'Neues Fahrzeug':'Fahrzeug bearbeiten',function(bd){
+    function feld(id,lab,wert){
+      bd.appendChild(el('label','feld',lab));
+      var i=el('input'); i.id=id; i.value=wert||''; bd.appendChild(i); return i;
+    }
+    feld('vName','Bezeichnung (so steht es in WhatsApp)',fz?fz.name:'Shuttle '+(mFahrzeuge().length+1));
+    bd.appendChild(el('label','feld','Draufsicht / Größe'));
+    var sel=el('select'); sel.id='vVorlage';
+    VANS.REIHENFOLGE.forEach(function(id){
+      var o=el('option',null,VANS.VORLAGEN[id].name+' — '+VANS.VORLAGEN[id].plaetze+' Crew-Plätze');
+      o.value=id; if(fz&&fz.vorlage===id)o.selected=true; sel.appendChild(o);
+    });
+    bd.appendChild(sel);
+    var vor=el('div','vanwrap'); bd.appendChild(vor);
+    function zeigen(){
+      leeren(vor);
+      vor.appendChild(VANS.zeichneVan(sel.value,{ohneKlick:true,zustand:function(sid,def){
+        return def.typ==='fahrer'?{klasse:'fahrer',sub:''}:{klasse:'frei',text:'',sub:''};
+      }}));
+    }
+    sel.onchange=zeigen; zeigen();
+    feld('vKfz','Kennzeichen',fz?fz.kennzeichen:'');
+    bd.appendChild(el('label','feld','Stadt'));
+    var selSt=el('select'); selSt.id='vStadt';
+    var oAlle=el('option',null,'alle Städte'); oAlle.value=''; selSt.appendChild(oAlle);
+    var st=(tour().staedte||[]).slice();
+    if(fz&&fz.stadt&&st.indexOf(fz.stadt)<0)st.push(fz.stadt);
+    st.forEach(function(x){
+      var o=el('option',null,x); o.value=x;
+      if(fz?(fz.stadt===x):(x===aktStadt()))o.selected=true; selSt.appendChild(o);
+    });
+    bd.appendChild(selSt);
+    bd.appendChild(el('label','feld','Fahrer (aus der Fahrerliste der Stadt)'));
+    var selFa=el('select'); selFa.id='vFahrerId';
+    function fahrerFuellen(){
+      leeren(selFa);
+      var o0=el('option',null,'— noch offen —'); o0.value=''; selFa.appendChild(o0);
+      mFahrer(selSt.value||undefined).forEach(function(fa){
+        var o=el('option',null,fa.name+(fa.firma?' · '+fa.firma:'')); o.value=fa.id;
+        if(fz&&fz.fahrerId===fa.id)o.selected=true; selFa.appendChild(o);
+      });
+    }
+    fahrerFuellen(); selSt.onchange=fahrerFuellen;
+    bd.appendChild(selFa);
+    bd.appendChild(el('label','feld','Notiz (Gepäck, Klimaanlage …)'));
+    var ta=el('textarea'); ta.id='vNotiz'; ta.style.minHeight='55px'; ta.value=fz?fz.notiz||'':'';
+    bd.appendChild(ta);
+  },[{text:'Abbrechen'},
+     (fz?{text:'Löschen',art:'warn',fn:function(){
+       S.fahrzeuge=S.fahrzeuge.filter(function(x){return x!==fz;});
+       protokoll('Fahrzeug '+fz.name+' gelöscht'); speichern(); zeichne();}}:{text:' ',fn:function(){return true;}}),
+     {text:'Speichern',art:'pri',fn:function(bd){
+       var o=fz||{id:uid('f'), tourId:tourId()};
+       o.name=bd.querySelector('#vName').value||'Shuttle';
+       o.vorlage=bd.querySelector('#vVorlage').value;
+       o.kennzeichen=bd.querySelector('#vKfz').value;
+       o.stadt=bd.querySelector('#vStadt').value;
+       o.fahrerId=bd.querySelector('#vFahrerId').value;
+       if(o.fahrerId)o.fahrer=(fahrerById(o.fahrerId)||{}).name||'';
+       o.notiz=bd.querySelector('#vNotiz').value;
+       if(!fz){S.fahrzeuge.push(o); protokoll('Fahrzeug '+o.name+' angelegt');}
+       else protokoll('Fahrzeug '+o.name+' geändert');
+       speichern(); zeichne();
+     }}]);
+}
+
+/* ==========================================================
+   5) Tagesvorlagen
+   ========================================================== */
+function zeichneVorlagen(m){
+  var kopf=el('div','sechead');
+  kopf.appendChild(el('h2',null,'Tagesvorlagen'));
+  kopf.appendChild(el('span',null,mVorlagen().length+' Vorlagen'));
+  m.appendChild(kopf);
+  m.appendChild((function(){
+    var h=el('div','hint tape');
+    h.textContent='Eine Vorlage enthält alle Abfahrten eines typischen Tages. Für einen neuen Tag wählst du nur noch das Datum — alle Fahrten und Shuttles werden fertig angelegt.';
+    return h;
+  })());
+
+  var s0=el('div','sec'), z=el('div','btnzeile');
+  var b1=el('button','btn pri','Neue Vorlage'); b1.onclick=function(){vorlageBearbeiten(null);};
+  var b2=el('button','btn','Vorlage auf einen Tag anwenden'); b2.onclick=vorlageAnwendenDialog;
+  z.appendChild(b1); z.appendChild(b2); s0.appendChild(z); m.appendChild(s0);
+
+  var sec=el('div','sec');
+  mVorlagen().forEach(function(v){
+    var c=el('div','card');
+    var r=el('div','row');
+    var t=el('div','grow stack');
+    var h3=el('div',null,v.name); h3.style.fontFamily='var(--disp)'; h3.style.fontWeight='700';
+    h3.style.fontSize='16px'; t.appendChild(h3);
+    v.abfahrten.forEach(function(a){
+      t.appendChild(el('div','meta','• '+a.zeit+' Uhr · '+a.richtung+' · '+
+        a.fahrzeugIds.map(function(id){return (fzById(id)||{}).name||'?';}).join(' + ')));
+    });
+    r.appendChild(t);
+    var bz=el('div','btnzeile');
+    var e1=el('button','btn klein','Anwenden'); e1.onclick=function(){vorlageAnwendenDialog(v.id);};
+    var e2=el('button','btn klein','Bearbeiten'); e2.onclick=function(){vorlageBearbeiten(v);};
+    bz.appendChild(e1); bz.appendChild(e2); r.appendChild(bz);
+    c.appendChild(r); sec.appendChild(c);
+  });
+  m.appendChild(sec);
+}
+
+function vorlageBearbeiten(v){
+  var neu=!v;
+  var daten=v?JSON.parse(JSON.stringify(v.abfahrten)):[
+    {zeit:'08:30',richtung:'Hotel ➜ Venue',von:'Hotellobby',nach:'Venue · Crew-Eingang',fahrzeugIds:[],hinweis:''}];
+  var dlg=dialog(neu?'Neue Vorlage':'Vorlage bearbeiten',function(bd){
+    bd.appendChild(el('label','feld','Name der Vorlage'));
+    var i=el('input'); i.id='tvName'; i.value=v?v.name:'Showtag'; bd.appendChild(i);
+    var liste=el('div'); liste.id='tvListe'; bd.appendChild(liste);
+    function zeichnenListe(){
+      leeren(liste);
+      daten.forEach(function(a,idx){
+        var c=el('div','card'); c.style.marginTop='10px';
+        var z=el('div','fzeile');
+        var d1=el('div'); d1.appendChild(el('label','feld','Abfahrt'));
+        var t=el('input'); t.type='time'; t.value=a.zeit;
+        t.onchange=function(){a.zeit=t.value;}; d1.appendChild(t);
+        var d2=el('div'); d2.appendChild(el('label','feld','Richtung'));
+        var s=el('select');
+        ['Hotel ➜ Venue','Venue ➜ Hotel','Hotel ➜ Bahnhof','Bahnhof ➜ Hotel','Hotel ➜ Flughafen',
+         'Flughafen ➜ Hotel','Sonderfahrt'].forEach(function(r){
+          var o=el('option',null,r); o.value=r; if(r===a.richtung)o.selected=true; s.appendChild(o);
+        });
+        s.onchange=function(){a.richtung=s.value;}; d2.appendChild(s);
+        z.appendChild(d1); z.appendChild(d2); c.appendChild(z);
+
+        var z2=el('div','fzeile');
+        var d3=el('div'); d3.appendChild(el('label','feld','Treffpunkt'));
+        var i3=el('input'); i3.value=a.von; i3.onchange=function(){a.von=i3.value;}; d3.appendChild(i3);
+        var d4=el('div'); d4.appendChild(el('label','feld','Ziel'));
+        var i4=el('input'); i4.value=a.nach; i4.onchange=function(){a.nach=i4.value;}; d4.appendChild(i4);
+        z2.appendChild(d3); z2.appendChild(d4); c.appendChild(z2);
+
+        c.appendChild(el('label','feld','Fahrzeuge'));
+        mFahrzeuge().forEach(function(fz){
+          var lab=el('label'); lab.style.display='block'; lab.style.fontSize='14px';
+          var cb=el('input'); cb.type='checkbox'; cb.style.width='auto'; cb.style.marginRight='7px';
+          cb.checked=a.fahrzeugIds.indexOf(fz.id)>=0;
+          cb.onchange=function(){
+            if(cb.checked){if(a.fahrzeugIds.indexOf(fz.id)<0)a.fahrzeugIds.push(fz.id);}
+            else a.fahrzeugIds=a.fahrzeugIds.filter(function(x){return x!==fz.id;});
+          };
+          lab.appendChild(cb);
+          lab.appendChild(document.createTextNode(fz.name+' · '+
+            (VANS.VORLAGEN[fz.vorlage]||{}).kurz+' · '+fz.kennzeichen));
+          c.appendChild(lab);
+        });
+        c.appendChild(el('label','feld','Hinweis'));
+        var ta=el('textarea'); ta.style.minHeight='45px'; ta.value=a.hinweis||'';
+        ta.onchange=function(){a.hinweis=ta.value;}; c.appendChild(ta);
+
+        var br=el('button','btn klein warn','Diese Abfahrt entfernen');
+        br.style.marginTop='8px';
+        br.onclick=function(){daten.splice(idx,1);zeichnenListe();};
+        c.appendChild(br);
+        liste.appendChild(c);
+      });
+      var ba=el('button','btn klein','+ Abfahrt hinzufügen');
+      ba.style.marginTop='10px';
+      ba.onclick=function(){daten.push({zeit:'12:00',richtung:'Hotel ➜ Venue',von:'Hotellobby',
+        nach:'Venue · Crew-Eingang',fahrzeugIds:[],hinweis:''});zeichnenListe();};
+      liste.appendChild(ba);
+    }
+    zeichnenListe();
+  },[{text:'Abbrechen'},
+     (v?{text:'Löschen',art:'warn',fn:function(){
+       S.tagesvorlagen=S.tagesvorlagen.filter(function(x){return x!==v;});
+       speichern();zeichne();}}:{text:' ',fn:function(){return true;}}),
+     {text:'Speichern',art:'pri',fn:function(bd){
+       var o=v||{id:uid('v'), tourId:tourId()};
+       o.name=bd.querySelector('#tvName').value||'Vorlage';
+       o.abfahrten=daten;
+       if(!v)S.tagesvorlagen.push(o);
+       protokoll('Vorlage '+o.name+' gespeichert');
+       speichern();zeichne();
+     }}]);
+  return dlg;
+}
+
+function vorlageAnwendenDialog(vorId){
+  if(!mVorlagen().length){toast('Es gibt noch keine Vorlage.');return;}
+  dialog('Vorlage auf einen Tag anwenden',function(bd){
+    bd.appendChild(el('label','feld','Vorlage'));
+    var sel=el('select'); sel.id='avVorlage';
+    mVorlagen().forEach(function(v){
+      var o=el('option',null,v.name+' · '+v.abfahrten.length+' Abfahrten'); o.value=v.id;
+      if(typeof vorId==='string'&&vorId===v.id)o.selected=true;
+      sel.appendChild(o);
+    });
+    bd.appendChild(sel);
+    bd.appendChild(el('label','feld','Datum'));
+    var d=el('input'); d.type='date'; d.id='avDatum'; d.value=plusTage(heuteISO(),1); bd.appendChild(d);
+    bd.appendChild(el('label','feld','Status der neuen Fahrten'));
+    var s2=el('select'); s2.id='avStatus';
+    [['offen','Sofort zur Buchung freigeben'],['entwurf','Erst als Entwurf anlegen']].forEach(function(p){
+      var o=el('option',null,p[1]); o.value=p[0]; s2.appendChild(o);
+    });
+    bd.appendChild(s2);
+  },[{text:'Abbrechen'},{text:'Tag anlegen',art:'pri',fn:function(bd){
+    var v=null, vid=bd.querySelector('#avVorlage').value;
+    S.tagesvorlagen.forEach(function(x){if(x.id===vid)v=x;});
+    if(!v)return false;
+    var dat=bd.querySelector('#avDatum').value||plusTage(heuteISO(),1);
+    var status=bd.querySelector('#avStatus').value;
+    v.abfahrten.forEach(function(a){
+      S.fahrten.push({id:uid('t'), tourId:tourId(), stadt:S.einst.stadt, datum:dat, zeit:a.zeit, richtung:a.richtung, von:a.von, nach:a.nach,
+        hinweis:a.hinweis||'', status:status,
+        shuttles:a.fahrzeugIds.map(function(fid){
+          return {id:uid('s'), fahrzeugId:fid, zeit:'', gesperrt:[], warteliste:[], plaetze:{}};
+        })});
+    });
+    protokoll('Vorlage '+v.name+' auf '+dat+' angewendet ('+v.abfahrten.length+' Fahrten)');
+    speichern(); ansicht.tab='fahrten'; zeichne();
+    toast(v.abfahrten.length+' Fahrten für '+datumKurz(dat)+' angelegt.');
+  }}]);
+}
+
+/* ==========================================================
+   6) Crew
+   ========================================================== */
+function zeichneCrew(m){
+  var kopf=el('div','sechead');
+  kopf.appendChild(el('h2',null,'Crew-Liste'));
+  kopf.appendChild(el('span',null,mCrew().length+' Personen'));
+  m.appendChild(kopf);
+
+  var s0=el('div','sec'), z=el('div','btnzeile');
+  var b1=el('button','btn pri','Person hinzufügen'); b1.onclick=function(){crewBearbeiten(null);};
+  var b2=el('button','btn','Liste einlesen (Namen einfügen)'); b2.onclick=crewImport;
+  z.appendChild(b1); z.appendChild(b2); s0.appendChild(z); m.appendChild(s0);
+
+  var sec=el('div','sec'), w=el('div','tabwrap'), t=el('table');
+  var tr=el('tr');
+  ['Name','Abteilung','Kürzel','Gebuchte Fahrten',''].forEach(function(h){tr.appendChild(el('th',null,h));});
+  t.appendChild(tr);
+  mCrew().slice().sort(function(a,b){return name(a)<name(b)?-1:1;}).forEach(function(c){
+    var r=el('tr');
+    r.appendChild(el('td',null,name(c)));
+    r.appendChild(el('td',null,gewerkVon(c)));
+    r.appendChild(el('td',null,c.kuerzel||''));
+    var n=0; mFahrten().forEach(function(f){if(meinPlatz(f,c.id))n++;});
+    r.appendChild(el('td',null,String(n)));
+    var td=el('td');
+    var b=el('button','btn klein','Ändern'); b.onclick=function(){crewBearbeiten(c);};
+    td.appendChild(b); r.appendChild(td);
+    t.appendChild(r);
+  });
+  w.appendChild(t); sec.appendChild(w); m.appendChild(sec);
+}
+
+function crewBearbeiten(c){
+  dialog(c?'Person ändern':'Person hinzufügen',function(bd){
+    function feld(id,lab,wert){
+      bd.appendChild(el('label','feld',lab));
+      var i=el('input'); i.id=id; i.value=wert||''; bd.appendChild(i);
+    }
+    feld('cVor','Vorname',c?c.vorname:'');
+    feld('cNach','Nachname',c?c.nachname:'');
+    feld('cAbt','Gewerk (Audio, Licht, LED, Backline \u2026)',c?gewerkVon(c):'');
+  },[{text:'Abbrechen'},
+     (c?{text:'Löschen',art:'warn',fn:function(){
+       S.crew=S.crew.filter(function(x){return x!==c;}); speichern(); zeichne();}}
+       :{text:' ',fn:function(){return true;}}),
+     {text:'Speichern',art:'pri',fn:function(bd){
+       var o=c||{id:uid('c'), tourId:tourId()};
+       o.vorname=bd.querySelector('#cVor').value.trim();
+       o.nachname=bd.querySelector('#cNach').value.trim();
+       o.gewerk=bd.querySelector('#cAbt').value.trim()||'ohne Gewerk';
+       o.kuerzel=((o.vorname[0]||'')+(o.nachname[0]||'')).toUpperCase();
+       if(!c)S.crew.push(o);
+       speichern(); zeichne();
+     }}]);
+}
+
+function crewImport(){
+  dialog('Crew-Liste einlesen',function(bd){
+    bd.appendChild(el('p',null,'Eine Person je Zeile. Erlaubt: „Nachname, Vorname, Abteilung" oder „Vorname Nachname".'));
+    var ta=el('textarea'); ta.id='ciText'; ta.style.minHeight='170px';
+    ta.placeholder='Ahrens, Marek, Produktion\nBeck, Jonas, Backline\nSilke Brand';
+    bd.appendChild(ta);
+  },[{text:'Abbrechen'},{text:'Einlesen',art:'pri',fn:function(bd){
+    var zeilen=bd.querySelector('#ciText').value.split('\n'), n=0;
+    zeilen.forEach(function(z){
+      z=z.trim(); if(!z)return;
+      var vor='',nach='',abt='';
+      if(z.indexOf(',')>=0){
+        var p=z.split(',').map(function(x){return x.trim();});
+        nach=p[0]||''; vor=p[1]||''; abt=p[2]||'';
+      } else {
+        var w=z.split(/\s+/); vor=w[0]||''; nach=w.slice(1).join(' ')||'';
+      }
+      if(!vor&&!nach)return;
+      S.crew.push({id:uid('c'), tourId:tourId(), vorname:vor, nachname:nach, gewerk:abt||'ohne Gewerk', info:'',
+        kuerzel:((vor[0]||'')+(nach[0]||'')).toUpperCase()});
+      n++;
+    });
+    protokoll(n+' Personen eingelesen');
+    speichern(); zeichne(); toast(n+' Personen eingelesen.');
+  }}]);
+}
+
+/* ==========================================================
+   7) Meine Plätze (Crew)
+   ========================================================== */
+function zeichneMeine(m){
+  var c=ich();
+  var kopf=el('div','sechead');
+  kopf.appendChild(el('h2',null,'Meine Plätze'));
+  kopf.appendChild(el('span',null,name(c)));
+  m.appendChild(kopf);
+  var sec=el('div','sec'), gefunden=0;
+  mFahrten().slice().sort(function(a,b){return (a.datum+a.zeit)<(b.datum+b.zeit)?-1:1;}).forEach(function(f){
+    var mp=meinPlatz(f,S.einst.ich);
+    if(!mp)return;
+    gefunden++;
+    var k=el('div','card hl');
+    var z=el('div','row');
+    var zeit=el('span',null,datumKurz(f.datum)+' · '+f.zeit+' Uhr');
+    zeit.style.fontFamily='var(--disp)'; zeit.style.fontWeight='700'; zeit.style.fontSize='17px';
+    z.appendChild(zeit);
+    z.appendChild(el('span','badge '+(mp.b.status==='bestaetigt'?'b-ok':'b-tape'),
+      mp.b.status==='bestaetigt'?'bestätigt':'wartet auf Freigabe'));
+    k.appendChild(z);
+    k.appendChild(el('div','meta',f.richtung+' · Treffpunkt '+f.von));
+    k.appendChild(el('div','meta',(fzById(mp.sh.fahrzeugId)||{}).name+' · '+
+      ((fzById(mp.sh.fahrzeugId)||{}).kennzeichen||'')));
+    k.appendChild(el('div','meta','Abfahrt '+restText(f)));
+    var bz=el('div','btnzeile'); bz.style.marginTop='9px';
+    var b1=el('button','btn klein','Sitzplan ansehen');
+    b1.onclick=function(){ansicht.fahrtId=f.id;zeichne();};
+    var b2=el('button','btn klein warn','Platz absagen');
+    b2.onclick=function(){frage('Platz absagen','Deinen Platz für '+datumKurz(f.datum)+' '+f.zeit+
+      ' Uhr wirklich freigeben?','Absagen',function(){platzFreigeben(f,mp.sh,mp.sitz);},'warn');};
+    bz.appendChild(b1); bz.appendChild(b2);
+    k.appendChild(bz);
+    sec.appendChild(k);
+  });
+  if(!gefunden) sec.appendChild((function(){var k=el('div','card');
+    k.appendChild(el('div','leer','Du hast noch keinen Platz gebucht. Gehe auf „Fahrten" und tippe auf einen freien Sitz.'));
+    return k;})());
+  m.appendChild(sec);
+}
+
+
+/* ==========================================================
+   Besetzung: links die Crew, rechts die Shuttle-Plaetze
+   ========================================================== */
+function aufDoppel(node, fn){
+  node.addEventListener('dblclick', function(e){ e.preventDefault(); fn(e); });
+  var letzte=0;
+  node.addEventListener('touchend', function(e){
+    var t=Date.now();
+    if(t-letzte<430){ e.preventDefault(); fn(e); letzte=0; } else letzte=t;
+  });
+}
+function aufKontext(node, fn){
+  node.addEventListener('contextmenu', function(e){ e.preventDefault(); fn(e); });
+  var timer=null;
+  node.addEventListener('touchstart', function(e){
+    timer=setTimeout(function(){ fn(e); }, 620);
+  }, {passive:true});
+  ['touchend','touchmove','touchcancel'].forEach(function(ev){
+    node.addEventListener(ev, function(){ clearTimeout(timer); }, {passive:true});
+  });
+}
+function kontextMenue(ev, titel, eintraege){
+  var alt=document.querySelector('.kmenu'); if(alt)alt.remove();
+  var box=el('div','kmenu');
+  if(titel) box.appendChild(el('div','kkopf',titel));
+  eintraege.forEach(function(e){
+    if(e==='-'){ box.appendChild(el('div','trenn')); return; }
+    var b=el('button',null,e.t);
+    b.onclick=function(){ box.remove(); e.fn(); };
+    box.appendChild(b);
+  });
+  document.body.appendChild(box);
+  var x=(ev.touches&&ev.touches[0]?ev.touches[0].clientX:ev.clientX)||40;
+  var y=(ev.touches&&ev.touches[0]?ev.touches[0].clientY:ev.clientY)||40;
+  var b=box.getBoundingClientRect();
+  box.style.left=Math.max(6,Math.min(x, window.innerWidth-b.width-8))+'px';
+  box.style.top=Math.max(6,Math.min(y, window.innerHeight-b.height-8))+'px';
+  setTimeout(function(){
+    document.addEventListener('click', function zu(){ box.remove(); document.removeEventListener('click',zu); });
+  },10);
+}
+
+/* Rueckgaengig fuer Zuweisungen */
+var rueck=[];
+function merkeStand(sh, was){
+  rueck.push({sh:sh, plaetze:JSON.parse(JSON.stringify(sh.plaetze)), was:was});
+  if(rueck.length>40)rueck.shift();
+}
+function rueckgaengig(){
+  var r=rueck.pop();
+  if(!r){toast('Nichts zum Rückgängigmachen.');return;}
+  r.sh.plaetze=r.plaetze; speichern(); zeichne();
+  toast('Rückgängig: '+r.was);
+}
+
+function tagePlan(){
+  var t={}; mFahrten().forEach(function(f){t[f.datum]=true;});
+  return Object.keys(t).sort();
+}
+function personAmTag(crewId, datum){
+  var treffer=[];
+  mFahrten().filter(function(f){return f.datum===datum;}).forEach(function(f){
+    f.shuttles.forEach(function(sh){
+      for(var k in sh.plaetze) if(sh.plaetze[k].crewId===crewId)
+        treffer.push({f:f, sh:sh, sitz:k, b:sh.plaetze[k]});
+    });
+  });
+  return treffer;
+}
+function zuweisen(f, sh, sitz, crewId){
+  if(!crewId){toast('Erst jemanden in der Crew-Liste antippen.');return;}
+  if(sh.plaetze[sitz]){toast('Der Platz ist schon belegt.');return;}
+  if((sh.gesperrt||[]).indexOf(sitz)>=0){toast('Der Platz ist für Gepäck gesperrt.');return;}
+  var vorher=meinPlatz(f, crewId);
+  merkeStand(sh, name(crewById(crewId))+' in '+(fzById(sh.fahrzeugId)||{}).name);
+  if(vorher && vorher.sh===sh) delete sh.plaetze[vorher.sitz];
+  else if(vorher){ merkeStand(vorher.sh, 'alter Platz'); delete vorher.sh.plaetze[vorher.sitz]; }
+  sh.plaetze[sitz]={crewId:crewId, status:'bestaetigt', ts:new Date().toISOString()};
+  protokoll(name(crewById(crewId))+' in '+(fzById(sh.fahrzeugId)||{}).name+' eingeteilt');
+  speichern(); zeichne();
+}
+function zuweisungLoesen(f, sh, sitz){
+  var b=sh.plaetze[sitz]; if(!b)return;
+  merkeStand(sh, 'Platz von '+name(crewById(b.crewId)));
+  delete sh.plaetze[sitz];
+  protokoll(name(crewById(b.crewId))+' aus '+(fzById(sh.fahrzeugId)||{}).name+' entfernt');
+  speichern(); zeichne();
+}
+
+function zeichneBesetzung(m){
+  var tage=tagePlan();
+  if(!tage.length){
+    m.appendChild(el('div','leer','Für diese Tour sind noch keine Fahrten angelegt.'));
+    return;
+  }
+  if(!ansicht.tag || tage.indexOf(ansicht.tag)<0) ansicht.tag = (tage.indexOf(heuteISO())>=0?heuteISO():tage[0]);
+
+  /* ---- Kopfzeile ---- */
+  var kopf=el('div','dashkopf');
+  var selTag=el('select');
+  tage.forEach(function(d){
+    var f0=mFahrten().filter(function(x){return x.datum===d;})[0]||{};
+    var o=el('option',null,datumLang(d)+(f0.stadt?' · '+f0.stadt:''));
+    o.value=d; if(d===ansicht.tag)o.selected=true; selTag.appendChild(o);
+  });
+  selTag.onchange=function(){ansicht.tag=selTag.value;ansicht.sitzWahl=null;zeichne();};
+  kopf.appendChild(selTag);
+
+  var suche=el('input'); suche.placeholder='Crew suchen …'; suche.value=ansicht.suche||'';
+  suche.oninput=function(){ansicht.suche=suche.value;zeichneCrewListe();};
+  suche.style.maxWidth='190px';
+  kopf.appendChild(suche);
+
+  var bGrp=el('button','btn klein'+(S.einst.gruppieren?' pri':''),'nach Gewerken');
+  bGrp.onclick=function(){S.einst.gruppieren=!S.einst.gruppieren;speichern();zeichne();};
+  kopf.appendChild(bGrp);
+
+  var bOhne=el('button','btn klein'+(ansicht.nurOhne?' pri':''),'nur ohne Platz');
+  bOhne.onclick=function(){ansicht.nurOhne=!ansicht.nurOhne;zeichne();};
+  kopf.appendChild(bOhne);
+
+  var bAuto=el('button','btn klein','Rest verteilen');
+  bAuto.onclick=function(){autoVerteilen();};
+  kopf.appendChild(bAuto);
+
+  var bZur=el('button','btn klein','Rückgängig');
+  bZur.onclick=rueckgaengig;
+  kopf.appendChild(bZur);
+  m.appendChild(kopf);
+
+  var hin=el('div','hint tape');
+  hin.textContent='Erst einen freien Platz antippen, dann in der Crew-Liste doppelt auf den Namen tippen — schon ist die Person eingeteilt. Doppeltippen auf einen belegten Platz nimmt sie wieder heraus. Welcher Platz im Van es genau ist, spielt keine Rolle — gezählt wird nur, wie viele mitfahren.';
+  m.appendChild(hin);
+
+  var dash=el('div','dash');
+  var links=el('div','dashlinks'); links.id='crewListe';
+  var rechts=el('div','dashrechts');
+  dash.appendChild(links); dash.appendChild(rechts);
+  m.appendChild(dash);
+
+  /* ---- rechte Seite: Abfahrten des Tages ---- */
+  var fahrten=mFahrten().filter(function(f){return f.datum===ansicht.tag;})
+    .sort(function(a,b){return a.zeit<b.zeit?-1:1;});
+  fahrten.forEach(function(f){
+    var c=el('div','card');
+    var z=el('div','row');
+    var zt=el('span',null,f.zeit+' Uhr');
+    zt.style.fontFamily='var(--disp)';zt.style.fontWeight='700';zt.style.fontSize='19px';
+    zt.style.color='var(--tape-sig)';
+    z.appendChild(zt);
+    z.appendChild(el('span',null,f.richtung));
+    z.appendChild(el('span','badge b-plan',(fahrtKap(f)-fahrtFrei(f))+'/'+fahrtKap(f)+' besetzt'));
+    var bw=el('button','btn klein','WhatsApp-Text');
+    bw.onclick=function(){whatsappDialog(f);};
+    z.appendChild(bw);
+    c.appendChild(z);
+    c.appendChild(el('div','meta','ab '+f.von+' → '+f.nach));
+
+    var grid=el('div','shuttlegrid'); grid.style.marginTop='8px';
+    f.shuttles.forEach(function(sh){
+      var fz=fzById(sh.fahrzeugId)||{name:'?',vorlage:'van7'};
+      var sc=el('div'); sc.style.flex='1 1 300px';
+      var k=el('div','row');
+      var t=el('span',null,fz.name); t.style.fontFamily='var(--disp)'; t.style.fontWeight='700';
+      k.appendChild(t);
+      k.appendChild(el('span','kfz',fz.kennzeichen||'—'));
+      k.appendChild(el('span','meta',freiCount(sh)+' frei'));
+      sc.appendChild(k);
+      var vw=el('div','vanwrap');
+      var svg=VANS.zeichneVan(fz.vorlage,{
+        zustand:function(sid,def){
+          var zu=sitzZustand(sh,sid,def,false);
+          if(ansicht.sitzWahl && ansicht.sitzWahl.shuttleId===sh.id && ansicht.sitzWahl.sitz===sid)
+            zu.klasse=(zu.klasse||'')+' wahl';
+          zu.klickbar=(def.typ!=='fahrer');
+          return zu;
+        },
+        klick:function(sid,def){
+          if(def.typ==='fahrer')return;
+          if((sh.gesperrt||[]).indexOf(sid)>=0){toast('Platz ist für Gepäck gesperrt.');return;}
+          if(sh.plaetze[sid]){
+            ansicht.sitzWahl={fahrtId:f.id, shuttleId:sh.id, sitz:sid};
+            ansicht.crewWahl=sh.plaetze[sid].crewId; zeichne(); return;
+          }
+          if(ansicht.crewWahl){ zuweisen(f,sh,sid,ansicht.crewWahl); ansicht.crewWahl=null; return; }
+          ansicht.sitzWahl={fahrtId:f.id, shuttleId:sh.id, sitz:sid};
+          zeichne();
+        }
+      });
+      /* Doppeltippen und Menue je Platz */
+      Array.prototype.forEach.call(svg.querySelectorAll('.seat'), function(g){
+        var sid=g.getAttribute('data-sitz');
+        aufDoppel(g, function(){
+          if(sh.plaetze[sid]) zuweisungLoesen(f,sh,sid);
+          else if(ansicht.crewWahl){ zuweisen(f,sh,sid,ansicht.crewWahl); ansicht.crewWahl=null; }
+        });
+        aufKontext(g, function(ev){
+          var b=sh.plaetze[sid];
+          var eintraege=[];
+          if(b){
+            eintraege.push({t:'Person herausnehmen', fn:function(){zuweisungLoesen(f,sh,sid);}});
+            if(b.status==='angefragt')
+              eintraege.push({t:'Platz bestätigen', fn:function(){b.status='bestaetigt';speichern();zeichne();}});
+          } else {
+            if(ansicht.crewWahl)
+              eintraege.push({t:'Gewählte Person hier einsetzen', fn:function(){zuweisen(f,sh,sid,ansicht.crewWahl);ansicht.crewWahl=null;}});
+            eintraege.push({t:'Platz für Gepäck sperren', fn:function(){
+              sh.gesperrt=(sh.gesperrt||[]).concat([sid]);speichern();zeichne();}});
+          }
+          if((sh.gesperrt||[]).indexOf(sid)>=0)
+            eintraege.push({t:'Sperre aufheben', fn:function(){
+              sh.gesperrt=sh.gesperrt.filter(function(x){return x!==sid;});speichern();zeichne();}});
+          kontextMenue(ev, 'Platz in '+fz.name, eintraege);
+        });
+      });
+      vw.appendChild(svg); sc.appendChild(vw);
+      grid.appendChild(sc);
+    });
+    c.appendChild(grid);
+    rechts.appendChild(c);
+  });
+
+  /* ---- linke Seite: Crew ---- */
+  function zeichneCrewListe(){
+    var box=leeren($('crewListe'));
+    var kopfz=el('div','row'); kopfz.style.marginBottom='6px';
+    var h=el('span',null,'Crew · '+mCrew().length);
+    h.style.fontFamily='var(--disp)'; h.style.fontWeight='700';
+    kopfz.appendChild(h);
+    var bn=el('button','btn klein','+ Person');
+    bn.onclick=function(){crewBearbeiten(null);};
+    kopfz.appendChild(bn);
+    box.appendChild(kopfz);
+
+    var such=(ansicht.suche||'').toLowerCase();
+    var liste=mCrew().filter(function(c){
+      if(such && (name(c)+' '+gewerkVon(c)).toLowerCase().indexOf(such)<0)return false;
+      if(ansicht.nurOhne && personAmTag(c.id, ansicht.tag).length)return false;
+      return true;
+    }).sort(function(a,b){return name(a)<name(b)?-1:1;});
+
+    if(!liste.length) box.appendChild(el('div','leer','Niemand gefunden.'));
+
+    function zeile(c){
+      var eintraege=personAmTag(c.id, ansicht.tag);
+      var r=el('div','crewrow'+(eintraege.length?' verplant':'')+
+        (c.faehrtSelbst?' selbst':'')+(ansicht.crewWahl===c.id?' gewaehlt':''));
+      var chip=el('span','kchip',c.kuerzel||'??');
+      r.appendChild(chip);
+      var nm=el('div','cname'); nm.appendChild(document.createTextNode(name(c)));
+      var unten=gewerkVon(c)+(c.info?' · '+c.info:'')+(c.faehrtSelbst?' · fährt selbst':'');
+      nm.appendChild(el('small',null,unten));
+      r.appendChild(nm);
+      eintraege.forEach(function(e){
+        var ch=el('span','sitzchip'+(e.b.status==='angefragt'?' offen':''),
+          e.f.zeit+' · '+kurzFz(fzById(e.sh.fahrzeugId)));
+        ch.title=(fzById(e.sh.fahrzeugId)||{}).name+' · '+e.f.richtung;
+        r.appendChild(ch);
+      });
+      r.onclick=function(){
+        ansicht.crewWahl=(ansicht.crewWahl===c.id?null:c.id);
+        if(ansicht.crewWahl && ansicht.sitzWahl){
+          var f=fahrtById(ansicht.sitzWahl.fahrtId);
+          var sh=null;
+          if(f)f.shuttles.forEach(function(x){if(x.id===ansicht.sitzWahl.shuttleId)sh=x;});
+          if(f&&sh&&!sh.plaetze[ansicht.sitzWahl.sitz]){
+            zuweisen(f,sh,ansicht.sitzWahl.sitz,c.id);
+            ansicht.crewWahl=null; ansicht.sitzWahl=null; return;
+          }
+        }
+        zeichne();
+      };
+      aufDoppel(r, function(){
+        if(!ansicht.sitzWahl){ toast('Erst rechts einen freien Platz antippen.'); return; }
+        var f=fahrtById(ansicht.sitzWahl.fahrtId), sh=null;
+        if(f)f.shuttles.forEach(function(x){if(x.id===ansicht.sitzWahl.shuttleId)sh=x;});
+        if(!f||!sh)return;
+        zuweisen(f,sh,ansicht.sitzWahl.sitz,c.id);
+        ansicht.sitzWahl=null; ansicht.crewWahl=null;
+      });
+      aufKontext(r, function(ev){
+        var eint=[
+          {t:'Info hinzufügen oder ändern', fn:function(){infoDialog(c);}},
+          {t:(c.faehrtSelbst?'„fährt selbst" aufheben':'Als „fährt selbst" merken'), fn:function(){
+            c.faehrtSelbst=!c.faehrtSelbst;
+            protokoll(name(c)+(c.faehrtSelbst?' fährt selbst':' fährt wieder mit'));
+            speichern();zeichne();}},
+          {t:'Gewerk ändern', fn:function(){gewerkDialog(c);}},
+          '-'
+        ];
+        if(eintraege.length){
+          eint.push({t:'Aus dieser Fahrt entfernen', fn:function(){
+            zuweisungLoesen(eintraege[0].f, eintraege[0].sh, eintraege[0].sitz);}});
+          eint.push({t:'Aus allen Fahrten des Tages entfernen', fn:function(){
+            eintraege.forEach(function(e){ merkeStand(e.sh,'Tagesplan '+name(c)); delete e.sh.plaetze[e.sitz]; });
+            protokoll(name(c)+' aus allen Fahrten am '+datumKurz(ansicht.tag)+' entfernt');
+            speichern();zeichne();}});
+          eint.push('-');
+        }
+        eint.push({t:'Person bearbeiten', fn:function(){crewBearbeiten(c);}});
+        eint.push({t:'Person aus der Crew löschen', fn:function(){
+          frage('Person löschen',name(c)+' wirklich aus der Crew-Liste löschen?','Löschen',function(){
+            S.crew=S.crew.filter(function(x){return x!==c;});
+            protokoll(name(c)+' aus der Crew gelöscht'); speichern(); zeichne();
+          },'warn');}});
+        kontextMenue(ev, name(c), eint);
+      });
+      return r;
+    }
+
+    if(S.einst.gruppieren){
+      var gruppen={};
+      liste.forEach(function(c){ (gruppen[gewerkVon(c)]=gruppen[gewerkVon(c)]||[]).push(c); });
+      var namen=Object.keys(gruppen).sort(function(a,b){
+        var ia=GEWERKE.indexOf(a), ib=GEWERKE.indexOf(b);
+        if(ia<0)ia=99; if(ib<0)ib=99;
+        return ia===ib ? (a<b?-1:1) : ia-ib;
+      });
+      namen.forEach(function(g){
+        var frei=gruppen[g].filter(function(c){return !personAmTag(c.id,ansicht.tag).length;}).length;
+        box.appendChild(el('div','gwkopf',g+' · '+gruppen[g].length+(frei?' ('+frei+' offen)':'')));
+        gruppen[g].forEach(function(c){ box.appendChild(zeile(c)); });
+      });
+    } else {
+      liste.forEach(function(c){ box.appendChild(zeile(c)); });
+    }
+  }
+  zeichneCrewListe();
+}
+
+function infoDialog(c){
+  dialog('Info zu '+name(c),function(bd){
+    bd.appendChild(el('p',null,'Kurzer Vermerk, der in der Crew-Liste mitläuft.'));
+    var i=el('input'); i.id='infoFeld'; i.value=c.info||'';
+    i.placeholder='z. B. fährt selbst, kommt später, Nightliner, nur Hinfahrt';
+    bd.appendChild(i);
+    var z=el('div','btnzeile'); z.style.marginTop='10px';
+    ['fährt selbst','kommt später','fährt im Nightliner','nur Hinfahrt','nur Rückfahrt','krank']
+      .forEach(function(t){
+        var b=el('button','btn klein',t);
+        b.onclick=function(){bd.querySelector('#infoFeld').value=t;};
+        z.appendChild(b);
+      });
+    bd.appendChild(z);
+  },[{text:'Abbrechen'},{text:'Info löschen',fn:function(){c.info='';speichern();zeichne();}},
+     {text:'Speichern',art:'pri',fn:function(bd){
+       c.info=bd.querySelector('#infoFeld').value.trim();
+       if(c.info==='fährt selbst')c.faehrtSelbst=true;
+       protokoll('Info zu '+name(c)+': '+(c.info||'gelöscht'));
+       speichern();zeichne();}}]);
+}
+function gewerkDialog(c){
+  dialog('Gewerk von '+name(c),function(bd){
+    bd.appendChild(el('label','feld','Gewerk'));
+    var sel=el('select'); sel.id='gwSel';
+    var liste=GEWERKE.slice();
+    if(liste.indexOf(gewerkVon(c))<0)liste.push(gewerkVon(c));
+    liste.forEach(function(g){
+      var o=el('option',null,g); o.value=g; if(g===gewerkVon(c))o.selected=true; sel.appendChild(o);
+    });
+    bd.appendChild(sel);
+    bd.appendChild(el('label','feld','oder eigenes Gewerk'));
+    var i=el('input'); i.id='gwFrei'; bd.appendChild(i);
+  },[{text:'Abbrechen'},{text:'Übernehmen',art:'pri',fn:function(bd){
+    var frei=bd.querySelector('#gwFrei').value.trim();
+    c.gewerk=frei||bd.querySelector('#gwSel').value;
+    speichern();zeichne();}}]);
+}
+
+function autoVerteilen(){
+  var f=mFahrten().filter(function(x){return x.datum===ansicht.tag;})
+    .sort(function(a,b){return a.zeit<b.zeit?-1:1;});
+  if(!f.length){toast('Für den Tag gibt es keine Fahrt.');return;}
+  dialog('Rest automatisch verteilen',function(bd){
+    bd.appendChild(el('label','feld','Auf welche Abfahrt?'));
+    var sel=el('select'); sel.id='avF';
+    f.forEach(function(x){
+      var o=el('option',null,x.zeit+' Uhr · '+x.richtung+' · '+fahrtFrei(x)+' frei');
+      o.value=x.id; sel.appendChild(o);
+    });
+    bd.appendChild(sel);
+    bd.appendChild(el('p',null,'Alle noch nicht eingeteilten Personen werden der Reihe nach auf freie Plätze gesetzt. „Fährt selbst" wird übersprungen.'));
+  },[{text:'Abbrechen'},{text:'Verteilen',art:'pri',fn:function(bd){
+    var f2=fahrtById(bd.querySelector('#avF').value); if(!f2)return;
+    var offen=mCrew().filter(function(c){
+      return !c.faehrtSelbst && !meinPlatz(f2,c.id);
+    });
+    var n=0;
+    f2.shuttles.forEach(function(sh){
+      merkeStand(sh,'automatische Verteilung');
+      VANS.buchbar(vorlageVon(sh)).forEach(function(sitz){
+        if(!offen.length)return;
+        if(sh.plaetze[sitz.id])return;
+        if((sh.gesperrt||[]).indexOf(sitz.id)>=0)return;
+        var c=offen.shift();
+        sh.plaetze[sitz.id]={crewId:c.id,status:'bestaetigt',ts:new Date().toISOString()};
+        n++;
+      });
+    });
+    protokoll(n+' Personen automatisch auf die Fahrt '+f2.zeit+' verteilt');
+    speichern(); zeichne();
+    toast(n+' Personen eingeteilt'+(offen.length?', '+offen.length+' ohne Platz.':'.'));
+  }}]);
+}
+
+/* ==========================================================
+   8) WhatsApp
+   ========================================================== */
+function fahrtLink(f){
+  var b=S.einst.basisLink||'';
+  return b+(b.indexOf('?')>=0?'&':'?')+'f='+f.id;
+}
+
+/* ---------- Bausteine für den Text ---------- */
+function shuttleBlock(f){
+  var t='';
+  f.shuttles.forEach(function(sh){
+    var fz=fzById(sh.fahrzeugId)||{}, vl=VANS.VORLAGEN[fz.vorlage]||{};
+    t+='🕒 '+(sh.zeit||f.zeit)+' Uhr · '+fz.name+'\n';
+    t+='   '+(vl.kurz||'')+' · '+(fz.kennzeichen||'')+' · Fahrer '+fahrerName(fz)+'\n';
+    t+='   '+freiCount(sh)+' von '+kapazitaet(sh)+' Plätzen frei\n';
+  });
+  return t;
+}
+function besetzungBlock(f){
+  var zeilen=[];
+  f.shuttles.forEach(function(sh){
+    var fz=fzById(sh.fahrzeugId)||{}, liste=[];
+    VANS.buchbar(vorlageVon(sh)).forEach(function(sz){
+      var b=sh.plaetze[sz.id];
+      if(b) liste.push(nameKurz(crewById(b.crewId))+(b.status==='angefragt'?' (offen)':''));
+    });
+    if(liste.length) zeilen.push('🚐 '+fz.name+' ('+(fz.kennzeichen||'')+'): '+liste.join(', '));
+  });
+  return zeilen.join('\n');
+}
+function tagWort(f){
+  if(f.datum===heuteISO())return 'heute';
+  if(f.datum===plusTage(heuteISO(),1))return 'morgen';
+  return datumLang(f.datum);
+}
+var PLATZHALTER=[
+  ['{kuenstler}','Künstler'],['{tour}','Tour'],['{stadt}','Stadt'],
+  ['{datum}','Datum kurz'],['{datum_lang}','Datum lang'],['{tag_wort}','heute/morgen'],
+  ['{zeit}','Abfahrtszeit'],['{richtung}','Richtung'],['{treffpunkt}','Treffpunkt'],
+  ['{ziel}','Ziel'],['{hinweis}','Hinweis'],['{shuttles}','Liste der Shuttles'],
+  ['{besetzung}','Wer sitzt wo'],['{freie_plaetze}','freie Plätze'],['{link}','Link zum Buchen'],
+  ['{gruss}','Anrede'],['{signatur}','Unterschrift'],
+  ['{fahrer_liste}','Fahrer mit Zeiten'],['{anzahl}','Personen gesamt'],
+  ['{tm_kontakt}','Kontakt Tourmanagement'],['{gruppe}','Name der Fahrer-Gruppe']
+];
+function werte(f){
+  var t=tour();
+  return {
+    '{kuenstler}': t?t.kuenstler:'', '{tour}': t?t.tour+' '+t.jahr:'',
+    '{stadt}': f.stadt||S.einst.stadt||'',
+    '{datum}': datumKurz(f.datum), '{datum_lang}': datumLang(f.datum), '{tag_wort}': tagWort(f),
+    '{zeit}': f.zeit, '{richtung}': f.richtung, '{treffpunkt}': f.von, '{ziel}': f.nach,
+    '{hinweis}': f.hinweis?('ℹ️ '+f.hinweis+'\n'):'',
+    '{shuttles}': shuttleBlock(f), '{besetzung}': besetzungBlock(f),
+    '{freie_plaetze}': String(fahrtFrei(f)), '{link}': fahrtLink(f),
+    '{gruss}': S.einst.gruss||'', '{signatur}': S.einst.signatur||'',
+    '{fahrer_liste}': fahrerListe(f), '{anzahl}': String(anzahlGaeste(f)),
+    '{tm_kontakt}': S.einst.tmKontakt||'', '{gruppe}': stadtInfo(f.stadt||S.einst.stadt).fahrerGruppe||''
+  };
+}
+function fuelleText(text, f){
+  var w=werte(f), t=String(text||'');
+  for(var k in w) t=t.split(k).join(w[k]);
+  return t;
+}
+/* Werte zurück in Platzhalter verwandeln, damit aus einem Text eine Vorlage wird */
+function zuVorlage(text, f){
+  var w=werte(f), t=String(text||'');
+  ['{link}','{besetzung}','{shuttles}','{datum_lang}','{datum}','{treffpunkt}','{ziel}',
+   '{zeit}','{richtung}','{stadt}','{kuenstler}','{signatur}','{gruss}','{hinweis}'].forEach(function(k){
+    var v=w[k];
+    if(v && String(v).length>2) t=t.split(v).join(k);
+  });
+  return t;
+}
+
+function fahrerListe(f){
+  var t='';
+  f.shuttles.forEach(function(sh){
+    var fz=fzById(sh.fahrzeugId)||{}, n=belegtCount(sh);
+    t+='🚐 '+fz.name+' · '+(fz.kennzeichen||'ohne Kennzeichen')+'\n';
+    t+='   Fahrer: '+fahrerName(fz);
+    var fa=fz.fahrerId?fahrerById(fz.fahrerId):null;
+    if(fa&&fa.telefon)t+=' ('+fa.telefon+')';
+    t+='\n';
+    t+='   Abfahrt '+(sh.zeit||f.zeit)+' Uhr · '+f.von+' → '+f.nach+'\n';
+    t+='   '+n+' '+(n===1?'Person':'Personen')+' an Bord\n';
+  });
+  return t;
+}
+function anzahlGaeste(f){var n=0;f.shuttles.forEach(function(sh){n+=belegtCount(sh);});return n;}
+
+function standardText(f, art, empf){
+  empf=empf||'crew';
+  var v=null;
+  mTexte(f.stadt).forEach(function(x){
+    if(x.art!==art)return;
+    if((x.empfaenger||'crew')!==empf)return;
+    if(!v) v=x;
+    else if(x.stadt && !v.stadt) v=x;   /* Stadt-Vorlage schlägt die allgemeine */
+  });
+  if(v) return fuelleText(v.text, f);
+  if(empf==='fahrer')
+    return fuelleText('Hallo zusammen,\nhier die Fahrten für {tag_wort} in {stadt}:\n\n{fahrer_liste}\nInsgesamt {anzahl} Personen.\n\n{signatur}\n{tm_kontakt}', f);
+  return fuelleText('🚐 {datum} · {zeit} Uhr · {richtung}\n\n{gruss}\n\n{shuttles}\n📍 {treffpunkt} → {ziel}\n{hinweis}\n👉 {link}\n\n{signatur}', f);
+}
+function waText(f,empf){ return standardText(f,'ansage',empf); }
+function waErinnerung(f,empf){ return standardText(f,'erinnerung',empf); }
+
+function waTagesText(datum){
+  var f=mFahrten().filter(function(x){return x.datum===datum;})
+    .sort(function(a,b){return a.zeit<b.zeit?-1:1;});
+  if(!f.length)return '';
+  var stadt=f[0].stadt||S.einst.stadt||'';
+  var t='🚐 SHUTTLE-PLAN · '+datumLang(datum).toUpperCase()+(stadt?' · '+stadt.toUpperCase():'')+'\n\n';
+  t+=(S.einst.gruss||'Hallo liebe Crew,')+'\n';
+  t+='hier der Shuttle-Plan für den Tag. Bitte tragt euch selbst ein.\n\n';
+  f.forEach(function(x){
+    t+='▪️ '+x.zeit+' Uhr · '+x.richtung+'\n';
+    t+='   ab '+x.von+'\n';
+    x.shuttles.forEach(function(sh){
+      var fz=fzById(sh.fahrzeugId)||{};
+      t+='   • '+fz.name+' ('+(fz.kennzeichen||'')+') · '+freiCount(sh)+'/'+kapazitaet(sh)+' frei\n';
+    });
+    if(x.hinweis)t+='   ℹ️ '+x.hinweis+'\n';
+    t+='   👉 '+fahrtLink(x)+'\n\n';
+  });
+  t+=(S.einst.signatur||'Euer Tourmanagement');
+  return t;
+}
+
+/* ---------- Der Textkasten: frei bearbeitbar ---------- */
+function textWerkstatt(box, f, starttext, stadt, empf){
+  empf=empf||'crew';
+  leeren(box);
+  var ta=el('textarea'); ta.value=starttext; ta.style.minHeight='230px';
+  ta.style.fontFamily='var(--body)'; ta.style.fontSize='14.5px';
+
+  /* Vorlagen-Auswahl */
+  var zeile1=el('div','row'); zeile1.style.marginBottom='8px';
+  var sel=el('select'); sel.style.maxWidth='260px';
+  sel.appendChild(el('option',null,'— Vorlage wählen —'));
+  mTexte().filter(function(v){return (v.empfaenger||'crew')===empf;}).forEach(function(v){
+    var o=el('option',null,v.name+(v.stadt?' · nur '+v.stadt:'')); o.value=v.id; sel.appendChild(o);
+  });
+  sel.onchange=function(){
+    if(!sel.value)return;
+    var v=null; S.textvorlagen.forEach(function(x){if(x.id===sel.value)v=x;});
+    if(v) ta.value = f?fuelleText(v.text,f):v.text;
+  };
+  zeile1.appendChild(sel);
+  var bVer=el('button','btn klein','Vorlagen verwalten');
+  bVer.onclick=function(){vorlagenVerwalten();};
+  zeile1.appendChild(bVer);
+  box.appendChild(zeile1);
+  box.appendChild(ta);
+
+  /* Platzhalter zum Einsetzen */
+  var ph=el('div','row'); ph.style.margin='8px 0 4px'; ph.style.gap='5px';
+  ph.appendChild(el('span','meta','Platzhalter:'));
+  PLATZHALTER.forEach(function(p){
+    var b=el('button','btn klein',p[0]);
+    b.title=p[1]; b.style.fontSize='11.5px'; b.style.padding='3px 6px';
+    b.onclick=function(){
+      var st=ta.selectionStart||0, en=ta.selectionEnd||0;
+      ta.value=ta.value.slice(0,st)+p[0]+ta.value.slice(en);
+      ta.focus(); ta.selectionStart=ta.selectionEnd=st+p[0].length;
+    };
+    ph.appendChild(b);
+  });
+  box.appendChild(ph);
+
+  /* Vorschau */
+  var vorTitel=el('div','meta','So kommt die Nachricht in der Gruppe an:');
+  vorTitel.style.margin='10px 0 5px';
+  box.appendChild(vorTitel);
+  var wa=el('div','wa'); var bub=el('div','wabubble'); wa.appendChild(bub);
+  box.appendChild(wa);
+  function vorschau(){
+    leeren(bub);
+    var t=f?fuelleText(ta.value,f):ta.value;
+    t.split(/(https?:\/\/\S+)/).forEach(function(teil,i){
+      if(i%2===1)bub.appendChild(el('span','link',teil));
+      else bub.appendChild(document.createTextNode(teil));
+    });
+    bub.appendChild(el('span','wazeit',pad(new Date().getHours())+':'+pad(new Date().getMinutes())+' ✓✓'));
+  }
+  ta.oninput=vorschau; vorschau();
+
+  /* Knöpfe */
+  var bz=el('div','btnzeile'); bz.style.marginTop='12px';
+  function fertig(){ return f?fuelleText(ta.value,f):ta.value; }
+  var b1=el('button','btn pri','Text kopieren');
+  b1.onclick=function(){kopieren(fertig(),'Text kopiert — jetzt in die Gruppe einfügen.');};
+  var b2=el('button','btn','In WhatsApp öffnen');
+  b2.onclick=function(){window.open('https://wa.me/?text='+encodeURIComponent(fertig()),'_blank');};
+  var b3=el('button','btn','Als Vorlage speichern');
+  b3.onclick=function(){vorlageSpeichern(ta.value, f, stadt, empf);};
+  bz.appendChild(b1); bz.appendChild(b2); bz.appendChild(b3);
+  if(f){
+    var b4=el('button','btn','Link als QR');
+    b4.onclick=function(){qrDialog(fahrtLink(f));};
+    bz.appendChild(b4);
+  }
+  box.appendChild(bz);
+  return ta;
+}
+
+function vorlageSpeichern(text, f, stadt, empf){
+  empf=empf||'crew';
+  dialog('Als Vorlage speichern',function(bd){
+    bd.appendChild(el('label','feld','Name der Vorlage'));
+    var i=el('input'); i.id='vsName'; i.value='Neue Vorlage'; bd.appendChild(i);
+    bd.appendChild(el('label','feld','Gilt für'));
+    var sel=el('select'); sel.id='vsStadt';
+    var o0=el('option',null,'alle Städte dieser Tour'); o0.value=''; sel.appendChild(o0);
+    var st=tour().staedte||[];
+    if(stadt && st.indexOf(stadt)<0) st=st.concat([stadt]);
+    st.forEach(function(x){
+      var o=el('option',null,'nur '+x); o.value=x; if(x===stadt)o.selected=true; sel.appendChild(o);
+    });
+    bd.appendChild(sel);
+    bd.appendChild(el('label','feld','Art'));
+    var sa=el('select'); sa.id='vsArt';
+    [['ansage','Ansage mit Buchungs-Link'],['erinnerung','Erinnerung vor der Abfahrt'],
+     ['frei','Freier Text']].forEach(function(p){
+      var o=el('option',null,p[1]); o.value=p[0]; sa.appendChild(o);
+    });
+    bd.appendChild(sa);
+    bd.appendChild(el('label','feld','Empfänger'));
+    var se=el('select'); se.id='vsEmpf';
+    [['crew','Crew-Gruppe'],['fahrer','Fahrer-Gruppe']].forEach(function(p2){
+      var o=el('option',null,p2[1]); o.value=p2[0]; if(p2[0]===empf)o.selected=true; se.appendChild(o);
+    });
+    bd.appendChild(se);
+    var lab=el('label'); lab.style.display='block'; lab.style.marginTop='12px'; lab.style.fontSize='14px';
+    var cb=el('input'); cb.type='checkbox'; cb.id='vsPh'; cb.checked=true;
+    cb.style.width='auto'; cb.style.marginRight='8px';
+    lab.appendChild(cb);
+    lab.appendChild(document.createTextNode('Datum, Uhrzeit, Orte und Link durch Platzhalter ersetzen (empfohlen)'));
+    bd.appendChild(lab);
+  },[{text:'Abbrechen'},{text:'Speichern',art:'pri',fn:function(bd){
+    var t=text;
+    if(bd.querySelector('#vsPh').checked && f) t=zuVorlage(t,f);
+    S.textvorlagen.push({id:uid('tv'), tourId:tourId(), stadt:bd.querySelector('#vsStadt').value,
+      empfaenger:bd.querySelector('#vsEmpf').value,
+      name:bd.querySelector('#vsName').value||'Vorlage', art:bd.querySelector('#vsArt').value, text:t});
+    protokoll('Textvorlage gespeichert');
+    speichern(); zeichne(); toast('Vorlage gespeichert.');
+  }}]);
+}
+
+function vorlagenVerwalten(){
+  dialog('Textvorlagen',function(bd){
+    var liste=el('div'); bd.appendChild(liste);
+    function neu(){
+      leeren(liste);
+      var vs=mTexte();
+      if(!vs.length) liste.appendChild(el('div','leer','Noch keine Vorlage gespeichert.'));
+      vs.forEach(function(v){
+        var c=el('div','card');
+        var r=el('div','row');
+        var t=el('div','grow stack');
+        var h=el('div',null,v.name); h.style.fontFamily='var(--disp)'; h.style.fontWeight='700';
+        t.appendChild(h);
+        t.appendChild(el('div','meta',((v.empfaenger||'crew')==='fahrer'?'Fahrer-Gruppe':'Crew-Gruppe')+
+          ' · '+(v.stadt?'nur '+v.stadt:'alle Städte')+' · '+
+          (v.art==='ansage'?'Ansage':(v.art==='erinnerung'?'Erinnerung':'freier Text'))));
+        r.appendChild(t);
+        var bz=el('div','btnzeile');
+        var b1=el('button','btn klein','Bearbeiten');
+        b1.onclick=function(){vorlageBearbeitenText(v, neu);};
+        var b2=el('button','btn klein','Kopie');
+        b2.onclick=function(){
+          S.textvorlagen.push({id:uid('tv'), tourId:v.tourId, stadt:v.stadt, name:v.name+' (Kopie)',
+            art:v.art, text:v.text});
+          speichern(); neu();};
+        var b3=el('button','btn klein warn','Löschen');
+        b3.onclick=function(){
+          S.textvorlagen=S.textvorlagen.filter(function(x){return x!==v;});
+          speichern(); neu();};
+        bz.appendChild(b1); bz.appendChild(b2); bz.appendChild(b3);
+        r.appendChild(bz); c.appendChild(r);
+        var vor=el('div','pre',v.text.length>190?v.text.slice(0,190)+' …':v.text);
+        vor.style.marginTop='8px'; vor.style.fontSize='13px';
+        c.appendChild(vor);
+        liste.appendChild(c);
+      });
+      var bn=el('button','btn pri','Neue leere Vorlage');
+      bn.onclick=function(){
+        var v={id:uid('tv'), tourId:tourId(), stadt:'', name:'Neue Vorlage', art:'ansage',
+          text:'{gruss}\n\n🚐 {datum} · {zeit} Uhr · {richtung}\n\n{shuttles}\n📍 {treffpunkt}\n👉 {link}\n\n{signatur}'};
+        S.textvorlagen.push(v); speichern(); vorlageBearbeitenText(v, neu);
+      };
+      liste.appendChild(bn);
+    }
+    neu();
+  },[{text:'Schließen',fn:function(){zeichne();}}]);
+}
+
+function vorlageBearbeitenText(v, danach){
+  dialog('Vorlage bearbeiten',function(bd){
+    bd.appendChild(el('label','feld','Name'));
+    var i=el('input'); i.id='vbName'; i.value=v.name; bd.appendChild(i);
+    bd.appendChild(el('label','feld','Gilt für'));
+    var sel=el('select'); sel.id='vbStadt';
+    var o0=el('option',null,'alle Städte dieser Tour'); o0.value=''; if(!v.stadt)o0.selected=true;
+    sel.appendChild(o0);
+    (tour().staedte||[]).forEach(function(x){
+      var o=el('option',null,'nur '+x); o.value=x; if(x===v.stadt)o.selected=true; sel.appendChild(o);
+    });
+    bd.appendChild(sel);
+    bd.appendChild(el('label','feld','Art'));
+    var sa=el('select'); sa.id='vbArt';
+    [['ansage','Ansage mit Buchungs-Link'],['erinnerung','Erinnerung vor der Abfahrt'],
+     ['frei','Freier Text']].forEach(function(p){
+      var o=el('option',null,p[1]); o.value=p[0]; if(p[0]===v.art)o.selected=true; sa.appendChild(o);
+    });
+    bd.appendChild(sa);
+    bd.appendChild(el('label','feld','Empfänger'));
+    var se=el('select'); se.id='vbEmpf';
+    [['crew','Crew-Gruppe'],['fahrer','Fahrer-Gruppe']].forEach(function(p2){
+      var o=el('option',null,p2[1]); o.value=p2[0];
+      if(p2[0]===(v.empfaenger||'crew'))o.selected=true; se.appendChild(o);
+    });
+    bd.appendChild(se);
+    bd.appendChild(el('label','feld','Text'));
+    var ta=el('textarea'); ta.id='vbText'; ta.value=v.text; ta.style.minHeight='220px';
+    bd.appendChild(ta);
+    var ph=el('div','row'); ph.style.marginTop='8px'; ph.style.gap='5px';
+    PLATZHALTER.forEach(function(p){
+      var b=el('button','btn klein',p[0]); b.title=p[1];
+      b.style.fontSize='11.5px'; b.style.padding='3px 6px';
+      b.onclick=function(){
+        var st=ta.selectionStart||0, en=ta.selectionEnd||0;
+        ta.value=ta.value.slice(0,st)+p[0]+ta.value.slice(en);
+        ta.focus(); ta.selectionStart=ta.selectionEnd=st+p[0].length;
+      };
+      ph.appendChild(b);
+    });
+    bd.appendChild(ph);
+  },[{text:'Abbrechen',fn:function(){if(danach)danach();}},
+     {text:'Speichern',art:'pri',fn:function(bd){
+       v.name=bd.querySelector('#vbName').value||'Vorlage';
+       v.stadt=bd.querySelector('#vbStadt').value;
+       v.art=bd.querySelector('#vbArt').value;
+       v.empfaenger=bd.querySelector('#vbEmpf').value;
+       v.text=bd.querySelector('#vbText').value;
+       speichern(); if(danach)danach(); toast('Vorlage gespeichert.');
+     }}]);
+}
+
+function whatsappDialog(f){
+  var art='ansage', empf='crew';
+  dialog('Nachricht schreiben',function(bd){
+    bd.appendChild(el('label','feld','An welche Gruppe?'));
+    var se=el('select');
+    [['crew','Crew-Gruppe'],['fahrer','Fahrer-Gruppe der Stadt']].forEach(function(p2){
+      var o=el('option',null,p2[1]); o.value=p2[0]; se.appendChild(o);
+    });
+    bd.appendChild(se);
+    bd.appendChild(el('label','feld','Art der Nachricht'));
+    var sel=el('select');
+    [['ansage','Ansage mit Buchungs-Link'],['erinnerung','Erinnerung kurz vor Abfahrt'],
+     ['tag','Ganzer Tag auf einmal']].forEach(function(p){
+      var o=el('option',null,p[1]); o.value=p[0]; sel.appendChild(o);
+    });
+    bd.appendChild(sel);
+    var box=el('div'); box.style.marginTop='12px'; bd.appendChild(box);
+    function neu(){
+      var t;
+      if(art==='tag') t = (empf==='fahrer')?fahrerTagesText(f.datum,'ansage'):waTagesText(f.datum);
+      else t = standardText(f, art, empf);
+      textWerkstatt(box, art==='tag'?null:f, t, f.stadt, empf);
+    }
+    se.onchange=function(){empf=se.value;neu();};
+    sel.onchange=function(){art=sel.value;neu();};
+    neu();
+  },[{text:'Schließen'}]);
+}
+function qrDialog(link){
+  dialog('QR-Code',function(bd){
+    bd.appendChild(el('p',null,'Zum Aushängen an der Hotelrezeption oder im Production Office.'));
+    var box=el('div'); box.style.textAlign='center'; box.style.margin='12px 0';
+    if(window.QR&&QR.svg){
+      try{ box.appendChild(QR.svg(link,{size:220,margin:4,dark:'#17181C',light:'#ffffff'})); }
+      catch(e){ box.appendChild(el('div','meta','QR nicht verfügbar.')); }
+    }
+    bd.appendChild(box);
+    var p=el('div','pre',link); bd.appendChild(p);
+  },[{text:'Schließen'},{text:'Link kopieren',art:'pri',fn:function(){kopieren(link,'Link kopiert.');}}]);
+}
+
+function zeichneWhatsapp(m){
+  var kopf=el('div','sechead');
+  kopf.appendChild(el('h2',null,'Nachricht schreiben'));
+  m.appendChild(kopf);
+
+  var tage=tagePlan();
+  if(!tage.length){ m.appendChild(el('div','leer','Für diese Tour gibt es noch keine Fahrten.')); return; }
+  if(!ansicht.tag || tage.indexOf(ansicht.tag)<0) ansicht.tag=(tage.indexOf(heuteISO())>=0?heuteISO():tage[0]);
+  if(!ansicht.empf) ansicht.empf='crew';
+
+  var sec=el('div','sec'), c=el('div','card');
+
+  /* Empfänger */
+  c.appendChild(el('label','feld','An welche Gruppe?'));
+  var wahl=el('div','btnzeile');
+  [['crew','Crew-Gruppe'],['fahrer','Fahrer-Gruppe der Stadt']].forEach(function(p2){
+    var b=el('button','btn'+(ansicht.empf===p2[0]?' pri':''),p2[1]);
+    b.onclick=function(){ansicht.empf=p2[0];zeichne();};
+    wahl.appendChild(b);
+  });
+  c.appendChild(wahl);
+
+  /* Tag und Fahrt */
+  var z=el('div','fzeile'); z.style.marginTop='10px';
+  var d1=el('div'); d1.appendChild(el('label','feld','Tag'));
+  var selTag=el('select');
+  tage.forEach(function(d){
+    var f0=mFahrten().filter(function(x){return x.datum===d;})[0]||{};
+    var o=el('option',null,datumLang(d)+(f0.stadt?' · '+f0.stadt:'')); o.value=d;
+    if(d===ansicht.tag)o.selected=true; selTag.appendChild(o);
+  });
+  selTag.onchange=function(){ansicht.tag=selTag.value;ansicht.fahrtWahl=null;zeichne();};
+  d1.appendChild(selTag); z.appendChild(d1);
+
+  var fahrten=mFahrten().filter(function(f){return f.datum===ansicht.tag;})
+    .sort(function(a,b){return a.zeit<b.zeit?-1:1;});
+  var d2=el('div'); d2.appendChild(el('label','feld','Fahrt'));
+  var selF=el('select');
+  var oAll=el('option',null,'ganzer Tag'); oAll.value=''; selF.appendChild(oAll);
+  fahrten.forEach(function(f){
+    var o=el('option',null,f.zeit+' Uhr · '+f.richtung); o.value=f.id;
+    if(ansicht.fahrtWahl===f.id)o.selected=true; selF.appendChild(o);
+  });
+  selF.onchange=function(){ansicht.fahrtWahl=selF.value||null;zeichne();};
+  d2.appendChild(selF); z.appendChild(d2);
+
+  var d3=el('div'); d3.appendChild(el('label','feld','Art'));
+  var selA=el('select');
+  [['ansage','Ansage'],['erinnerung','Erinnerung vor Abfahrt']].forEach(function(p2){
+    var o=el('option',null,p2[1]); o.value=p2[0];
+    if(ansicht.textArt===p2[0])o.selected=true; selA.appendChild(o);
+  });
+  selA.onchange=function(){ansicht.textArt=selA.value;zeichne();};
+  d3.appendChild(selA); z.appendChild(d3);
+  c.appendChild(z);
+
+  var stadt=(fahrten[0]||{}).stadt||S.einst.stadt||'';
+  if(ansicht.empf==='fahrer'){
+    var inf=stadtInfo(stadt);
+    var h=el('div','hint tape'); h.style.margin='12px 0 0';
+    h.textContent='Diese Nachricht geht in die Fahrer-Gruppe für '+(stadt||'diese Stadt')+
+      (inf.fahrerGruppe?' („'+inf.fahrerGruppe+'")':' (Gruppenname noch nicht hinterlegt)')+
+      '. In jeder Stadt sind es andere Fahrer — die Liste pflegst du unter „Fahrzeuge".';
+    c.appendChild(h);
+  }
+
+  var box=el('div'); box.style.marginTop='14px'; c.appendChild(box);
+  var art=ansicht.textArt||'ansage';
+  var f=ansicht.fahrtWahl?fahrtById(ansicht.fahrtWahl):fahrten[0];
+  var text;
+  if(!ansicht.fahrtWahl && ansicht.empf==='crew') text=waTagesText(ansicht.tag);
+  else if(!ansicht.fahrtWahl && ansicht.empf==='fahrer') text=fahrerTagesText(ansicht.tag, art);
+  else text=standardText(f, art, ansicht.empf);
+  textWerkstatt(box, (ansicht.fahrtWahl?f:null), text, stadt, ansicht.empf);
+
+  sec.appendChild(c); m.appendChild(sec);
+
+  /* Wer sitzt wo */
+  var k2=el('div','sechead'); k2.appendChild(el('h2',null,'Wer ist wo eingetragen'));
+  m.appendChild(k2);
+  var s2=el('div','sec');
+  fahrten.forEach(function(x){
+    var c2=el('div','card');
+    c2.appendChild(el('div',null,x.zeit+' Uhr · '+x.richtung));
+    x.shuttles.forEach(function(sh){
+      var fz=fzById(sh.fahrzeugId)||{}, namen=[];
+      for(var k in sh.plaetze) namen.push(nameKurz(crewById(sh.plaetze[k].crewId))+
+        (sh.plaetze[k].status==='angefragt'?' (offen)':''));
+      c2.appendChild(el('div','meta',fz.name+' · '+fahrerName(fz)+': '+
+        (namen.length?namen.join(', '):'noch niemand')));
+    });
+    s2.appendChild(c2);
+  });
+  m.appendChild(s2);
+}
+
+function fahrerTagesText(datum, art){
+  var f=mFahrten().filter(function(x){return x.datum===datum;})
+    .sort(function(a,b){return a.zeit<b.zeit?-1:1;});
+  if(!f.length)return '';
+  var stadt=f[0].stadt||S.einst.stadt||'';
+  var t='Hallo zusammen,\nhier die Shuttle-Fahrten für '+tagWort(f[0])+' in '+stadt+' ('+datumKurz(datum)+'):\n\n';
+  f.forEach(function(x){
+    t+='▪️ '+x.zeit+' Uhr · '+x.von+' → '+x.nach+'\n';
+    x.shuttles.forEach(function(sh){
+      var fz=fzById(sh.fahrzeugId)||{}, fa=fz.fahrerId?fahrerById(fz.fahrerId):null;
+      t+='   🚐 '+fz.name+' ('+(fz.kennzeichen||'')+') · '+fahrerName(fz)+
+         (fa&&fa.telefon?' '+fa.telefon:'')+' · '+belegtCount(sh)+' Personen\n';
+    });
+    if(x.hinweis)t+='   ℹ️ '+x.hinweis+'\n';
+    t+='\n';
+  });
+  t+='Bitte seid 10 Minuten vor der Abfahrt am Treffpunkt.\n\n';
+  t+=(S.einst.signatur||'Euer Tourmanagement');
+  if(S.einst.tmKontakt)t+='\n'+S.einst.tmKontakt;
+  return t;
+}
+
+function einstellungen(){
+  dialog('Einstellungen',function(bd){
+    bd.appendChild(el('label','feld','Tour / Künstler'));
+    var tr=el('select');
+    S.touren.forEach(function(t){
+      var o=el('option',null,tourName(t)); o.value=t.id;
+      if(t.id===S.einst.tourId)o.selected=true; tr.appendChild(o);
+    });
+    bd.appendChild(tr);
+    var btr=el('button','btn klein','Touren und Städte verwalten');
+    btr.style.marginTop='7px';
+    btr.onclick=function(){tourenVerwalten();};
+    bd.appendChild(btr);
+
+    bd.appendChild(el('label','feld','Ansicht'));
+    var r=el('select');
+    [['admin','Admin — planen, freigeben, verschicken'],
+     ['crew','Crew — nur Plätze buchen']].forEach(function(p){
+      var o=el('option',null,p[1]); o.value=p[0]; if(p[0]===S.einst.rolle)o.selected=true; r.appendChild(o);
+    });
+    bd.appendChild(r);
+
+    bd.appendChild(el('label','feld','Ich bin'));
+    var ic=el('select');
+    mCrew().slice().sort(function(a,b){return name(a)<name(b)?-1:1;}).forEach(function(c){
+      var o=el('option',null,name(c)+' · '+gewerkVon(c)); o.value=c.id;
+      if(c.id===S.einst.ich)o.selected=true; ic.appendChild(o);
+    });
+    bd.appendChild(ic);
+
+    bd.appendChild(el('label','feld','Design'));
+    var th=el('select');
+    [['dark','Dunkel (Roadcase)'],['light','Hell']].forEach(function(p){
+      var o=el('option',null,p[1]); o.value=p[0]; if(p[0]===S.einst.theme)o.selected=true; th.appendChild(o);
+    });
+    bd.appendChild(th);
+
+    var z=el('div','fzeile');
+    var d1=el('div'); d1.appendChild(el('label','feld','Buchungsschluss (Minuten vor Abfahrt)'));
+    var bs=el('input'); bs.type='number'; bs.min='0'; bs.value=S.einst.buchungsschluss; d1.appendChild(bs);
+    var d2=el('div'); d2.appendChild(el('label','feld','Stadt / Show'));
+    var st=el('input'); st.value=S.einst.stadt||''; d2.appendChild(st);
+    z.appendChild(d1); z.appendChild(d2); bd.appendChild(z);
+
+    bd.appendChild(el('label','feld','Link zum Tool (steht in der WhatsApp-Nachricht)'));
+    var bl=el('input'); bl.value=S.einst.basisLink||''; bd.appendChild(bl);
+
+    bd.appendChild(el('label','feld','Anrede in der Nachricht'));
+    var gr=el('input'); gr.value=S.einst.gruss||''; bd.appendChild(gr);
+    bd.appendChild(el('label','feld','Unterschrift'));
+    var si=el('input'); si.value=S.einst.signatur||''; bd.appendChild(si);
+    bd.appendChild(el('label','feld','Kontakt Tourmanagement (steht in den Fahrer-Nachrichten)'));
+    var tk=el('input'); tk.value=S.einst.tmKontakt||'';
+    tk.placeholder='z. B. Tourmanagement 0170 1112233'; bd.appendChild(tk);
+
+    var lab=el('label'); lab.style.display='block'; lab.style.marginTop='12px'; lab.style.fontSize='14px';
+    var cb=el('input'); cb.type='checkbox'; cb.style.width='auto'; cb.style.marginRight='8px';
+    cb.checked=!!S.einst.autoBestaetigen;
+    lab.appendChild(cb);
+    lab.appendChild(document.createTextNode('Buchungen sofort bestätigen (ohne Freigabe durch den Admin)'));
+    bd.appendChild(lab);
+
+    bd.appendChild(el('label','feld','Anbindung an J.SHOW'));
+    var jb=el('div','btnzeile');
+    var j1=el('button','btn klein','Anbindung an J.SHOW');
+    j1.onclick=function(){jshowDialog();};
+    var j2=el('button','btn klein','Plan als JSON ausgeben');
+    j2.onclick=function(){jshowExport();};
+    var j3=el('button','btn klein','Crew aus JSON einlesen');
+    j3.onclick=function(){jshowImport();};
+    var j4=el('button','btn klein','Termine aus JSON einlesen');
+    j4.onclick=function(){jshowTermineEinfuegen();};
+    jb.appendChild(j1); jb.appendChild(j2); jb.appendChild(j3); jb.appendChild(j4);
+    bd.appendChild(jb);
+
+    bd.appendChild(el('label','feld','Daten'));
+    var bz=el('div','btnzeile');
+    var e1=el('button','btn klein','Sicherung speichern');
+    e1.onclick=function(){
+      var a=el('a'); a.href='data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(S,null,1));
+      a.download='AMK_Shuttle_'+heuteISO()+'.json'; a.click();
+    };
+    var e2=el('button','btn klein warn','Alles auf Demo zurücksetzen');
+    e2.onclick=function(){
+      frage('Zurücksetzen','Wirklich alles löschen und die Demo-Daten neu laden?','Zurücksetzen',
+        function(){S=demoDaten();speichern();zeichne();toast('Demo-Daten neu geladen.');},'warn');
+    };
+    bz.appendChild(e1); bz.appendChild(e2); bd.appendChild(bz);
+
+    bd._lesen=function(){
+      S.einst.tourId=tr.value; S.einst.tmKontakt=tk.value;
+      S.einst.rolle=r.value; S.einst.ich=ic.value; S.einst.theme=th.value;
+      S.einst.buchungsschluss=parseInt(bs.value,10)||0; S.einst.stadt=st.value;
+      S.einst.basisLink=bl.value; S.einst.gruss=gr.value; S.einst.signatur=si.value;
+      S.einst.autoBestaetigen=cb.checked;
+    };
+  },[{text:'Abbrechen'},{text:'Übernehmen',art:'pri',fn:function(bd){
+    if(bd._lesen)bd._lesen();
+    if(!istAdmin()&&ansicht.tab!=='fahrten'&&ansicht.tab!=='meine')ansicht.tab='fahrten';
+    speichern(); zeichne();
+  }}]);
+}
+
+/* ==========================================================
+   Touren und Städte
+   ========================================================== */
+function tourenVerwalten(){
+  dialog('Touren und Städte',function(bd){
+    var liste=el('div'); bd.appendChild(liste);
+    function neu(){
+      leeren(liste);
+      S.touren.forEach(function(t){
+        var c=el('div','card'+(t.id===S.einst.tourId?' hl':''));
+        var r=el('div','row');
+        var tx=el('div','grow stack');
+        var h=el('div',null,tourName(t)); h.style.fontFamily='var(--disp)'; h.style.fontWeight='700';
+        tx.appendChild(h);
+        tx.appendChild(el('div','meta',(t.staedte||[]).length?
+          (t.staedte.length+' Städte: '+t.staedte.join(', ')):'noch keine Städte hinterlegt'));
+        var anz=S.fahrten.filter(function(x){return x.tourId===t.id;}).length;
+        tx.appendChild(el('div','meta',anz+' Fahrten · '+
+          S.crew.filter(function(x){return x.tourId===t.id;}).length+' Crew · '+
+          S.fahrer.filter(function(x){return x.tourId===t.id;}).length+' Fahrer'));
+        r.appendChild(tx);
+        var bz=el('div','btnzeile');
+        if(t.id!==S.einst.tourId){
+          var b0=el('button','btn klein pri','Auswählen');
+          b0.onclick=function(){
+            S.einst.tourId=t.id;
+            S.einst.stadt=(t.staedte&&t.staedte[0])||'';
+            ansicht.tag=null; ansicht.fahrtId=null;
+            speichern(); neu(); zeichne();
+          };
+          bz.appendChild(b0);
+        }
+        var b1=el('button','btn klein','Bearbeiten');
+        b1.onclick=function(){tourBearbeiten(t, neu);};
+        bz.appendChild(b1);
+        r.appendChild(bz); c.appendChild(r);
+        liste.appendChild(c);
+      });
+      var bn=el('button','btn pri','Neue Tour anlegen');
+      bn.onclick=function(){tourBearbeiten(null, neu);};
+      liste.appendChild(bn);
+    }
+    neu();
+  },[{text:'Schließen',fn:function(){zeichne();}}]);
+}
+
+function tourBearbeiten(t, danach){
+  var neuT=!t;
+  dialog(neuT?'Neue Tour':'Tour bearbeiten',function(bd){
+    function feld(id,lab,wert){
+      bd.appendChild(el('label','feld',lab));
+      var i=el('input'); i.id=id; i.value=wert||''; bd.appendChild(i);
+    }
+    feld('tKuenstler','Künstler / Band',t?t.kuenstler:'');
+    var z=el('div','fzeile');
+    var d1=el('div'); d1.appendChild(el('label','feld','Tour'));
+    var i1=el('input'); i1.id='tTour'; i1.value=t?t.tour:'Tour'; d1.appendChild(i1);
+    var d2=el('div'); d2.appendChild(el('label','feld','Jahr'));
+    var i2=el('input'); i2.id='tJahr'; i2.type='number'; i2.value=t?t.jahr:new Date().getFullYear();
+    d2.appendChild(i2);
+    z.appendChild(d1); z.appendChild(d2); bd.appendChild(z);
+    bd.appendChild(el('label','feld','Städte (mit Komma trennen)'));
+    var ta=el('textarea'); ta.id='tStaedte'; ta.style.minHeight='60px';
+    ta.value=t?(t.staedte||[]).join(', '):'';
+    bd.appendChild(ta);
+    if(t){
+      bd.appendChild(el('label','feld','Fahrer-WhatsApp-Gruppe je Stadt'));
+      (t.staedte||[]).forEach(function(st){
+        var inf=t.staedteInfo&&t.staedteInfo[st]?t.staedteInfo[st]:{fahrerGruppe:''};
+        var zz=el('div','row'); zz.style.marginBottom='5px';
+        var lab=el('span',null,st); lab.style.minWidth='120px'; lab.style.fontSize='14px';
+        var inp=el('input'); inp.value=inf.fahrerGruppe||'';
+        inp.placeholder='Name der Fahrer-Gruppe';
+        inp.onchange=function(){
+          t.staedteInfo=t.staedteInfo||{};
+          t.staedteInfo[st]=t.staedteInfo[st]||{fahrerGruppe:'',link:'',hotel:'',venue:''};
+          t.staedteInfo[st].fahrerGruppe=inp.value; speichern();
+        };
+        zz.appendChild(lab); zz.appendChild(inp); bd.appendChild(zz);
+      });
+    }
+  },[{text:'Abbrechen',fn:function(){if(danach)danach();}},
+     (t&&S.touren.length>1?{text:'Tour löschen',art:'warn',fn:function(){
+       frage('Tour löschen','Alle Fahrten, Fahrzeuge, Fahrer und Crew dieser Tour werden mitgelöscht.','Löschen',
+         function(){
+           ['fahrten','fahrzeuge','crew','fahrer','tagesvorlagen','textvorlagen'].forEach(function(k){
+             S[k]=S[k].filter(function(x){return x.tourId!==t.id;});
+           });
+           S.touren=S.touren.filter(function(x){return x!==t;});
+           if(S.einst.tourId===t.id)S.einst.tourId=S.touren[0].id;
+           speichern(); if(danach)danach(); zeichne();
+         },'warn');
+     }}:{text:' ',fn:function(){return true;}}),
+     {text:'Speichern',art:'pri',fn:function(bd){
+       var o=t||{id:uid('tour'), staedteInfo:{}};
+       o.kuenstler=bd.querySelector('#tKuenstler').value.trim()||'Künstler';
+       o.tour=bd.querySelector('#tTour').value.trim()||'Tour';
+       o.jahr=parseInt(bd.querySelector('#tJahr').value,10)||new Date().getFullYear();
+       o.staedte=bd.querySelector('#tStaedte').value.split(',')
+         .map(function(x){return x.trim();}).filter(Boolean);
+       if(!t){S.touren.push(o); S.einst.tourId=o.id; S.einst.stadt=o.staedte[0]||'';}
+       protokoll('Tour '+tourName(o)+' gespeichert');
+       speichern(); if(danach)danach(); zeichne();
+     }}]);
+}
+
+/* ==========================================================
+   Schnittstelle zu J.SHOW
+   ========================================================== */
+function jsUrl(pfad){
+  var j=S.einst.jshow, basis=(j.adresse||'').replace(/\/+$/,'');
+  var voll=basis+(pfad.indexOf('/')===0?pfad:'/'+pfad);
+  voll=voll.split('{plattform}').join(j.plattform||'');
+  if(j.proxy) voll=j.proxy.replace(/\/+$/,'')+'/'+encodeURIComponent(voll);
+  return voll;
+}
+function jsKopf(){
+  var j=S.einst.jshow, h={'Accept':'application/json'};
+  (j.kopf||'').split('\n').forEach(function(z){
+    var i=z.indexOf(':'); if(i<0)return;
+    h[z.slice(0,i).trim()]=z.slice(i+1).trim().split('{schluessel}').join(j.schluessel||'');
+  });
+  return h;
+}
+function jsFehlerText(e){
+  var t=String(e&&e.message?e.message:e);
+  if(t.indexOf('Failed to fetch')>=0||t.indexOf('NetworkError')>=0)
+    return 'Der Browser durfte die Anfrage nicht stellen. Das ist fast immer die übliche Sperre zwischen zwei Webadressen. '+
+           'Lösung: J.SHOW gibt unsere Adresse frei, oder wir setzen eine kleine Zwischenstelle davor und tragen sie oben als Zwischenstelle ein.';
+  return t;
+}
+/* ---- Vorführ-Betrieb: J.SHOW wird nachgestellt, nichts geht nach außen ---- */
+function jsDemoTermine(){
+  var t=tour(), heute=heuteISO();
+  var orte=[['Dortmund','Westfalenpark'],['Neu-Ulm','Wiley Sportpark'],
+            ['Mönchengladbach','Sparkassenpark'],['Ludwigsburg','KSK Music Open'],
+            ['Berlin','Parkbühne Wuhlheide'],['Hamburg','Stadtpark'],['Leipzig','Parkbühne']];
+  return orte.map(function(o,i){
+    return {id:'ev-'+(i+1), date:plusTage(heute,i*3), city:o[0],
+            venue:{name:o[1], city:o[0]}, artist:t.kuenstler, status:'confirmed',
+            type:'show'};
+  });
+}
+function jsDemoCrew(){
+  var liste=mCrew().slice(0,10).map(function(c){
+    return {id:c.id, first_name:c.vorname, last_name:c.nachname,
+            department:gewerkVon(c), phone:c.telefon||'', role:'crew'};
+  });
+  /* zwei Personen, die es bei uns noch nicht gibt — zeigt das Zusammenführen */
+  liste.push({id:'js-901', first_name:'Robin', last_name:'Kastner', department:'Audio',
+              phone:'0170 5550101', role:'crew'});
+  liste.push({id:'js-902', first_name:'Nadja', last_name:'Sperling', department:'LED/Video',
+              phone:'0170 5550102', role:'crew'});
+  return liste;
+}
+function jsDemoAntwort(art){
+  var daten = art==='termine' ? jsDemoTermine() : jsDemoCrew();
+  return JSON.stringify({_hinweis:'VORFÜHRUNG — nachgestellte Antwort, keine Verbindung nach außen',
+    platform:(S.einst.jshow.plattform||'landstreicher'), count:daten.length, data:daten}, null, 1);
+}
+function jsWartefenster(text, danach){
+  var dlg=dialog('J.SHOW',function(bd){
+    var h=el('div','hint tape'); h.style.margin='0 0 10px';
+    h.textContent='Vorführ-Betrieb: die Antwort wird nachgestellt, es geht nichts nach außen.';
+    bd.appendChild(h);
+    bd.appendChild(el('p',null,text));
+  },[{text:'Abbrechen'}]);
+  setTimeout(function(){ dlg.zu(); danach(); }, 900);
+}
+
+function jshowGesperrt(){
+  if(S.einst.jshow.modus==='demo') return false;
+  if(S.einst.jshow.aktiv) return false;
+  dialog('Anbindung ist noch abgeschaltet',function(bd){
+    bd.appendChild(el('p',null,'Es wird nichts an J.SHOW gesendet und nichts von dort geholt, solange die Freigabe von Landstreicher fehlt.'));
+    bd.appendChild(el('p',null,'Bis dahin läuft das Werkzeug eigenständig: Crew und Termine lassen sich als JSON einfügen, der fertige Plan als JSON ausgeben.'));
+    bd.appendChild(el('p',null,'Der Schalter dafür sitzt oben in diesem Fenster — bitte erst nach dem Go umlegen.'));
+  },[{text:'Verstanden'}]);
+  return true;
+}
+function jshowHolen(art){
+  if(jshowGesperrt())return;
+  var j=S.einst.jshow;
+  if(j.modus==='demo'){
+    jsWartefenster(art==='termine'?'Hole die Termine …':'Hole die Travel Party …',function(){
+      jshowAntwort(art, 200, jsDemoAntwort(art));
+    });
+    return;
+  }
+  var pfad = art==='termine'?j.pfadTermine:j.pfadCrew;
+  if(!j.adresse||!pfad){ toast('Adresse und Pfad fehlen — bitte zuerst die Verbindung einrichten.'); return; }
+  var url=jsUrl(pfad);
+  var dlg=dialog('Hole Daten aus J.SHOW',function(bd){
+    bd.appendChild(el('p',null,'Rufe ab: '+url));
+    var w=el('div','meta','Bitte einen Moment …'); w.id='jsWarte'; bd.appendChild(w);
+  },[{text:'Schließen'}]);
+  fetch(url,{headers:jsKopf()}).then(function(r){
+    return r.text().then(function(t){ return {ok:r.ok, code:r.status, text:t}; });
+  }).then(function(a){
+    dlg.zu(); jshowAntwort(art, a.code, a.text);
+  }).catch(function(e){
+    dlg.zu();
+    dialog('Abruf hat nicht geklappt',function(bd){
+      bd.appendChild(el('p',null,jsFehlerText(e)));
+      bd.appendChild(el('div','pre',url));
+    },[{text:'Schließen'},{text:'Stattdessen JSON einfügen',art:'pri',fn:function(){
+      art==='crew'?jshowImport():jshowTermineEinfuegen();
+    }}]);
+  });
+}
+function jshowAntwort(art, code, text){
+  dialog('Antwort von J.SHOW (Status '+code+')',function(bd){
+    if(S.einst.jshow.modus==='demo'){
+      var h=el('div','hint tape'); h.style.margin='0 0 10px';
+      h.textContent='Vorführung: nachgestellte Antwort. Im Echt-Betrieb steht hier genau das, was J.SHOW liefert.';
+      bd.appendChild(h);
+    }
+    bd.appendChild(el('p',null,'So kam die Antwort an. Wenn sie passt, unten übernehmen — sonst den Pfad anpassen.'));
+    var ta=el('textarea'); ta.id='jsRoh'; ta.value=text.slice(0,20000);
+    ta.style.minHeight='250px'; ta.style.fontSize='12.5px'; bd.appendChild(ta);
+  },[{text:'Schließen'},{text:'Übernehmen',art:'pri',fn:function(bd){
+    var roh=bd.querySelector('#jsRoh').value;
+    if(art==='crew') crewAusJson(roh);
+    else termineAusJson(roh);
+  }}]);
+}
+function crewAusJson(roh){
+  var liste=[];
+  try{
+    var j=JSON.parse(roh);
+    var arr=Array.isArray(j)?j:(j.data||j.crew||j.travelParty||j.travel_party||j.items||[]);
+    arr.forEach(function(x){
+      var nm=x.name||((x.firstName||x.first_name||x.vorname||'')+' '+
+                      (x.lastName||x.last_name||x.nachname||'')).trim();
+      if(!nm)return;
+      liste.push({nm:nm, gw:x.department||x.gewerk||x.role||x.position||x.job||'',
+                  tel:x.phone||x.telefon||x.mobile||''});
+    });
+  }catch(e){ toast('Das war keine lesbare JSON-Antwort.'); return; }
+  if(!liste.length){ toast('Keine Personen erkannt.'); return; }
+  var neuZahl=0, vorhanden=0;
+  liste.forEach(function(x){
+    var teile=x.nm.replace(',',' ').split(/\s+/).filter(Boolean);
+    var vor=teile[0]||'', nach=teile.slice(1).join(' ');
+    if(x.nm.indexOf(',')>=0){ nach=x.nm.split(',')[0].trim(); vor=(x.nm.split(',')[1]||'').trim(); }
+    /* Vorname und Nachname koennen in beiden Reihenfolgen kommen -> beide pruefen */
+    function suche(v,n){
+      return mCrew().filter(function(c){
+        return (c.vorname+'|'+c.nachname).toLowerCase()===(v+'|'+n).toLowerCase();
+      })[0];
+    }
+    var da=suche(vor,nach) || suche(nach,vor);
+    if(da){ if(x.tel)da.telefon=x.tel; if(x.gw)da.gewerk=x.gw; vorhanden++; return; }
+    S.crew.push({id:uid('c'), tourId:tourId(), vorname:vor, nachname:nach,
+      gewerk:x.gw||'ohne Gewerk', telefon:x.tel, info:'',
+      kuerzel:((vor[0]||'')+(nach[0]||'')).toUpperCase()});
+    neuZahl++;
+  });
+  protokoll(neuZahl+' Personen aus J.SHOW neu, '+vorhanden+' aktualisiert');
+  speichern(); zeichne();
+  toast(neuZahl+' neu, '+vorhanden+' aktualisiert.');
+}
+function termineAusJson(roh){
+  var arr=[];
+  try{
+    var j=JSON.parse(roh);
+    arr=Array.isArray(j)?j:(j.data||j.events||j.shows||j.items||[]);
+  }catch(e){ toast('Das war keine lesbare JSON-Antwort.'); return; }
+  var t=tour(), neuStadt=0, neuTag=0;
+  t.staedte=t.staedte||[];
+  arr.forEach(function(x){
+    var stadt=x.city||x.stadt||(x.venue&&x.venue.city)||'';
+    var datum=(x.date||x.datum||x.start||'').slice(0,10);
+    var venue=x.venue&&x.venue.name?x.venue.name:(x.venue||x.location||'');
+    if(stadt && t.staedte.indexOf(stadt)<0){ t.staedte.push(stadt); neuStadt++; }
+    if(stadt){
+      t.staedteInfo=t.staedteInfo||{};
+      t.staedteInfo[stadt]=t.staedteInfo[stadt]||{fahrerGruppe:'',link:'',hotel:'',venue:''};
+      if(venue&&!t.staedteInfo[stadt].venue)t.staedteInfo[stadt].venue=venue;
+    }
+    if(datum && stadt){
+      var da=mFahrten().filter(function(f){return f.datum===datum;}).length;
+      if(!da) neuTag++;
+    }
+  });
+  protokoll(neuStadt+' Städte aus J.SHOW übernommen');
+  speichern(); zeichne();
+  toast(neuStadt+' Städte übernommen'+(neuTag?', '+neuTag+' Showtage ohne Fahrten — Tagesvorlage anwenden.':'.'));
+}
+function jshowTermineEinfuegen(){
+  dialog('Termine aus J.SHOW einfügen',function(bd){
+    bd.appendChild(el('p',null,'Terminliste aus J.SHOW hierher kopieren. Erkannt werden Datum, Stadt und Venue.'));
+    var ta=el('textarea'); ta.id='jtText'; ta.style.minHeight='200px';
+    ta.placeholder='[{"date":"2026-08-16","city":"Berlin","venue":{"name":"Parkbühne Wuhlheide"}}, …]';
+    bd.appendChild(ta);
+  },[{text:'Abbrechen'},{text:'Übernehmen',art:'pri',fn:function(bd){
+    termineAusJson(bd.querySelector('#jtText').value);
+  }}]);
+}
+function jshowSchreiben(){
+  if(jshowGesperrt())return;
+  var j=S.einst.jshow;
+  var tage=tagePlan(); if(!tage.length){toast('Keine Fahrten vorhanden.');return;}
+  var tag=ansicht.tag||tage[0];
+  var paket=jshowPaket(tag);
+  if(j.modus==='demo'){
+    jsWartefenster('Sende den Shuttleplan an J.SHOW …',function(){
+      dialog('Zurückgeschrieben (Vorführung)',function(bd){
+        var h=el('div','hint tape'); h.style.margin='0 0 10px';
+        h.textContent='Nachgestellt — so würde J.SHOW antworten.';
+        bd.appendChild(h);
+        bd.appendChild(el('div','pre',JSON.stringify({status:'ok', event:tag,
+          stadt:paket.stadt, angelegt:'Eintrag im Tagesablauf „Shuttle-Plan"',
+          fahrten:paket.fahrten.length,
+          plaetze:paket.fahrten.reduce(function(n,f){
+            return n+f.shuttles.reduce(function(m,x){return m+x.plaetze.length;},0);},0)
+        },null,1)));
+      },[{text:'Schließen'}]);
+      protokoll('Shuttleplan '+tag+' an J.SHOW gesendet (Vorführung)');
+    });
+    return;
+  }
+  if(!j.adresse||!j.pfadSchreiben){
+    jshowExport(); toast('Kein Schreibpfad hinterlegt — hier ist das Paket zum Kopieren.');
+    return;
+  }
+  var url=jsUrl(j.pfadSchreiben);
+  var kopf=jsKopf(); kopf['Content-Type']='application/json';
+  fetch(url,{method:'POST',headers:kopf,body:JSON.stringify(paket)}).then(function(r){
+    return r.text().then(function(t){return {code:r.status,text:t};});
+  }).then(function(a){
+    dialog('Zurückgeschrieben (Status '+a.code+')',function(bd){
+      bd.appendChild(el('div','pre',a.text.slice(0,4000)||'(leere Antwort)'));
+    },[{text:'Schließen'}]);
+    protokoll('Shuttleplan '+tag+' an J.SHOW gesendet (Status '+a.code+')');
+  }).catch(function(e){
+    dialog('Senden hat nicht geklappt',function(bd){
+      bd.appendChild(el('p',null,jsFehlerText(e)));
+    },[{text:'Schließen'},{text:'Paket kopieren',art:'pri',fn:function(){jshowExport();}}]);
+  });
+}
+
+function jshowDialog(){
+  dialog('Anbindung an J.SHOW',function(bd){
+    var h=el('div','hint tape'); h.style.margin='0 0 10px';
+    h.textContent='Weg B: Stammdaten kommen aus J.SHOW, der fertige Sitzplan geht dorthin zurück. Für die Vorführung läuft alles nachgestellt — man sieht den kompletten Ablauf, ohne dass eine Verbindung entsteht.';
+    bd.appendChild(h);
+    bd.appendChild(el('label','feld','Betriebsart'));
+    var sm=el('select'); sm.id='jsModus';
+    [['demo','Vorführung — Antworten werden nachgestellt, nichts geht nach außen'],
+     ['live','Echt-Betrieb — erst nach der Freigabe durch Landstreicher']].forEach(function(p2){
+      var o=el('option',null,p2[1]); o.value=p2[0];
+      if(p2[0]===(S.einst.jshow.modus||'demo'))o.selected=true; sm.appendChild(o);
+    });
+    bd.appendChild(sm);
+    var lab=el('label'); lab.style.display='block'; lab.style.margin='10px 0'; lab.style.fontSize='14.5px';
+    var cb=el('input'); cb.type='checkbox'; cb.id='jsAktiv'; cb.checked=!!S.einst.jshow.aktiv;
+    cb.style.width='auto'; cb.style.marginRight='8px';
+    lab.appendChild(cb);
+    lab.appendChild(document.createTextNode('Anbindung scharfschalten — erst nach der Freigabe durch Landstreicher'));
+    bd.appendChild(lab);
+    var hw=el('div','hint warn'); hw.style.margin='0 0 12px';
+    hw.textContent='Vorführung ist die sichere Einstellung: alle Knöpfe funktionieren und zeigen den ganzen Ablauf, aber es entsteht keine Verbindung nach draußen. Der Echt-Betrieb braucht zusätzlich den Haken.';
+    bd.appendChild(hw);
+    function feld(id,lab,wert,platz){
+      bd.appendChild(el('label','feld',lab));
+      var i=el('input'); i.id=id; i.value=wert||''; if(platz)i.placeholder=platz;
+      bd.appendChild(i); return i;
+    }
+    var j=S.einst.jshow;
+    feld('jsA','Adresse der Plattform',j.adresse,'https://landstreicher.j.show');
+    feld('jsP','Plattform / Künstler-Kürzel',j.plattform,'landstreicher');
+    feld('jsK','API-Schlüssel',j.schluessel,'steht in J.SHOW unter API');
+    bd.appendChild(el('label','feld','Kopfzeilen (eine je Zeile, {schluessel} wird eingesetzt)'));
+    var ta=el('textarea'); ta.id='jsH'; ta.value=j.kopf||''; ta.style.minHeight='60px';
+    bd.appendChild(ta);
+    feld('jsT','Pfad für Termine',j.pfadTermine,'/api/… (aus der J.SHOW-Doku)');
+    feld('jsC','Pfad für Travel Party',j.pfadCrew,'/api/… (aus der J.SHOW-Doku)');
+    feld('jsS','Pfad zum Zurückschreiben',j.pfadSchreiben,'/api/… (aus der J.SHOW-Doku)');
+    feld('jsX','Zwischenstelle (nur falls der Browser blockiert)',j.proxy,'https://…/proxy');
+
+    bd.appendChild(el('label','feld','Ausprobieren'));
+    var bz=el('div','btnzeile');
+    var b1=el('button','btn klein','Termine holen');
+    b1.onclick=function(){jshowHolen('termine');};
+    var b2=el('button','btn klein','Travel Party holen');
+    b2.onclick=function(){jshowHolen('crew');};
+    var b3=el('button','btn klein','Plan zurückschreiben');
+    b3.onclick=function(){jshowSchreiben();};
+    bz.appendChild(b1); bz.appendChild(b2); bz.appendChild(b3);
+    bd.appendChild(bz);
+    var h2=el('div','hint'); h2.style.margin='12px 0 0';
+    h2.textContent='Ohne Schlüssel läuft alles wie bisher weiter: „Plan als JSON ausgeben" und „Crew aus JSON einlesen" ersetzen den Abruf, bis die Zugänge da sind.';
+    bd.appendChild(h2);
+    bd._lesen=function(){
+      S.einst.jshow={aktiv:bd.querySelector('#jsAktiv').checked,
+        modus:bd.querySelector('#jsModus').value,
+        adresse:bd.querySelector('#jsA').value.trim(),
+        plattform:bd.querySelector('#jsP').value.trim(),
+        schluessel:bd.querySelector('#jsK').value.trim(),
+        kopf:bd.querySelector('#jsH').value,
+        pfadTermine:bd.querySelector('#jsT').value.trim(),
+        pfadCrew:bd.querySelector('#jsC').value.trim(),
+        pfadSchreiben:bd.querySelector('#jsS').value.trim(),
+        proxy:bd.querySelector('#jsX').value.trim()};
+    };
+  },[{text:'Abbrechen'},{text:'Speichern',art:'pri',fn:function(bd){
+    if(bd._lesen)bd._lesen();
+    speichern(); toast('Verbindung gespeichert.');
+  }}]);
+}
+
+function jshowPaket(datum){
+  var t=tour();
+  return {
+    quelle:'AMK Shuttle', stand:new Date().toISOString(),
+    tour:{id:t.id, kuenstler:t.kuenstler, tour:t.tour, jahr:t.jahr},
+    tag:datum, stadt:(mFahrten().filter(function(f){return f.datum===datum;})[0]||{}).stadt||'',
+    fahrten:mFahrten().filter(function(f){return f.datum===datum;}).map(function(f){
+      return {
+        zeit:f.zeit, richtung:f.richtung, treffpunkt:f.von, ziel:f.nach, hinweis:f.hinweis,
+        shuttles:f.shuttles.map(function(sh){
+          var fz=fzById(sh.fahrzeugId)||{};
+          var plaetze=[];
+          for(var k in sh.plaetze){
+            var c=crewById(sh.plaetze[k].crewId)||{};
+            plaetze.push({name:name(c), gewerk:gewerkVon(c), status:sh.plaetze[k].status});
+          }
+          return {fahrzeug:fz.name, kennzeichen:fz.kennzeichen, typ:fz.vorlage,
+                  fahrer:fahrerName(fz), plaetze:plaetze, frei:freiCount(sh)};
+        })
+      };
+    })
+  };
+}
+function jshowExport(){
+  var tage=tagePlan();
+  if(!tage.length){toast('Keine Fahrten vorhanden.');return;}
+  var tag=ansicht.tag||tage[0];
+  var text=JSON.stringify(jshowPaket(tag),null,1);
+  dialog('Plan als JSON',function(bd){
+    bd.appendChild(el('p',null,'Genau dieses Paket würde an J.SHOW gehen — als Eintrag im Tagesablauf oder als Datei am Termin.'));
+    var ta=el('textarea'); ta.value=text; ta.style.minHeight='260px'; ta.style.fontSize='12.5px';
+    bd.appendChild(ta);
+  },[{text:'Schließen'},{text:'Kopieren',art:'pri',fn:function(){kopieren(text,'JSON kopiert.');}}]);
+}
+function jshowImport(){
+  dialog('Crew aus J.SHOW einlesen',function(bd){
+    bd.appendChild(el('p',null,'Travel Party aus J.SHOW hierher kopieren — als JSON-Liste oder als einfache Namensliste. Erkannt werden Name, Gewerk und Telefon.'));
+    var ta=el('textarea'); ta.id='jiText'; ta.style.minHeight='200px';
+    ta.placeholder='[{"name":"Ahrens Marek","department":"Production","phone":"0170 …"}, …]';
+    bd.appendChild(ta);
+  },[{text:'Abbrechen'},{text:'Einlesen',art:'pri',fn:function(bd){
+    var roh=bd.querySelector('#jiText').value.trim();
+    if(!roh)return false;
+    var liste=[];
+    try{
+      var j=JSON.parse(roh);
+      var arr=Array.isArray(j)?j:(j.data||j.crew||j.travelParty||[]);
+      arr.forEach(function(x){
+        var nm=x.name||((x.firstName||x.vorname||'')+' '+(x.lastName||x.nachname||'')).trim();
+        if(!nm)return;
+        liste.push({nm:nm, gw:x.department||x.gewerk||x.role||x.position||'',
+                    tel:x.phone||x.telefon||''});
+      });
+    }catch(e){
+      roh.split('\n').forEach(function(z){
+        z=z.trim(); if(!z)return;
+        var teile=z.split(/[,;\t]/).map(function(x){return x.trim();});
+        liste.push({nm:teile[0], gw:teile[1]||'', tel:teile[2]||''});
+      });
+    }
+    var n=0;
+    liste.forEach(function(x){
+      var teile=x.nm.split(/\s+/);
+      var nach=teile[0], vor=teile.slice(1).join(' ');
+      if(x.nm.indexOf(',')<0 && teile.length>1){ vor=teile[0]; nach=teile.slice(1).join(' '); }
+      S.crew.push({id:uid('c'), tourId:tourId(), vorname:vor, nachname:nach,
+        gewerk:x.gw||'ohne Gewerk', telefon:x.tel, info:'',
+        kuerzel:((vor[0]||'')+(nach[0]||'')).toUpperCase()});
+      n++;
+    });
+    protokoll(n+' Personen aus J.SHOW eingelesen');
+    speichern(); zeichne(); toast(n+' Personen eingelesen.');
+  }}]);
+}
+
+/* ==========================================================
+   Start
+   ========================================================== */
+function start(){
+  laden();
+  $('btnEinst').onclick=einstellungen;
+  /* Link-Parameter: ?f=Fahrt  ?p=Person  ?rolle=crew */
+  var q={}; location.search.replace(/^\?/,'').split('&').forEach(function(p){
+    if(!p)return; var t=p.split('='); q[decodeURIComponent(t[0])]=decodeURIComponent(t[1]||'');
+  });
+  if(q.rolle==='crew'||q.rolle==='admin'){S.einst.rolle=q.rolle;}
+  if(q.p&&crewById(q.p)){S.einst.ich=q.p;}
+  if(q.f&&fahrtById(q.f)){ansicht.fahrtId=q.f;}
+  if(!istAdmin()&&ansicht.tab!=='fahrten'&&ansicht.tab!=='meine')ansicht.tab='fahrten';
+  zeichne();
+  /* Restzeiten laufend nachziehen */
+  setInterval(function(){ if(!document.querySelector('.ovl')) zeichne(); }, 60000);
+}
+start();
+</script>
+</body>
+</html>
