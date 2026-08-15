@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crew-Shuttle in J.SHOW · zum Ausprobieren</title>
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon-180.png">
+<style>
+:root{
+  --grund:#0E1116; --flaeche:#171C24; --flaeche2:#1A212B; --linie:#262D38; --linie2:#38424F;
+  --ink:#E8EAEE; --grau:#8A94A6; --tape:#FFD23F; --ok:#64A85C; --okink:#9EE7C6; --rot:#FF8B80;
+  --disp:Arial,Helvetica,sans-serif; --body:'Segoe UI',system-ui,-apple-system,Helvetica,Arial,sans-serif;
+  --vanbody:#3A404A;--vanline:#828997;--vanglas:#46505F;--vaninnen:#1C1F24;
+  --vanrad:#0C0D10;--vanhaube:#333844;--vanlicht:#FFE9A8;--vanruecklicht:#C2453B;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--grund);color:var(--ink);font-family:var(--body);font-size:14px;line-height:1.45}
+button{font-family:inherit}
+
+/* ---------- Leiste ausserhalb des Nachbaus ---------- */
+.aussen{position:sticky;top:0;z-index:60;background:#12151A;border-bottom:1px solid var(--linie);
+  display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:9px 14px}
+.aussen .hinw{font-size:12.5px;color:var(--grau);display:flex;align-items:center;gap:7px}
+.aussen .hinw b{color:var(--tape);font-family:var(--disp);font-size:11px;letter-spacing:.6px;
+  background:rgba(255,210,63,.13);border:1px solid rgba(255,210,63,.45);border-radius:4px;padding:2px 7px}
+.aussen .rechts{margin-left:auto;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.umschalt{display:flex;background:#1B2029;border:1px solid var(--linie2);border-radius:8px;overflow:hidden}
+.umschalt button{background:none;border:none;color:var(--ink);font-size:13px;padding:7px 13px;cursor:pointer}
+.umschalt button.an{background:var(--tape);color:#161616;font-weight:700}
+.wahl{background:#1B2029;border:1px solid var(--linie2);border-radius:8px;color:var(--ink);
+  font-size:13px;padding:7px 9px}
+.klein{background:#1B2029;border:1px solid var(--linie2);border-radius:8px;color:var(--ink);
+  font-size:13px;padding:7px 11px;cursor:pointer}
+.klein:hover{border-color:var(--tape)}
+
+.buehne{display:flex;gap:24px;justify-content:center;align-items:flex-start;
+  padding:22px 16px 60px;flex-wrap:wrap}
+
+/* ---------- gemeinsame Bausteine des Nachbaus ---------- */
+.jkopf{background:var(--flaeche);padding:11px 14px;display:flex;align-items:center;gap:11px;
+  border-bottom:1px solid var(--linie)}
+.logo{width:32px;height:32px;border-radius:9px;background:#E7EAF0;color:#12161C;display:flex;
+  align-items:center;justify-content:center;font-weight:800;font-size:13px;letter-spacing:-.5px;flex:0 0 auto}
+.jkopf .t1{font-size:15px;font-weight:600;line-height:1.15}
+.jkopf .t2{font-size:12px;color:var(--grau)}
+.jkopf .rechts{margin-left:auto;color:var(--grau);font-size:18px;cursor:default}
+.abschnitt{padding:13px 14px 4px;font-size:12px;color:var(--grau);letter-spacing:.6px;text-transform:uppercase}
+.zeile{display:flex;gap:12px;padding:10px 14px;border-bottom:1px solid #1D232C;align-items:flex-start}
+.zeit{font-variant-numeric:tabular-nums;font-size:14.5px;color:#C6CDD9;min-width:46px;padding-top:2px}
+.inhalt{flex:1;min-width:0}
+.inhalt .was{font-size:15px;font-weight:600}
+.inhalt .wo{font-size:12.5px;color:var(--grau);margin-top:1px}
+.zeile.shuttle{background:#141A22;border-left:3px solid var(--tape);padding-left:11px;cursor:pointer}
+.zeile.shuttle:hover{background:#18202A}
+.pfeil{color:var(--grau);font-size:16px;align-self:center}
+.marke{font-family:var(--disp);font-size:10px;font-weight:700;letter-spacing:.5px;background:var(--tape);
+  color:#161616;border-radius:4px;padding:2px 6px;display:inline-block}
+.marke.grau{background:#2A3340;color:var(--grau)}
+.marke.gruen{background:#1E5B45;color:var(--okink)}
+.fussnote{padding:10px 14px 16px;font-size:11.5px;color:#6F7A8C;line-height:1.45}
+
+/* ---------- Handy (Crew) ---------- */
+.handy{width:392px;background:#12161C;border:1px solid #2A3039;border-radius:24px;overflow:hidden;
+  box-shadow:0 18px 46px rgba(0,0,0,.55);display:flex;flex-direction:column;min-height:660px}
+.handy .rumpf{flex:1;overflow-y:auto;max-height:74vh}
+.datum{padding:12px 14px 4px;font-size:12px;color:var(--grau);letter-spacing:.6px;text-transform:uppercase}
+.tage{display:flex;gap:8px;padding:0 14px 10px}
+.tage button{flex:1;background:var(--flaeche);border:1px solid var(--linie);border-radius:8px;
+  color:var(--ink);font-size:12.5px;padding:8px 6px;cursor:pointer}
+.tage button.an{border-color:var(--tape);background:#1E2530}
+.showkarte{margin:0 14px 4px;background:var(--flaeche);border:1px solid var(--linie);border-radius:12px;padding:12px 13px}
+.showkarte .stadt{font-size:17px;font-weight:600}
+.showkarte .venue{font-size:12.5px;color:var(--grau);margin-top:1px}
+.showkarte .status{display:inline-block;margin-top:8px;font-size:11px;font-weight:700;background:#1E5B45;
+  color:var(--okink);border-radius:4px;padding:3px 8px}
+
+.block{margin:8px 14px 14px;border:1px solid var(--linie2);border-radius:12px;overflow:hidden;background:#141A22}
+.blockkopf{display:flex;align-items:center;gap:9px;padding:10px 12px;background:var(--flaeche2);
+  border-bottom:1px solid #2A3340}
+.blockkopf .titel{font-size:14px;font-weight:600}
+.blockkopf .marke{margin-left:auto}
+.vans{display:flex;gap:10px;padding:12px}
+.van{flex:1;min-width:0;text-align:center}
+.van .name{font-size:13px;font-weight:600}
+.van .kfz{font-size:11px;color:var(--grau);font-variant-numeric:tabular-nums}
+.van .frei{font-size:12px;margin-top:4px}
+.van .frei b{color:var(--okink)}
+.van .frei.voll b{color:var(--rot)}
+.vanmap{display:block;max-width:158px;margin:6px auto 0}
+.legende{display:flex;gap:12px;justify-content:center;padding:0 12px 12px;font-size:11px;color:#98A2B3;flex-wrap:wrap}
+.legende span{display:flex;align-items:center;gap:5px}
+.lp{width:12px;height:12px;border-radius:3px;border:2px solid #5A6473;background:#232830;display:inline-block}
+.lp.b{background:#22401F;border-color:var(--ok)}
+.lp.a{background:#4A3D12;border-color:var(--tape)}
+.meins{margin:0 12px 12px;background:#16241D;border:1px solid #2C5B44;border-radius:9px;padding:9px 11px;font-size:13px}
+.meins b{color:var(--okink)}
+.meins.wartet{background:#2A2412;border-color:#5B4C1E}
+.meins.wartet b{color:var(--tape)}
+.knopfzeile{display:flex;gap:9px;padding:0 12px 12px}
+.knopf{flex:1;text-align:center;background:var(--tape);color:#161616;font-weight:700;font-size:14px;
+  border:none;border-radius:8px;padding:11px 8px;cursor:pointer}
+.knopf:disabled{background:#2A3340;color:#6F7A8C;cursor:default}
+.knopf.zweit{background:#232B36;color:var(--ink);border:1px solid var(--linie2)}
+.zurueck{background:none;border:none;color:var(--grau);font-size:13px;padding:10px 14px 2px;cursor:pointer}
+.zurueck:hover{color:var(--ink)}
+
+/* ---------- Sitze ---------- */
+.seat .seatbox{fill:#232830;stroke:#5A6473;stroke-width:2}
+.seat .seatlehne{fill:#5A6473;opacity:.55}
+.seat .seattext{font-family:Arial;font-weight:700;font-size:19px;fill:#fff;text-anchor:middle}
+.seat .seatsub{font-family:Arial;font-size:10px;fill:#fff;opacity:.85;text-anchor:middle}
+.seat.frei .seatbox{stroke-dasharray:5 4}
+.seat.bestaetigt .seatbox{fill:#22401F;stroke:var(--ok)}
+.seat.bestaetigt .seatlehne{fill:var(--ok)}
+.seat.angefragt .seatbox{fill:#4A3D12;stroke:var(--tape);stroke-dasharray:5 4}
+.seat.angefragt .seatlehne{fill:var(--tape);opacity:.8}
+.seat.gesperrt .seatbox{fill:#20252D;stroke:#333C48}
+.seat.fahrer .seatbox{fill:var(--flaeche);stroke:#4A5563}
+.seat.fahrer .seatlehne{fill:#4A5563;opacity:.6}
+.seat .lenkrad{fill:none;stroke:#4A5563;stroke-width:3}
+.seat .lenkradnabe{fill:#4A5563}
+.seat.ich .seatbox{stroke:#fff;stroke-width:3.4}
+.seat.klickbar{cursor:pointer}
+.seat.klickbar:hover .seatbox{stroke:var(--tape)}
+
+/* ---------- Rechner (Tourmanagement) ---------- */
+.fenster{width:min(980px,100%);background:#12161C;border:1px solid #2A3039;border-radius:14px;
+  overflow:hidden;box-shadow:0 18px 46px rgba(0,0,0,.55)}
+.reiter{display:flex;gap:2px;background:var(--flaeche);padding:0 10px;border-bottom:1px solid var(--linie)}
+.reiter button{background:none;border:none;border-bottom:3px solid transparent;color:var(--grau);
+  font-size:13.5px;padding:11px 14px 9px;cursor:pointer}
+.reiter button.an{color:var(--ink);border-bottom-color:var(--tape)}
+.reiter .zusatz{margin-left:auto;display:flex;align-items:center;gap:8px;padding:6px 0}
+.tafel{padding:14px}
+.karte{background:var(--flaeche);border:1px solid var(--linie);border-radius:12px;padding:12px 13px;margin-bottom:12px}
+.karte h3{font-family:var(--disp);font-size:15px;margin:0 0 3px}
+.karte .unter{font-size:12.5px;color:var(--grau);margin-bottom:8px}
+.spalten{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}
+.spalte{flex:1 1 300px;min-width:280px}
+.liste{max-height:330px;overflow-y:auto;border:1px solid var(--linie);border-radius:10px;background:var(--flaeche)}
+.person{display:flex;gap:9px;align-items:center;padding:7px 10px;border-bottom:1px solid #1D232C;cursor:pointer}
+.person:hover{background:#1B2029}
+.person.verplant{opacity:.5}
+.person .kuerz{width:26px;height:26px;border-radius:50%;background:#2A3340;font-size:11px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.person .nam{font-size:13.5px}
+.person .gew{font-size:11.5px;color:var(--grau)}
+.person .wo{margin-left:auto;font-size:11px;color:var(--okink)}
+.anfrage{display:flex;gap:10px;align-items:center;padding:8px 10px;border-bottom:1px solid #1D232C;font-size:13px}
+.anfrage .frei{margin-left:auto}
+.leer{padding:14px;color:var(--grau);font-size:13px}
+.hinweisleiste{background:#141A22;border:1px solid var(--linie2);border-left:3px solid var(--tape);
+  border-radius:9px;padding:9px 11px;font-size:12.5px;color:#C6CDD9;margin-bottom:12px}
+
+/* ---------- Schnittstellen-Protokoll ---------- */
+.protokoll{width:392px;background:#12161C;border:1px solid #2A3039;border-radius:14px;overflow:hidden}
+.protokoll .kopf{background:var(--flaeche);padding:10px 13px;border-bottom:1px solid var(--linie);
+  display:flex;align-items:center;gap:9px}
+.protokoll .kopf .t{font-size:13.5px;font-weight:600}
+.protokoll .txt{font-size:12px;color:var(--grau);padding:9px 13px;border-bottom:1px solid var(--linie);line-height:1.5}
+.protokoll .zeilen{max-height:420px;overflow-y:auto;font-family:Consolas,'Courier New',monospace;font-size:11.5px}
+.protokoll .z{padding:7px 13px;border-bottom:1px solid #1A2029;color:#B8C1CE;word-break:break-word}
+.protokoll .z .ri{color:var(--tape)}
+.protokoll .z .ok{color:var(--okink)}
+.protokoll .z .zt{color:#5E6875}
+
+/* ---------- Fenster / Meldungen ---------- */
+.ovl{position:fixed;inset:0;background:rgba(6,8,11,.72);display:flex;align-items:center;
+  justify-content:center;z-index:100;padding:18px}
+.dlg{background:#161B22;border:1px solid var(--linie2);border-radius:12px;max-width:560px;width:100%;
+  max-height:86vh;overflow:auto;box-shadow:0 22px 60px rgba(0,0,0,.6)}
+.dlg h3{font-family:var(--disp);font-size:16px;padding:13px 16px;border-bottom:1px solid var(--linie)}
+.dlg .inhalt2{padding:14px 16px;font-size:13.5px}
+.dlg .inhalt2 p{margin-bottom:9px}
+.dlg pre{background:#0E1116;border:1px solid var(--linie);border-radius:8px;padding:10px;font-size:11.5px;
+  color:#B8C1CE;overflow:auto;max-height:240px;white-space:pre-wrap;word-break:break-word}
+.dlg .fuss{display:flex;gap:9px;justify-content:flex-end;padding:11px 16px;border-top:1px solid var(--linie)}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:#1E2530;color:var(--ink);
+  border:1px solid var(--linie2);border-left:4px solid var(--tape);border-radius:9px;padding:11px 16px;
+  font-size:13.5px;z-index:120;box-shadow:0 12px 30px rgba(0,0,0,.5);max-width:88vw}
+
+.beschrift{text-align:center;font-size:12.5px;color:var(--grau);margin:10px auto 0;max-width:392px;line-height:1.45}
+@media (max-width:900px){.handy,.protokoll{width:100%;max-width:420px}}
+</style>
+</head>
+<body>
+
+<div class="aussen">
+  <div class="hinw"><b>NACHBAU</b> J.SHOW ist hier nachgebaut, die Anbindung ist nachgestellt — es geht nichts nach außen.</div>
+  <div class="rechts">
+    <div class="umschalt" id="umschalt">
+      <button data-ans="crew" class="an">Crew · Handy</button>
+      <button data-ans="tm">Tourmanagement · Rechner</button>
+    </div>
+    <select class="wahl" id="werbinich" title="Als wen schaue ich?"></select>
+    <button class="klein" id="btnReset">Von vorn</button>
+  </div>
+</div>
+
+<div class="buehne" id="buehne"></div>
+
+<script src="shuttle_fahrzeuge.js"></script>
+<script>
+'use strict';
+
+/* ================= Hilfen ================= */
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!==undefined)e.textContent=x;return e;}
+function heuteISO(){var d=new Date();return d.toISOString().slice(0,10);}
+function plusTage(iso,n){var d=new Date(iso+'T12:00:00');d.setDate(d.getDate()+n);return d.toISOString().slice(0,10);}
+var WOCHE=['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
+function langDatum(iso){var d=new Date(iso+'T12:00:00');
+  return WOCHE[d.getDay()]+' · '+('0'+d.getDate()).slice(-2)+'. '+
+    ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'][d.getMonth()]+
+    ' '+d.getFullYear();}
+function kurzDatum(iso){var d=new Date(iso+'T12:00:00');
+  return WOCHE[d.getDay()].slice(0,2)+' '+('0'+d.getDate()).slice(-2)+'.'+('0'+(d.getMonth()+1)).slice(-2)+'.';}
+function uhr(){var d=new Date();return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)+':'+('0'+d.getSeconds()).slice(-2);}
+
+/* ================= Daten ================= */
+var SCHLUESSEL='amk_jshow_demo_v2';
+function saat(){
+  var t1=(new Date().getHours()<7)?heuteISO():plusTage(heuteISO(),1), t2=plusTage(t1,1);
+  var crewRoh=[
+    ['c1','Marek Ahrens','Produktion'],['c2','Jonas Beck','Backline'],['c3','Silke Brand','Catering'],
+    ['c4','Timo Deckert','Licht'],['c5','Nina Falk','Audio'],['c6','Ruben Gerlach','Backline'],
+    ['c7','Lea Hartmann','Produktion'],['c8','Kai Hoffmann','Licht'],['c9','Mira Jansen','LED/Video'],
+    ['c10','Ole Kranz','Audio'],['c11','Frida Lang','Merchandise'],['c12','Ben Maurer','Rigging'],
+    ['c13','Aylin Neumann','Catering'],['c14','Sven Ortmann','Bühne'],['c15','Jule Pfeiffer','LED/Video'],
+    ['c16','Nico Reinert','Bühne'],['c17','Tara Schmitz','Merchandise'],['c18','Luis Steger','Rigging'],
+    ['c19','Hanna Vogt','Produktion'],['c20','Emil Walther','Licht'],['c21','Pia Zeidler','Audio'],
+    ['c22','Dario Cordes','Backline'],['c23','Maja Endres','Bühne'],['c24','Finn Groth','LED/Video'],
+    ['c25','Charlotte König','Tourmanagement'],['c26','Daniel Treseler','Tourmanagement']
+  ];
+  var crew=crewRoh.map(function(c){
+    var teile=c[1].split(' ');
+    return {id:c[0], name:c[1], gewerk:c[2], kuerzel:(teile[0][0]+teile[1][0]).toUpperCase()};
+  });
+  var fahrzeuge=[
+    {id:'f1', name:'Shuttle 1', vorlage:'van7', kennzeichen:'B-AM 1234', fahrer:'Rüdiger Palm', telefon:'0170 1234567'},
+    {id:'f2', name:'Shuttle 2', vorlage:'van8', kennzeichen:'B-MK 5678', fahrer:'Petra Simon', telefon:'0171 2345678'},
+    {id:'f3', name:'Shuttle 3', vorlage:'van9', kennzeichen:'B-AK 9012', fahrer:'Mo Yildiz', telefon:'0172 3456789'},
+    {id:'f4', name:'Nightliner-Zubringer', vorlage:'bus16', kennzeichen:'B-LS 4711', fahrer:'Achim Bruns', telefon:'0173 4567890'}
+  ];
+  var fahrten=[
+    {id:'t1', tag:t1, zeit:'08:30', richtung:'Hotel ➜ Venue', von:'Hotellobby', nach:'Parkbühne Wuhlheide · Loading Dock 2',
+     hinweis:'Bitte pünktlich, wir fahren wegen der Anlieferung genau um 08:30 los.',
+     shuttles:[
+       {fahrzeugId:'f1', gesperrt:[], warteliste:[], plaetze:{
+         'BF':{crewId:'c7',status:'bestaetigt'},'2L':{crewId:'c2',status:'bestaetigt'},
+         '2M':{crewId:'c6',status:'bestaetigt'},'2R':{crewId:'c22',status:'angefragt'},
+         '3L':{crewId:'c14',status:'bestaetigt'}}},
+       {fahrzeugId:'f2', gesperrt:['3R'], warteliste:[], plaetze:{
+         'BF':{crewId:'c4',status:'bestaetigt'},'2L':{crewId:'c8',status:'bestaetigt'},
+         '2M':{crewId:'c20',status:'angefragt'},'3L':{crewId:'c5',status:'bestaetigt'}}}
+     ]},
+    {id:'t2', tag:t1, zeit:'17:45', richtung:'Hotel ➜ Venue', von:'Hotellobby', nach:'Parkbühne Wuhlheide · Crew-Eingang',
+     hinweis:'Späte Schicht — Catering ist bereits vor Ort.',
+     shuttles:[
+       {fahrzeugId:'f1', gesperrt:[], warteliste:[], plaetze:{
+         'BF':{crewId:'c11',status:'bestaetigt'},'2L':{crewId:'c17',status:'angefragt'}}}
+     ]},
+    {id:'t3', tag:t1, zeit:'23:59', richtung:'Venue ➜ Hotel', von:'Parkbühne Wuhlheide · Crew-Eingang', nach:'Hotellobby',
+     hinweis:'Nach Show-Ende. Wir warten auf die letzten aus dem Backline-Load-out.',
+     shuttles:[
+       {fahrzeugId:'f4', gesperrt:[], warteliste:[], plaetze:{
+         '2L':{crewId:'c1',status:'bestaetigt'},'2M':{crewId:'c9',status:'bestaetigt'},
+         '3L':{crewId:'c19',status:'bestaetigt'}}}
+     ]},
+    {id:'t4', tag:t2, zeit:'09:15', richtung:'Hotel ➜ Venue', von:'Hotellobby', nach:'Parkbühne Wuhlheide · Loading Dock 2',
+     hinweis:'', shuttles:[
+       {fahrzeugId:'f1', gesperrt:[], warteliste:[], plaetze:{}},
+       {fahrzeugId:'f3', gesperrt:['4L','4R'], warteliste:[], plaetze:{}}
+     ]}
+  ];
+  var tage=[
+    {datum:t1, stadt:'Berlin', venue:'Parkbühne Wuhlheide', hotel:'Hotel Alexanderplatz', status:'bestätigt',
+     ablauf:[
+       {zeit:'07:00', was:'Frühstück', wo:'Hotel Alexanderplatz'},
+       {zeit:'08:30', fahrtId:'t1'},
+       {zeit:'09:00', was:'Load-in', wo:'Loading Dock 2'},
+       {zeit:'14:00', was:'Soundcheck', wo:'Hauptbühne'},
+       {zeit:'17:45', fahrtId:'t2'},
+       {zeit:'20:00', was:'Showtime', wo:'Hauptbühne'},
+       {zeit:'23:59', fahrtId:'t3'}
+     ]},
+    {datum:t2, stadt:'Berlin', venue:'Parkbühne Wuhlheide', hotel:'Hotel Alexanderplatz', status:'bestätigt',
+     ablauf:[
+       {zeit:'08:00', was:'Frühstück', wo:'Hotel Alexanderplatz'},
+       {zeit:'09:15', fahrtId:'t4'},
+       {zeit:'10:00', was:'Load-in Tag 2', wo:'Loading Dock 2'},
+       {zeit:'19:30', was:'Showtime', wo:'Hauptbühne'}
+     ]}
+  ];
+  return {ich:'c13', ansicht:'crew', tagNr:0, offen:null, crew:crew, fahrzeuge:fahrzeuge,
+          fahrten:fahrten, tage:tage, log:[]};
+}
+var D;
+function laden(){
+  try{
+    var roh=localStorage.getItem(SCHLUESSEL);
+    D = roh ? JSON.parse(roh) : saat();
+    if(!D.tage || !D.crew) D=saat();
+    /* Der Demo-Tag soll immer in der Zukunft liegen. */
+    var soll=(new Date().getHours()<7)?heuteISO():plusTage(heuteISO(),1);
+    if(D.tage[0].datum!==soll) D=saat();
+  }catch(e){ D=saat(); }
+}
+function sichern(){ try{ localStorage.setItem(SCHLUESSEL, JSON.stringify(D)); }catch(e){} }
+
+/* ================= Nachschlagen ================= */
+function person(id){ for(var i=0;i<D.crew.length;i++) if(D.crew[i].id===id) return D.crew[i]; return null; }
+function fahrzeug(id){ for(var i=0;i<D.fahrzeuge.length;i++) if(D.fahrzeuge[i].id===id) return D.fahrzeuge[i]; return null; }
+function fahrt(id){ for(var i=0;i<D.fahrten.length;i++) if(D.fahrten[i].id===id) return D.fahrten[i]; return null; }
+function tagFahrten(datum){ return D.fahrten.filter(function(f){ return f.tag===datum; }); }
+function ichName(){ var p=person(D.ich); return p?p.name:'—'; }
+
+function platzZahlen(f){
+  var frei=0, belegt=0, angefragt=0;
+  f.shuttles.forEach(function(s){
+    var fz=fahrzeug(s.fahrzeugId);
+    VANS.buchbar(fz.vorlage).forEach(function(si){
+      if((s.gesperrt||[]).indexOf(si.id)>=0) return;
+      var b=s.plaetze[si.id];
+      if(!b) frei++;
+      else if(b.status==='angefragt') angefragt++;
+      else belegt++;
+    });
+  });
+  return {frei:frei, belegt:belegt, angefragt:angefragt};
+}
+function meinPlatz(f){
+  for(var i=0;i<f.shuttles.length;i++){
+    var s=f.shuttles[i];
+    for(var sid in s.plaetze){
+      if(s.plaetze[sid].crewId===D.ich)
+        return {shuttle:s, sitzId:sid, status:s.plaetze[sid].status, fahrzeug:fahrzeug(s.fahrzeugId)};
+    }
+    if((s.warteliste||[]).indexOf(D.ich)>=0) return {shuttle:s, warteliste:true, fahrzeug:fahrzeug(s.fahrzeugId)};
+  }
+  return null;
+}
+function wirdSchonGefahren(crewId, datum){
+  var treffer=[];
+  tagFahrten(datum).forEach(function(f){
+    f.shuttles.forEach(function(s){
+      for(var sid in s.plaetze) if(s.plaetze[sid].crewId===crewId) treffer.push(f.zeit);
+    });
+  });
+  return treffer;
+}
+
+/* ================= Schnittstellen-Protokoll (nachgestellt) ================= */
+function ruf(richtung, text, antwort){
+  D.log.unshift({zeit:uhr(), richtung:richtung, text:text, antwort:antwort||''});
+  if(D.log.length>60) D.log.length=60;
+}
+
+/* ================= Meldungen ================= */
+var toastTimer=null;
+function toast(text){
+  var alt=document.querySelector('.toast'); if(alt)alt.remove();
+  var t=el('div','toast',text); document.body.appendChild(t);
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(function(){ if(t.parentNode)t.remove(); },3400);
+}
+function dialog(titel, bauen, knoepfe){
+  var ovl=el('div','ovl'), d=el('div','dlg');
+  d.appendChild(el('h3',null,titel));
+  var bd=el('div','inhalt2'); bauen(bd); d.appendChild(bd);
+  var fu=el('div','fuss');
+  (knoepfe||[{text:'Schließen'}]).forEach(function(k){
+    var b=el('button', k.art==='pri'?'knopf':'knopf zweit', k.text);
+    b.style.flex='0 0 auto';
+    b.onclick=function(){ if(k.fn && k.fn()===false) return; ovl.remove(); };
+    fu.appendChild(b);
+  });
+  d.appendChild(fu); ovl.appendChild(d);
+  ovl.onclick=function(e){ if(e.target===ovl) ovl.remove(); };
+  document.body.appendChild(ovl);
+  return {zu:function(){ovl.remove();}};
+}
+
+/* ================= Zeichnen: Crew-Handy ================= */
+function crewAnsicht(){
+  var h=el('div','handy');
+  var kopf=el('div','jkopf');
+  kopf.appendChild(el('div','logo','J.'));
+  var mitte=el('div');
+  mitte.appendChild(el('div','t1','AnnenMayKantereit'));
+  mitte.appendChild(el('div','t2','Publikum Open Airs 2026 · '+ichName()));
+  kopf.appendChild(mitte);
+  kopf.appendChild(el('div','rechts','☰'));
+  h.appendChild(kopf);
+
+  var rumpf=el('div','rumpf'); h.appendChild(rumpf);
+  if(D.offen) crewFahrt(rumpf); else crewTag(rumpf);
+  return h;
+}
+
+function crewTag(rumpf){
+  var t=D.tage[D.tagNr];
+  rumpf.appendChild(el('div','datum', langDatum(t.datum)));
+  var tage=el('div','tage');
+  D.tage.forEach(function(x,i){
+    var b=el('button', i===D.tagNr?'an':'', kurzDatum(x.datum)+' · '+x.stadt);
+    b.onclick=function(){ D.tagNr=i; sichern(); zeichne(); };
+    tage.appendChild(b);
+  });
+  rumpf.appendChild(tage);
+
+  var k=el('div','showkarte');
+  k.appendChild(el('div','stadt',t.stadt));
+  k.appendChild(el('div','venue', t.venue+' · '+t.hotel));
+  k.appendChild(el('div','status', t.status));
+  rumpf.appendChild(k);
+
+  rumpf.appendChild(el('div','abschnitt','Tagesablauf'));
+  t.ablauf.forEach(function(p){
+    if(p.fahrtId){
+      var f=fahrt(p.fahrtId); if(!f) return;
+      var z=platzZahlen(f), mein=meinPlatz(f);
+      var zeile=el('div','zeile shuttle');
+      zeile.appendChild(el('div','zeit', f.zeit));
+      var inh=el('div','inhalt');
+      inh.appendChild(el('div','was','Shuttle · '+f.richtung));
+      var untertext = 'ab '+f.von+' · '+(z.frei?z.frei+' Plätze frei':'ausgebucht');
+      inh.appendChild(el('div','wo', untertext));
+      if(mein){
+        var m=el('div'); m.style.marginTop='5px';
+        m.appendChild(el('span','marke '+(mein.status==='bestaetigt'?'gruen':''),
+          mein.warteliste ? 'auf der Warteliste'
+          : (mein.status==='bestaetigt' ? 'dein Platz ist bestätigt' : 'dein Platz ist angefragt')));
+        inh.appendChild(m);
+      }
+      zeile.appendChild(inh);
+      zeile.appendChild(el('div','pfeil','›'));
+      zeile.onclick=function(){ D.offen=f.id; sichern(); zeichne(); };
+      rumpf.appendChild(zeile);
+    }else{
+      var zn=el('div','zeile');
+      zn.appendChild(el('div','zeit',p.zeit));
+      var i2=el('div','inhalt');
+      i2.appendChild(el('div','was',p.was));
+      i2.appendChild(el('div','wo',p.wo));
+      zn.appendChild(i2);
+      rumpf.appendChild(zn);
+    }
+  });
+  rumpf.appendChild(el('div','fussnote',
+    'Nachbau: So stünde der Shuttle im gewohnten Tagesablauf — zwischen Frühstück und Load-in. '+
+    'Ein Tipp darauf öffnet die Platzbuchung, ohne die Plattform zu verlassen.'));
+}
+
+function crewFahrt(rumpf){
+  var f=fahrt(D.offen); if(!f){ D.offen=null; return crewTag(rumpf); }
+  var zurueck=el('button','zurueck','‹ zurück zum Tagesablauf');
+  zurueck.onclick=function(){ D.offen=null; sichern(); zeichne(); };
+  rumpf.appendChild(zurueck);
+
+  var zeile=el('div','zeile');
+  zeile.appendChild(el('div','zeit', f.zeit));
+  var inh=el('div','inhalt');
+  inh.appendChild(el('div','was','Abfahrt '+f.von));
+  inh.appendChild(el('div','wo','Ziel: '+f.nach));
+  zeile.appendChild(inh);
+  rumpf.appendChild(zeile);
+  if(f.hinweis) rumpf.appendChild(el('div','fussnote', f.hinweis));
+
+  var mein=meinPlatz(f);
+  var block=el('div','block');
+  var bk=el('div','blockkopf');
+  bk.appendChild(el('div','titel', mein?'Dein Platz':'Platz auswählen'));
+  bk.appendChild(el('span','marke','CREW-SHUTTLE'));
+  block.appendChild(bk);
+
+  var vans=el('div','vans');
+  f.shuttles.forEach(function(s){
+    var fz=fahrzeug(s.fahrzeugId);
+    var d=el('div','van');
+    d.appendChild(el('div','name', fz.name));
+    d.appendChild(el('div','kfz', fz.kennzeichen));
+    var svg=VANS.zeichneVan(fz.vorlage,{
+      zustand:function(sid,def){
+        if(def.typ==='fahrer') return {klasse:'fahrer', sub:'', titel:'Fahrer: '+fz.fahrer};
+        if((s.gesperrt||[]).indexOf(sid)>=0) return {klasse:'gesperrt', text:'▩', sub:'', titel:'Gepäck'};
+        var b=s.plaetze[sid];
+        if(!b) return {klasse:'frei'+(mein?'':' klickbar'), text:'', sub:'', klickbar:!mein, titel:'frei'};
+        var p=person(b.crewId);
+        return {klasse:(b.status==='angefragt'?'angefragt':'bestaetigt')+(b.crewId===D.ich?' ich':''),
+                text:'', sub:'', titel:(p?p.name:'') + (b.status==='angefragt'?' (angefragt)':'')};
+      },
+      klick:function(sid){ platzNehmen(f,s,sid); }
+    });
+    d.appendChild(svg);
+    var frei=0;
+    VANS.buchbar(fz.vorlage).forEach(function(si){
+      if((s.gesperrt||[]).indexOf(si.id)>=0) return;
+      if(!s.plaetze[si.id]) frei++;
+    });
+    var fz2=el('div','frei'+(frei?'':' voll'));
+    fz2.innerHTML='<b>'+frei+'</b> frei';
+    d.appendChild(fz2);
+    vans.appendChild(d);
+  });
+  block.appendChild(vans);
+
+  var lg=el('div','legende');
+  lg.innerHTML='<span><i class="lp"></i> frei</span><span><i class="lp a"></i> angefragt</span>'+
+               '<span><i class="lp b"></i> belegt</span>';
+  block.appendChild(lg);
+
+  if(mein){
+    var m=el('div','meins'+(mein.status==='bestaetigt'?'':' wartet'));
+    m.innerHTML = mein.warteliste
+      ? 'Du stehst auf der <b>Warteliste</b> für '+mein.fahrzeug.name+'. Wird ein Platz frei, rückst du nach.'
+      : 'Dein Platz: <b>'+mein.fahrzeug.name+'</b> · '+
+        (mein.status==='bestaetigt'?'bestätigt':'angefragt, das Tourmanagement gibt ihn frei')+
+        ' · Treffpunkt '+f.von+', '+f.zeit+' Uhr';
+    block.appendChild(m);
+  }else{
+    block.appendChild(el('div','fussnote',
+      'Tippe auf einen freien Platz. Es geht nur um einen Platz im Fahrzeug — welcher Sitz es wird, entscheidet sich beim Einsteigen.'));
+  }
+
+  var kn=el('div','knopfzeile');
+  if(mein){
+    var ab=el('button','knopf zweit','Absagen');
+    ab.onclick=function(){ absagen(f); };
+    kn.appendChild(ab);
+  }else if(!platzZahlen(f).frei){
+    var b1=el('button','knopf','Auf die Warteliste');
+    b1.onclick=function(){ warteliste(f); };
+    kn.appendChild(b1);
+  }
+  if(kn.children.length) block.appendChild(kn);
+  rumpf.appendChild(block);
+
+  rumpf.appendChild(el('div','fussnote',
+    'Nachbau. Buchung, Absage und Warteliste laufen hier echt — nur die Plattform darum herum ist nachgebaut.'));
+}
+
+/* ================= Handlungen der Crew ================= */
+function platzNehmen(f, s, sid){
+  var fz=fahrzeug(s.fahrzeugId);
+  dialog('Platz nehmen', function(bd){
+    bd.appendChild(el('p', null, fz.name+' · '+fz.kennzeichen+' · Abfahrt '+f.zeit+' Uhr ab '+f.von+'.'));
+    bd.appendChild(el('p', null, 'Du buchst als '+ichName()+'. Das Tourmanagement gibt den Platz frei, danach ist er grün.'));
+  },[{text:'Abbrechen'},{text:'Platz nehmen', art:'pri', fn:function(){
+    if(s.plaetze[sid]){ toast('Der Platz ist gerade vergeben worden.'); zeichne(); return; }
+    s.plaetze[sid]={crewId:D.ich, status:'angefragt'};
+    ruf('aus','POST /api/shuttle/buchung  {fahrt:"'+f.id+'", fahrzeug:"'+fz.name+'", person:"'+ichName()+'"}','201 angelegt');
+    ruf('aus','PATCH /api/tagesablauf/'+f.id+'  {freie_plaetze:'+platzZahlen(f).frei+'}','200 übernommen');
+    sichern(); zeichne();
+    toast('Platz angefragt — das Tourmanagement gibt ihn frei.');
+  }}]);
+}
+function absagen(f){
+  dialog('Platz absagen', function(bd){
+    bd.appendChild(el('p',null,'Soll dein Platz für die Abfahrt um '+f.zeit+' Uhr wieder frei werden?'));
+    bd.appendChild(el('p',null,'Steht jemand auf der Warteliste, rückt diese Person automatisch nach.'));
+  },[{text:'Nein'},{text:'Ja, absagen', art:'pri', fn:function(){
+    var weg=false;
+    f.shuttles.forEach(function(s){
+      for(var sid in s.plaetze){
+        if(s.plaetze[sid].crewId===D.ich){ delete s.plaetze[sid]; weg=true;
+          if((s.warteliste||[]).length){
+            var naechster=s.warteliste.shift();
+            s.plaetze[sid]={crewId:naechster, status:'angefragt'};
+            var p=person(naechster);
+            ruf('aus','POST /api/shuttle/nachruecken  {person:"'+(p?p.name:'')+'"}','201 angelegt');
+            toast('Platz frei — '+(p?p.name:'')+' ist von der Warteliste nachgerückt.');
+          }
+        }
+      }
+      var w=(s.warteliste||[]).indexOf(D.ich);
+      if(w>=0){ s.warteliste.splice(w,1); weg=true; }
+    });
+    if(weg){
+      ruf('aus','DELETE /api/shuttle/buchung  {fahrt:"'+f.id+'", person:"'+ichName()+'"}','200 gelöscht');
+      sichern(); zeichne();
+      if(!document.querySelector('.toast')) toast('Dein Platz ist wieder frei.');
+    }
+  }}]);
+}
+function warteliste(f){
+  var s=f.shuttles[0]; if(!s.warteliste) s.warteliste=[];
+  if(s.warteliste.indexOf(D.ich)<0) s.warteliste.push(D.ich);
+  ruf('aus','POST /api/shuttle/warteliste  {fahrt:"'+f.id+'", person:"'+ichName()+'"}','201 angelegt');
+  sichern(); zeichne(); toast('Du stehst auf der Warteliste.');
+}
+
+/* ================= Zeichnen: Tourmanagement ================= */
+var tmReiter='shuttle', tmAuswahl=null;   /* tmAuswahl: {fahrtId, shuttleNr, sitzId} */
+
+function tmAnsicht(){
+  var w=el('div','fenster');
+  var kopf=el('div','jkopf');
+  kopf.appendChild(el('div','logo','J.'));
+  var mitte=el('div');
+  mitte.appendChild(el('div','t1','AnnenMayKantereit · Publikum Open Airs 2026'));
+  mitte.appendChild(el('div','t2','Landstreicher Booking · angemeldet als Tourmanagement'));
+  kopf.appendChild(mitte);
+  kopf.appendChild(el('div','rechts','⚙'));
+  w.appendChild(kopf);
+
+  var r=el('div','reiter');
+  [['tag','Tagesablauf'],['crew','Travel Party'],['shuttle','Shuttle']].forEach(function(x){
+    var b=el('button', tmReiter===x[0]?'an':'', x[1]);
+    if(x[0]==='shuttle') b.textContent='Shuttle';
+    b.onclick=function(){ tmReiter=x[0]; tmAuswahl=null; zeichne(); };
+    r.appendChild(b);
+  });
+  var zus=el('div','zusatz');
+  zus.appendChild(el('span','marke','ZUSATZ-BAUSTEIN'));
+  r.appendChild(zus);
+  w.appendChild(r);
+
+  var t=el('div','tafel');
+  if(tmReiter==='tag') tmTagesablauf(t);
+  else if(tmReiter==='crew') tmTravelParty(t);
+  else tmShuttle(t);
+  w.appendChild(t);
+  return w;
+}
+
+function tmTagesablauf(t){
+  t.appendChild(el('div','hinweisleiste',
+    'Das ist die vorhandene Ansicht der Plattform. Der Shuttle-Eintrag kommt aus dem Zusatz-Baustein und '+
+    'trägt sich mit Uhrzeit, Treffpunkt und freien Plätzen selbst ein.'));
+  D.tage.forEach(function(tag){
+    var k=el('div','karte');
+    k.appendChild(el('h3', null, langDatum(tag.datum)+' · '+tag.stadt));
+    k.appendChild(el('div','unter', tag.venue+' · '+tag.hotel));
+    tag.ablauf.forEach(function(p){
+      var zeile=el('div','zeile');
+      zeile.appendChild(el('div','zeit', p.zeit));
+      var inh=el('div','inhalt');
+      if(p.fahrtId){
+        var f=fahrt(p.fahrtId), z=platzZahlen(f);
+        inh.appendChild(el('div','was','Shuttle · '+f.richtung));
+        inh.appendChild(el('div','wo','ab '+f.von+' · '+z.belegt+' besetzt, '+z.angefragt+' angefragt, '+z.frei+' frei'));
+        var m=el('div'); m.style.marginTop='4px';
+        m.appendChild(el('span','marke','aus dem Shuttle-Baustein'));
+        inh.appendChild(m);
+      }else{
+        inh.appendChild(el('div','was',p.was));
+        inh.appendChild(el('div','wo',p.wo));
+      }
+      zeile.appendChild(inh);
+      k.appendChild(zeile);
+    });
+    t.appendChild(k);
+  });
+}
+
+function tmTravelParty(t){
+  t.appendChild(el('div','hinweisleiste',
+    'Die Travel Party steht bereits in der Plattform. Der Shuttle-Baustein liest sie von dort — '+
+    'Namen und Gewerke werden nirgends ein zweites Mal gepflegt.'));
+  var k=el('div','karte');
+  k.appendChild(el('h3',null,'Travel Party · '+D.crew.length+' Personen'));
+  k.appendChild(el('div','unter','Quelle: J.SHOW · zuletzt geholt heute'));
+  var liste=el('div','liste'); liste.style.maxHeight='420px';
+  D.crew.forEach(function(c){
+    var z=el('div','person');
+    z.appendChild(el('div','kuerz', c.kuerzel));
+    var n=el('div');
+    n.appendChild(el('div','nam', c.name));
+    n.appendChild(el('div','gew', c.gewerk));
+    z.appendChild(n);
+    var f=wirdSchonGefahren(c.id, D.tage[D.tagNr].datum);
+    if(f.length) z.appendChild(el('div','wo','Shuttle '+f.join(', ')));
+    liste.appendChild(z);
+  });
+  k.appendChild(liste);
+  t.appendChild(k);
+}
+
+function tmShuttle(t){
+  var tag=D.tage[D.tagNr];
+  var kopf=el('div','karte');
+  var reihe=el('div'); reihe.style.display='flex'; reihe.style.flexWrap='wrap';
+  reihe.style.gap='10px'; reihe.style.alignItems='center';
+  var links=el('div');
+  links.appendChild(el('h3',null,'Shuttle · '+tag.stadt+' · '+langDatum(tag.datum)));
+  links.appendChild(el('div','unter','Fahrten, Plätze und Anfragen des Tages'));
+  reihe.appendChild(links);
+  var rechts=el('div'); rechts.style.marginLeft='auto'; rechts.style.display='flex'; rechts.style.gap='8px';
+  D.tage.forEach(function(x,i){
+    var b=el('button','klein', kurzDatum(x.datum));
+    if(i===D.tagNr){ b.style.borderColor='var(--tape)'; }
+    b.onclick=function(){ D.tagNr=i; tmAuswahl=null; sichern(); zeichne(); };
+    rechts.appendChild(b);
+  });
+  var bs=el('button','klein','Plan an J.SHOW zurückgeben');
+  bs.style.borderColor='var(--tape)';
+  bs.onclick=function(){ zurueckschreiben(); };
+  rechts.appendChild(bs);
+  reihe.appendChild(rechts);
+  kopf.appendChild(reihe);
+  t.appendChild(kopf);
+
+  /* Anfragen */
+  var offene=[];
+  tagFahrten(tag.datum).forEach(function(f){
+    f.shuttles.forEach(function(s,nr){
+      for(var sid in s.plaetze) if(s.plaetze[sid].status==='angefragt')
+        offene.push({f:f, s:s, sid:sid, crewId:s.plaetze[sid].crewId});
+    });
+  });
+  var ka=el('div','karte');
+  var kr=el('div'); kr.style.display='flex'; kr.style.alignItems='center'; kr.style.gap='10px';
+  var kl=el('div');
+  kl.appendChild(el('h3',null,'Offene Anfragen · '+offene.length));
+  kl.appendChild(el('div','unter','Die Crew hat sich selbst eingebucht — die Freigabe bleibt beim Tourmanagement.'));
+  kr.appendChild(kl);
+  if(offene.length){
+    var alle=el('button','klein','Alle bestätigen');
+    alle.style.marginLeft='auto'; alle.style.borderColor='var(--tape)';
+    alle.onclick=function(){
+      offene.forEach(function(o){ o.s.plaetze[o.sid].status='bestaetigt'; });
+      ruf('aus','PATCH /api/shuttle/buchungen  {bestaetigt:'+offene.length+'}','200 übernommen');
+      sichern(); zeichne(); toast(offene.length+' Anfragen bestätigt.');
+    };
+    kr.appendChild(alle);
+  }
+  ka.appendChild(kr);
+  if(!offene.length) ka.appendChild(el('div','leer','Nichts offen — alle Plätze sind bestätigt.'));
+  else offene.forEach(function(o){
+    var p=person(o.crewId), fz=fahrzeug(o.s.fahrzeugId);
+    var z=el('div','anfrage');
+    z.appendChild(el('div','kuerz', p?p.kuerzel:'?'));
+    z.appendChild(el('div', null, (p?p.name:'')+' · '+(p?p.gewerk:'')+' — '+o.f.zeit+' Uhr, '+fz.name));
+    var b=el('button','klein','Bestätigen'); b.className='klein'; b.style.marginLeft='auto';
+    b.onclick=function(){
+      o.s.plaetze[o.sid].status='bestaetigt';
+      ruf('aus','PATCH /api/shuttle/buchung/'+o.sid+'  {status:"bestätigt"}','200 übernommen');
+      sichern(); zeichne(); toast('Platz bestätigt.');
+    };
+    z.appendChild(b);
+    ka.appendChild(z);
+  });
+  t.appendChild(ka);
+
+  /* Besetzung */
+  var kb=el('div','karte');
+  kb.appendChild(el('h3',null,'Selbst besetzen'));
+  kb.appendChild(el('div','unter','Erst einen freien Platz anklicken, dann links den Namen doppelt anklicken.'));
+  var sp=el('div','spalten');
+
+  var linksSp=el('div','spalte');
+  linksSp.appendChild(el('div','unter','Travel Party aus J.SHOW'));
+  var liste=el('div','liste');
+  D.crew.forEach(function(c){
+    var schon=wirdSchonGefahren(c.id, tag.datum);
+    var z=el('div','person'+(schon.length?' verplant':''));
+    z.appendChild(el('div','kuerz', c.kuerzel));
+    var n=el('div');
+    n.appendChild(el('div','nam', c.name));
+    n.appendChild(el('div','gew', c.gewerk));
+    z.appendChild(n);
+    if(schon.length) z.appendChild(el('div','wo', schon.join(', ')));
+    z.ondblclick=function(){ zuweisen(c.id); };
+    z.title='Doppelklick setzt '+c.name+' auf den ausgewählten Platz';
+    liste.appendChild(z);
+  });
+  linksSp.appendChild(liste);
+  sp.appendChild(linksSp);
+
+  var rechtsSp=el('div','spalte');
+  rechtsSp.appendChild(el('div','unter', tmAuswahl?'Ausgewählter Platz ist gelb umrandet.':'Abfahrten des Tages'));
+  tagFahrten(tag.datum).forEach(function(f){
+    var kf=el('div','karte'); kf.style.background='var(--flaeche2)';
+    kf.appendChild(el('h3',null, f.zeit+' Uhr · '+f.richtung));
+    kf.appendChild(el('div','unter','ab '+f.von+' → '+f.nach));
+    var vans=el('div','vans');
+    f.shuttles.forEach(function(s,nr){
+      var fz=fahrzeug(s.fahrzeugId);
+      var d=el('div','van');
+      d.appendChild(el('div','name', fz.name));
+      d.appendChild(el('div','kfz', fz.kennzeichen+' · '+fz.fahrer));
+      var svg=VANS.zeichneVan(fz.vorlage,{
+        zustand:function(sid,def){
+          if(def.typ==='fahrer') return {klasse:'fahrer', sub:'', titel:'Fahrer: '+fz.fahrer};
+          if((s.gesperrt||[]).indexOf(sid)>=0) return {klasse:'gesperrt', text:'▩', sub:'', titel:'Gepäck'};
+          var gewaehlt = tmAuswahl && tmAuswahl.fahrtId===f.id && tmAuswahl.shuttleNr===nr && tmAuswahl.sitzId===sid;
+          var b=s.plaetze[sid];
+          if(!b) return {klasse:'frei klickbar'+(gewaehlt?' ich':''), text:'', sub:'', klickbar:true, titel:'frei'};
+          var p=person(b.crewId);
+          return {klasse:(b.status==='angefragt'?'angefragt':'bestaetigt')+(gewaehlt?' ich':''),
+                  text:'', sub:(p?p.kuerzel:''), klickbar:true,
+                  titel:(p?p.name:'')+(b.status==='angefragt'?' (angefragt)':'')+' — Klick zum Herausnehmen'};
+        },
+        klick:function(sid){
+          var b=s.plaetze[sid];
+          if(b){
+            var p=person(b.crewId);
+            delete s.plaetze[sid];
+            ruf('aus','DELETE /api/shuttle/buchung  {person:"'+(p?p.name:'')+'"}','200 gelöscht');
+            sichern(); zeichne(); toast((p?p.name:'')+' herausgenommen.');
+          }else{
+            tmAuswahl={fahrtId:f.id, shuttleNr:nr, sitzId:sid};
+            zeichne(); toast('Platz gewählt — jetzt links einen Namen doppelt anklicken.');
+          }
+        }
+      });
+      d.appendChild(svg);
+      vans.appendChild(d);
+    });
+    kf.appendChild(vans);
+    rechtsSp.appendChild(kf);
+  });
+  sp.appendChild(rechtsSp);
+  kb.appendChild(sp);
+  t.appendChild(kb);
+}
+
+function zuweisen(crewId){
+  if(!tmAuswahl){ toast('Bitte zuerst rechts einen freien Platz anklicken.'); return; }
+  var f=fahrt(tmAuswahl.fahrtId); if(!f) return;
+  var s=f.shuttles[tmAuswahl.shuttleNr];
+  if(s.plaetze[tmAuswahl.sitzId]){ toast('Der Platz ist inzwischen belegt.'); tmAuswahl=null; zeichne(); return; }
+  s.plaetze[tmAuswahl.sitzId]={crewId:crewId, status:'bestaetigt'};
+  var p=person(crewId), fz=fahrzeug(s.fahrzeugId);
+  ruf('aus','POST /api/shuttle/buchung  {fahrt:"'+f.id+'", fahrzeug:"'+fz.name+'", person:"'+(p?p.name:'')+'", status:"bestätigt"}','201 angelegt');
+  tmAuswahl=null; sichern(); zeichne();
+  toast((p?p.name:'')+' fährt um '+f.zeit+' Uhr mit '+fz.name+'.');
+}
+
+function paket(){
+  var tag=D.tage[D.tagNr];
+  return {
+    plattform:'landstreicher.j.show', tour:'AnnenMayKantereit · Publikum Open Airs 2026',
+    datum:tag.datum, stadt:tag.stadt,
+    fahrten: tagFahrten(tag.datum).map(function(f){
+      return {zeit:f.zeit, richtung:f.richtung, treffpunkt:f.von, ziel:f.nach,
+        fahrzeuge: f.shuttles.map(function(s){
+          var fz=fahrzeug(s.fahrzeugId), leute=[];
+          for(var sid in s.plaetze){
+            var p=person(s.plaetze[sid].crewId);
+            if(p) leute.push({name:p.name, gewerk:p.gewerk, status:s.plaetze[sid].status});
+          }
+          return {name:fz.name, kennzeichen:fz.kennzeichen, fahrer:fz.fahrer,
+                  telefon:fz.telefon, personen:leute};
+        })};
+    })
+  };
+}
+function zurueckschreiben(){
+  var p=paket();
+  var anzahl=0;
+  p.fahrten.forEach(function(f){ f.fahrzeuge.forEach(function(v){ anzahl+=v.personen.length; }); });
+  ruf('aus','PUT /api/tagesablauf/shuttle  {datum:"'+p.datum+'", fahrten:'+p.fahrten.length+', personen:'+anzahl+'}','200 gespeichert');
+  sichern();
+  dialog('Plan an J.SHOW zurückgegeben', function(bd){
+    var h=el('p'); h.style.color='var(--tape)';
+    h.textContent='Nachgestellt: So würde das Paket aussehen und so würde die Plattform antworten. Es geht nichts nach außen.';
+    bd.appendChild(h);
+    bd.appendChild(el('p',null,'Antwort: 200 · Tagesablauf aktualisiert, '+p.fahrten.length+' Shuttle-Einträge, '+anzahl+' Personen.'));
+    var pre=el('pre', null, JSON.stringify(p,null,1));
+    bd.appendChild(pre);
+  },[{text:'Schließen', art:'pri'}]);
+  zeichne();
+}
+
+/* ================= Protokollspalte ================= */
+function protokollAnsicht(){
+  var w=el('div','protokoll');
+  var k=el('div','kopf');
+  k.appendChild(el('span','marke','NACHGESTELLT'));
+  k.appendChild(el('div','t','Was zwischen Werkzeug und J.SHOW liefe'));
+  w.appendChild(k);
+  w.appendChild(el('div','txt',
+    'Jede Buchung, jede Freigabe und jeder Plan würde über diese Schnittstelle laufen. '+
+    'Hier steht mit, was gesendet würde — solange die Freigabe fehlt, wird nichts gesendet.'));
+  var z=el('div','zeilen');
+  if(!D.log.length) z.appendChild(el('div','z','Noch nichts passiert. Buche links einen Platz.'));
+  D.log.forEach(function(l){
+    var d=el('div','z');
+    d.innerHTML='<span class="zt">'+l.zeit+'</span> <span class="ri">→</span> '+
+      l.text.replace(/[<>]/g,'') + (l.antwort?' <span class="ok">· '+l.antwort+'</span>':'');
+    z.appendChild(d);
+  });
+  w.appendChild(z);
+  return w;
+}
+
+/* ================= Aufbau ================= */
+function zeichne(){
+  var b=document.getElementById('buehne');
+  b.innerHTML='';
+  if(D.ansicht==='crew'){
+    var links=el('div');
+    links.appendChild(crewAnsicht());
+    links.appendChild(el('div','beschrift','So sieht es für die Crew aus — in der Plattform, ohne zweite App und ohne Konto.'));
+    b.appendChild(links);
+    var rechts=el('div');
+    rechts.appendChild(protokollAnsicht());
+    b.appendChild(rechts);
+  }else{
+    var tm=el('div'); tm.style.flex='1 1 720px'; tm.style.minWidth='0';
+    tm.appendChild(tmAnsicht());
+    tm.appendChild(el('div','beschrift','So sähe es für das Tourmanagement aus — der Shuttle als Baustein in der gewohnten Plattform.'));
+    b.appendChild(tm);
+    b.appendChild(protokollAnsicht());
+  }
+  var u=document.getElementById('umschalt');
+  [].slice.call(u.children).forEach(function(x){ x.classList.toggle('an', x.getAttribute('data-ans')===D.ansicht); });
+}
+
+function personenWahl(){
+  var s=document.getElementById('werbinich');
+  s.innerHTML='';
+  D.crew.forEach(function(c){
+    var o=document.createElement('option');
+    o.value=c.id; o.textContent=c.name+' · '+c.gewerk;
+    if(c.id===D.ich) o.selected=true;
+    s.appendChild(o);
+  });
+  s.onchange=function(){ D.ich=s.value; sichern(); zeichne(); };
+}
+
+document.getElementById('umschalt').onclick=function(e){
+  var b=e.target.closest('button'); if(!b) return;
+  D.ansicht=b.getAttribute('data-ans'); D.offen=null; tmAuswahl=null; sichern(); zeichne();
+};
+document.getElementById('btnReset').onclick=function(){
+  dialog('Von vorn beginnen', function(bd){
+    bd.appendChild(el('p',null,'Alle Buchungen dieser Vorführung werden zurückgesetzt.'));
+  },[{text:'Abbrechen'},{text:'Zurücksetzen', art:'pri', fn:function(){
+    D=saat(); sichern(); personenWahl(); zeichne(); toast('Alles wieder auf Anfang.');
+  }}]);
+};
+
+laden(); personenWahl(); zeichne();
+</script>
+</body>
+</html>

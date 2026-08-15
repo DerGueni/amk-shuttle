@@ -46,7 +46,7 @@ aside h2{font-family:var(--disp);font-size:14px;margin-bottom:9px}
 <header>
   <div class="kicker">LANDSTREICHER BOOKING · CREW-SHUTTLE</div>
   <h1>Erklärvideo: ein Tourtag mit dem Shuttle-Werkzeug</h1>
-  <div class="sub">Knapp vier Minuten, mit gesprochener Erklärung. Eine Datei mit Bild und Ton — auch zum Weitergeben.</div>
+  <div class="sub">Knapp sechs Minuten, mit gesprochener Erklärung: erst der Weg über die Crew-Gruppe, ab Minute 3:39 derselbe Tag in J.SHOW. Eine Datei mit Bild und Ton — auch zum Weitergeben.</div>
 </header>
 
 <main>
@@ -60,14 +60,16 @@ aside h2{font-family:var(--disp);font-size:14px;margin-bottom:9px}
         <button id="zur10">◀ 10 s</button>
         <button id="vor10">10 s ▶</button>
         <button id="anfang">An den Anfang</button>
-        <span class="zeit" id="zeit">0:00 / 3:53</span>
+        <span class="zeit" id="zeit">0:00 / 5:51</span>
       </div>
     </div>
     <div class="hinweis" id="tonhinweis">Bild und Ton stecken in einer Datei (<b>Demo_Shuttle.mp4</b>) — die lässt sich auch weitergeben oder in eine Präsentation einbauen.</div>
     <div class="hinweis rot">In diesem Video ist die Anbindung an J.SHOW <b>nachgestellt</b> — es entsteht keine Verbindung nach außen.</div>
     <div class="links">
       <a href="START_HIER.html">Übersicht mit Bildern</a>
-      <a href="Praesentation_Shuttle.html">Präsentation</a>
+      <a href="Praesentation_Shuttle.html">Präsentation · über die Gruppe</a>
+      <a href="Praesentation_JSHOW.html">Präsentation · in J.SHOW</a>
+      <a href="JSHOW_Demo.html">Fassung in J.SHOW öffnen</a>
       <a href="shuttle.html">Werkzeug öffnen</a>
       <a href="Anbindung_JSHOW.html">Anbindung an J.SHOW</a>
     </div>
@@ -83,17 +85,22 @@ aside h2{font-family:var(--disp);font-size:14px;margin-bottom:9px}
 <script>
 var KAP=[
  {"t":1.2,"n":"Worum es geht"},
- {"t":21.39,"n":"Die Abfahrten des Tages"},
- {"t":40.88,"n":"Das Fahrzeug von oben"},
- {"t":66.25,"n":"Die Crew bucht selbst"},
- {"t":80.11,"n":"Freigeben"},
- {"t":90.41,"n":"Selbst besetzen"},
- {"t":119.44,"n":"Kleinigkeiten, die zählen"},
- {"t":141.29,"n":"Fahrzeuge und Fahrer"},
- {"t":162.23,"n":"Die Nachricht an die Crew"},
- {"t":179.4,"n":"Die Nachricht an die Fahrer"},
- {"t":197.16,"n":"Anbindung an J.SHOW"},
- {"t":215.94,"n":"Zum Schluss"}
+ {"t":24.81,"n":"Die Abfahrten des Tages"},
+ {"t":44.3,"n":"Das Fahrzeug von oben"},
+ {"t":69.67,"n":"Die Crew bucht selbst"},
+ {"t":83.53,"n":"Freigeben"},
+ {"t":93.82,"n":"Selbst besetzen"},
+ {"t":122.86,"n":"Kleinigkeiten, die zählen"},
+ {"t":144.71,"n":"Fahrzeuge und Fahrer"},
+ {"t":165.65,"n":"Die Nachricht an die Crew"},
+ {"t":182.82,"n":"Die Nachricht an die Fahrer"},
+ {"t":200.58,"n":"Anbindung an J.SHOW"},
+ {"t":219.36,"n":"Zweite Fassung: in J.SHOW"},
+ {"t":243.01,"n":"Der Shuttle im Tagesablauf"},
+ {"t":262.9,"n":"Platz nehmen in der Plattform"},
+ {"t":283.24,"n":"Freigeben und einteilen"},
+ {"t":304.82,"n":"Der Plan geht zurück"},
+ {"t":326.61,"n":"Zum Schluss"}
 ];
 var v=document.getElementById('v');
 var ab=document.getElementById('ab'), zeit=document.getElementById('zeit');
@@ -119,7 +126,7 @@ document.getElementById('zur10').onclick=function(){springe(Math.max(0,v.current
 document.getElementById('vor10').onclick=function(){springe(v.currentTime+10);};
 document.getElementById('anfang').onclick=function(){springe(0);};
 v.addEventListener('timeupdate',function(){
-  var d=v.duration||226;
+  var d=v.duration||351;
   zeit.textContent=mmss(v.currentTime)+' / '+mmss(d);
   marken();
 });
